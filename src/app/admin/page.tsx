@@ -499,7 +499,7 @@ export default function AdminCafesPage() {
       <Modal
         isOpen={!!deleteTarget}
         onClose={() => { setDeleteTarget(null); setDeleteConfirmText(""); }}
-        title={deleteTarget?._count.orders > 0 ? "Deactivate Cafe" : "Permanently Delete Cafe"}
+        title={(deleteTarget?._count.orders ?? 0) > 0 ? "Deactivate Cafe" : "Permanently Delete Cafe"}
       >
         {deleteTarget && (
           <div className="space-y-4">
