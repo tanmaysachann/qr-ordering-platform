@@ -101,10 +101,13 @@ export default function AdminOrdersPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Completed Orders</h1>
+      <div className="flex items-center justify-between mb-7">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Completed Orders</h1>
+          <p className="text-sm text-muted mt-0.5">View and filter all completed orders across branches</p>
+        </div>
         <Button variant="secondary" size="sm" onClick={fetchOrders}>
-          <RefreshCw size={16} className="mr-1.5" />
+          <RefreshCw size={14} className="mr-1.5" />
           Refresh
         </Button>
       </div>
@@ -112,16 +115,16 @@ export default function AdminOrdersPage() {
       {/* Filters Row */}
       <div className="flex flex-wrap gap-3 mb-6">
         {/* Date presets */}
-        <div className="flex items-center gap-1 bg-surface rounded-xl border border-border p-1">
+        <div className="flex items-center gap-1 bg-surface rounded-xl border border-border p-1 shadow-sm">
           {datePresets.map((p) => (
             <button
               key={p.value}
               onClick={() => setDatePreset(p.value)}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-100",
+                "px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-100",
                 datePreset === p.value
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-muted hover:text-foreground"
+                  ? "bg-foreground text-background shadow-sm"
+                  : "text-muted hover:text-foreground hover:bg-surface-hover"
               )}
             >
               {p.label}
@@ -130,17 +133,17 @@ export default function AdminOrdersPage() {
         </div>
 
         {/* Cafe filter */}
-        <div className="flex items-center gap-1 bg-surface rounded-xl border border-border p-1 overflow-x-auto">
+        <div className="flex items-center gap-1 bg-surface rounded-xl border border-border p-1 overflow-x-auto shadow-sm">
           <button
             onClick={() => setCafeFilter("ALL")}
             className={cn(
-              "flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-100",
+              "flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-100",
               cafeFilter === "ALL"
-                ? "bg-primary text-white shadow-sm"
-                : "text-muted hover:text-foreground"
+                ? "bg-foreground text-background shadow-sm"
+                : "text-muted hover:text-foreground hover:bg-surface-hover"
             )}
           >
-            <Store size={12} />
+            <Store size={11} />
             All Branches
           </button>
           {cafes.map((c) => (
@@ -148,10 +151,10 @@ export default function AdminOrdersPage() {
               key={c.id}
               onClick={() => setCafeFilter(c.id)}
               className={cn(
-                "flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-100",
+                "flex-shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-100",
                 cafeFilter === c.id
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-muted hover:text-foreground"
+                  ? "bg-foreground text-background shadow-sm"
+                  : "text-muted hover:text-foreground hover:bg-surface-hover"
               )}
             >
               {c.name}
@@ -160,20 +163,30 @@ export default function AdminOrdersPage() {
         </div>
       </div>
 
-      {/* Summary */}
+      {/* Summary bar */}
       {!loading && orders.length > 0 && (
-        <div className="flex items-center gap-6 mb-4 text-sm text-muted">
-          <span><strong className="text-foreground">{orders.length}</strong> orders</span>
-          <span><strong className="text-foreground">{paiseToCurrencyShort(totalRevenue)}</strong> revenue</span>
+        <div className="flex items-center gap-6 bg-surface rounded-xl border border-border px-5 py-3 mb-5 shadow-sm">
+          <div>
+            <p className="text-[11px] text-muted uppercase tracking-wide font-medium">Orders</p>
+            <p className="text-lg font-bold">{orders.length}</p>
+          </div>
+          <div className="w-px h-8 bg-border" />
+          <div>
+            <p className="text-[11px] text-muted uppercase tracking-wide font-medium">Revenue</p>
+            <p className="text-lg font-bold text-emerald-600">{paiseToCurrencyShort(totalRevenue)}</p>
+          </div>
         </div>
       )}
 
       {/* Table */}
       {loading ? (
-        <div className="bg-surface rounded-2xl border border-border overflow-hidden">
+        <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-sm">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="px-5 py-4 border-b border-border animate-pulse">
-              <div className="h-4 bg-surface-hover rounded w-3/4" />
+            <div key={i} className="px-5 py-4 border-b border-border animate-pulse flex gap-4">
+              <div className="h-3.5 bg-surface-hover rounded w-24" />
+              <div className="h-3.5 bg-surface-hover rounded w-32" />
+              <div className="h-3.5 bg-surface-hover rounded w-28" />
+              <div className="h-3.5 bg-surface-hover rounded w-16 ml-auto" />
             </div>
           ))}
         </div>
@@ -184,8 +197,8 @@ export default function AdminOrdersPage() {
           description="Completed orders will appear here"
         />
       ) : (
-        <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-          <div className="grid grid-cols-5 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+        <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-sm">
+          <div className="grid grid-cols-5 gap-4 px-5 py-3 bg-surface-hover border-b border-border text-[11px] font-semibold text-muted uppercase tracking-wide">
             <span>Order #</span>
             <span>Branch</span>
             <span>Customer</span>
@@ -196,14 +209,14 @@ export default function AdminOrdersPage() {
             <div
               key={order.id}
               className={cn(
-                "grid grid-cols-5 gap-4 px-5 py-3.5 text-sm items-center",
+                "grid grid-cols-5 gap-4 px-5 py-3.5 text-sm items-center hover:bg-surface-hover/50 transition-colors",
                 i < orders.length - 1 && "border-b border-border"
               )}
             >
-              <span className="font-medium">{order.orderNumber}</span>
-              <span className="text-muted truncate">{order.cafe?.name ?? "—"}</span>
-              <span className="text-muted truncate">{order.customerName || "Guest"}</span>
-              <span className="text-right font-medium">{paiseToCurrencyShort(order.totalPaise)}</span>
+              <span className="font-semibold text-primary text-xs">{order.orderNumber}</span>
+              <span className="text-muted truncate text-xs">{order.cafe?.name ?? "—"}</span>
+              <span className="text-foreground truncate">{order.customerName || <span className="text-muted">Guest</span>}</span>
+              <span className="text-right font-semibold">{paiseToCurrencyShort(order.totalPaise)}</span>
               <span className="text-right text-muted text-xs">
                 {new Date(order.createdAt).toLocaleDateString("en-IN", {
                   day: "numeric",

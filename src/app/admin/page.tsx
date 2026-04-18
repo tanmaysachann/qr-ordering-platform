@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/frontend/components/ui/card";
 import { Button } from "@/frontend/components/ui/button";
 import { Input } from "@/frontend/components/ui/input";
 import { Modal } from "@/frontend/components/ui/modal";
@@ -196,26 +195,30 @@ export default function AdminCafesPage() {
         {
           label: "Total Revenue",
           value: paiseToCurrencyShort(analytics.totalRevenue),
-          icon: <DollarSign size={20} />,
-          color: "text-green-600 bg-green-50",
+          icon: <DollarSign size={18} />,
+          iconBg: "bg-emerald-50 text-emerald-600",
+          accent: "from-emerald-400 to-teal-500",
         },
         {
           label: "Today's Revenue",
           value: paiseToCurrencyShort(analytics.todayRevenue),
-          icon: <TrendingUp size={20} />,
-          color: "text-primary bg-primary/10",
+          icon: <TrendingUp size={18} />,
+          iconBg: "bg-amber-50 text-amber-600",
+          accent: "from-amber-400 to-orange-500",
         },
         {
           label: "Total Orders",
           value: String(analytics.totalOrders),
-          icon: <ShoppingBag size={20} />,
-          color: "text-blue-600 bg-blue-50",
+          icon: <ShoppingBag size={18} />,
+          iconBg: "bg-blue-50 text-blue-600",
+          accent: "from-blue-400 to-indigo-500",
         },
         {
           label: "Today's Orders",
           value: String(analytics.todayOrders),
-          icon: <Activity size={20} />,
-          color: "text-purple-600 bg-purple-50",
+          icon: <Activity size={18} />,
+          iconBg: "bg-violet-50 text-violet-600",
+          accent: "from-violet-400 to-purple-500",
         },
       ]
     : [];
@@ -239,10 +242,13 @@ export default function AdminCafesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+      <div className="flex items-center justify-between mb-7">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
+          <p className="text-sm text-muted mt-0.5">Welcome back — here's what's happening</p>
+        </div>
         <Button onClick={() => setShowModal(true)}>
-          <Plus size={18} className="mr-1.5" />
+          <Plus size={16} className="mr-1.5" />
           Add Cafe
         </Button>
       </div>
@@ -251,25 +257,25 @@ export default function AdminCafesPage() {
       {analytics && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {statCards.map((stat) => (
-            <Card key={stat.label}>
-              <CardContent className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.color}`}>
-                  {stat.icon}
-                </div>
-                <div>
-                  <p className="text-xs text-muted">{stat.label}</p>
-                  <p className="text-lg font-bold">{stat.value}</p>
-                </div>
-              </CardContent>
-            </Card>
+            <div key={stat.label} className="relative bg-surface rounded-2xl border border-border p-5 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-150">
+              <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${stat.accent}`} />
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${stat.iconBg}`}>
+                {stat.icon}
+              </div>
+              <p className="text-[11px] text-muted font-medium uppercase tracking-wide mb-0.5">{stat.label}</p>
+              <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
+            </div>
           ))}
         </div>
       )}
 
       {/* Cafes */}
-      <h2 className="text-lg font-semibold mb-4">
-        All Cafes ({cafes.length})
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-base font-semibold text-foreground">
+          All Cafes
+          <span className="ml-2 text-xs font-normal text-muted bg-surface-hover px-2 py-0.5 rounded-full border border-border">{cafes.length}</span>
+        </h2>
+      </div>
 
       {cafes.length === 0 ? (
         <EmptyState
@@ -289,54 +295,49 @@ export default function AdminCafesPage() {
             <div
               key={cafe.id}
               onClick={() => router.push(`/admin/cafes/${cafe.id}`)}
-              className="bg-surface rounded-2xl border border-border p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-[box-shadow,border-color] duration-100 cursor-pointer group"
+              className="group bg-surface rounded-2xl border border-border p-5 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer"
             >
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>{cafe.name}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={cafe.isActive ? "success" : "danger"}>
-                      {cafe.isActive ? "Active" : "Inactive"}
-                    </Badge>
-                    <ChevronRight size={16} className="text-muted group-hover:text-primary transition-colors" />
-                  </div>
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Store size={17} className="text-primary" />
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted mb-1">/{cafe.slug}</p>
-                {cafe.address && (
-                  <p className="text-xs text-muted mb-3">{cafe.address}</p>
-                )}
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-4 text-xs text-muted">
-                    <span><strong className="text-foreground">{cafe._count.orders}</strong> orders</span>
-                    <span><strong className="text-foreground">{cafe._count.menuItems}</strong> items</span>
-                    <span><strong className="text-foreground">{cafe._count.users}</strong> staff</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setQrTarget(cafe);
-                      }}
-                      className="p-1.5 rounded-lg text-muted hover:text-primary hover:bg-primary/10 transition-colors"
-                      title="Show QR code"
-                    >
-                      <QrCode size={14} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDeleteTarget(cafe);
-                      }}
-                      className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors"
-                      title={cafe._count.orders > 0 ? "Deactivate cafe" : "Delete cafe"}
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant={cafe.isActive ? "success" : "danger"}>
+                    {cafe.isActive ? "Active" : "Inactive"}
+                  </Badge>
+                  <ChevronRight size={15} className="text-muted/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-100" />
                 </div>
-              </CardContent>
+              </div>
+
+              <p className="font-semibold text-base mb-0.5">{cafe.name}</p>
+              <p className="text-xs text-muted/60 mb-3">/{cafe.slug}</p>
+              {cafe.address && (
+                <p className="text-xs text-muted mb-3 truncate">{cafe.address}</p>
+              )}
+
+              <div className="flex items-center justify-between pt-3 border-t border-border">
+                <div className="flex gap-3 text-xs">
+                  <span className="text-muted"><strong className="text-foreground font-semibold">{cafe._count.orders}</strong> orders</span>
+                  <span className="text-muted"><strong className="text-foreground font-semibold">{cafe._count.menuItems}</strong> items</span>
+                  <span className="text-muted"><strong className="text-foreground font-semibold">{cafe._count.users}</strong> staff</span>
+                </div>
+                <div className="flex items-center gap-0.5">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setQrTarget(cafe); }}
+                    className="p-1.5 rounded-lg text-muted hover:text-primary hover:bg-primary/10 transition-colors"
+                    title="Show QR code"
+                  >
+                    <QrCode size={13} />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setDeleteTarget(cafe); }}
+                    className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors"
+                    title={cafe._count.orders > 0 ? "Deactivate cafe" : "Delete cafe"}
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
