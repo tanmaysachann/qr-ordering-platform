@@ -10,7 +10,7 @@ import {
   LayoutDashboard,
   BarChart3,
   LogOut,
-  Menu,
+  Menu as MenuIcon,
   X,
 } from "lucide-react";
 import { cn } from "@/shared/utils/cn";
@@ -27,17 +27,16 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isAdmin = user.role === "SUPER_ADMIN";
 
-  const navigation = [
-    { name: "Orders", href: "/dashboard", icon: ClipboardList },
-    { name: "Menu", href: "/dashboard/menu", icon: UtensilsCrossed },
-    { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
-    ...(isAdmin
-      ? [
-          { name: "All Cafes", href: "/admin", icon: LayoutDashboard },
-          { name: "All Orders", href: "/admin/orders", icon: ClipboardList },
-        ]
-      : []),
-  ];
+  const navigation = isAdmin
+    ? [
+        { name: "All Cafes", href: "/admin", icon: LayoutDashboard },
+        { name: "All Orders", href: "/admin/orders", icon: ClipboardList },
+      ]
+    : [
+        { name: "Orders", href: "/dashboard", icon: ClipboardList },
+        { name: "Menu", href: "/dashboard/menu", icon: UtensilsCrossed },
+        { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
+      ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -49,7 +48,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="p-1.5 hover:bg-surface-hover rounded-lg"
             >
-              {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
+              {sidebarOpen ? <X size={22} /> : <MenuIcon size={22} />}
             </button>
             <div className="flex items-center gap-2">
               <Coffee size={20} className="text-primary" />

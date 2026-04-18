@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { OrderCard } from "@/frontend/components/dashboard/order-card";
 import { useSSE } from "@/frontend/hooks/use-sse";
 import { EmptyState } from "@/frontend/components/ui/empty-state";
-import { ClipboardList, RefreshCw, Bell, Users, Phone } from "lucide-react";
+import { ClipboardList, RefreshCw, Bell } from "lucide-react";
 import { Button } from "@/frontend/components/ui/button";
 import { cn } from "@/shared/utils/cn";
 import type { DashboardOrder } from "@/shared/types";
@@ -17,20 +17,11 @@ const statusFilters: { label: string; value: OrderStatus | "ALL" }[] = [
   { label: "Completed", value: "COMPLETED" },
 ];
 
-interface StaffMember {
-  id: string;
-  name: string;
-  age: number;
-  mobileNumber: string;
-}
-
 export default function DashboardOrdersPage() {
   const [orders, setOrders] = useState<DashboardOrder[]>([]);
   const [filter, setFilter] = useState<OrderStatus | "ALL">("ALL");
   const [loading, setLoading] = useState(true);
   const [newOrderAlert, setNewOrderAlert] = useState(false);
-  const [staff, setStaff] = useState<StaffMember[]>([]);
-  const [staffLoading, setStaffLoading] = useState(true);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -65,13 +56,6 @@ export default function DashboardOrdersPage() {
     fetchOrders();
   }, [fetchOrders]);
 
-  useEffect(() => {
-    fetch("/api/dashboard/staff")
-      .then((r) => r.json())
-      .then((d) => { if (d.success) setStaff(d.data); })
-      .catch(() => {})
-      .finally(() => setStaffLoading(false));
-  }, []);
 
   // SSE for live updates
   useSSE({
@@ -179,43 +163,6 @@ export default function DashboardOrdersPage() {
           ))}
         </div>
       )}
-      {/* Staff Section */}
-      <div className="mt-10">
-        <h2 className="text-lg font-semibold flex items-center gap-2 mb-4">
-          <Users size={18} className="text-primary" />
-          Our Staff ({staff.length})
-        </h2>
-        {staffLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="bg-surface rounded-2xl border border-border p-4 animate-pulse h-20" />
-            ))}
-          </div>
-        ) : staff.length === 0 ? (
-          <div className="bg-surface rounded-2xl border border-border p-8 text-center text-muted text-sm">
-            No staff members added yet
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {staff.map((member) => (
-              <div key={member.id} className="bg-surface rounded-2xl border border-border p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Users size={16} className="text-primary" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-semibold text-sm truncate">{member.name}</p>
-                    <p className="text-xs text-muted">Age: {member.age}</p>
-                    <p className="text-xs text-muted flex items-center gap-1 mt-0.5">
-                      <Phone size={10} /> {member.mobileNumber}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }

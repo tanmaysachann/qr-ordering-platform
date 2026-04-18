@@ -19,8 +19,18 @@ import {
   Trash2,
   ChevronRight,
   QrCode,
+  Users,
+  Phone,
 } from "lucide-react";
 import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
+
+interface StaffMember {
+  id: string;
+  cafeId: string;
+  name: string;
+  age: number;
+  mobileNumber: string;
+}
 
 interface CafeWithStats {
   id: string;
@@ -59,6 +69,11 @@ export default function AdminCafesPage() {
     return match ? match[1] : "";
   })();
 
+  // Staff state
+  const [allStaff, setAllStaff] = useState<StaffMember[]>([]);
+  const [staffCafeFilter, setStaffCafeFilter] = useState<string>("ALL");
+  const [staffLoading, setStaffLoading] = useState(true);
+
   // Delete state
   const [deleteTarget, setDeleteTarget] = useState<CafeWithStats | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -75,12 +90,31 @@ export default function AdminCafesPage() {
       const cafesData = await cafesRes.json();
       const analyticsData = await analyticsRes.json();
 
-      if (cafesData.success) setCafes(cafesData.data);
+      if (cafesData.success) {
+        setCafes(cafesData.data);
+        fetchAllStaff(cafesData.data);
+      }
       if (analyticsData.success) setAnalytics(analyticsData.data);
     } catch (err) {
       console.error("Failed to fetch admin data:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAllStaff = async (cafeList: CafeWithStats[]) => {
+    try {
+      const results = await Promise.all(
+        cafeList.map((c) =>
+          fetch(`/api/admin/cafes/${c.id}/staff`)
+            .then((r) => r.json())
+            .then((d) => (d.success ? (d.data as StaffMember[]).map((s) => ({ ...s, cafeId: c.id })) : []))
+            .catch(() => [] as StaffMember[])
+        )
+      );
+      setAllStaff(results.flat());
+    } finally {
+      setStaffLoading(false);
     }
   };
 
@@ -387,6 +421,70 @@ export default function AdminCafesPage() {
           </Button>
         </div>
       </Modal>
+
+      {/* All Staff Section */}
+      <div className="mt-10">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold flex items-center gap-2">
+            <Users size={18} className="text-primary" />
+            All Staff
+          </h2>
+        </div>
+
+        {/* Cafe filter */}
+        <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+          <button
+            onClick={() => setStaffCafeFilter("ALL")}
+            className={`flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors ${staffCafeFilter === "ALL" ? "bg-primary text-white border-primary" : "bg-surface text-muted border-border hover:border-primary/30"}`}
+          >
+            All Branches
+          </button>
+          {cafes.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setStaffCafeFilter(c.id)}
+              className={`flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors ${staffCafeFilter === c.id ? "bg-primary text-white border-primary" : "bg-surface text-muted border-border hover:border-primary/30"}`}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+
+        {staffLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="bg-surface rounded-2xl border border-border p-4 animate-pulse h-20" />
+            ))}
+          </div>
+        ) : (() => {
+          const filtered = staffCafeFilter === "ALL" ? allStaff : allStaff.filter((s) => s.cafeId === staffCafeFilter);
+          return filtered.length === 0 ? (
+            <div className="bg-surface rounded-2xl border border-border p-8 text-center text-muted text-sm">
+              No staff members found
+            </div>
+          ) : (
+            <div className="bg-surface rounded-2xl border border-border overflow-hidden">
+              <div className="grid grid-cols-4 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+                <span>Name</span>
+                <span>Branch</span>
+                <span>Age</span>
+                <span className="flex items-center gap-1"><Phone size={10} /> Mobile</span>
+              </div>
+              {filtered.map((member, i) => {
+                const cafe = cafes.find((c) => c.id === member.cafeId);
+                return (
+                  <div key={member.id} className={`grid grid-cols-4 gap-4 px-5 py-3 text-sm items-center ${i < filtered.length - 1 ? "border-b border-border" : ""}`}>
+                    <span className="font-medium">{member.name}</span>
+                    <span className="text-muted truncate">{cafe?.name ?? "—"}</span>
+                    <span className="text-muted">{member.age}</span>
+                    <span className="text-muted">{member.mobileNumber}</span>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })()}
+      </div>
 
       {/* QR Code Modal */}
       <CafeQRModal
