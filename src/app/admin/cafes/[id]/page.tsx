@@ -23,6 +23,9 @@ import {
   KeyRound,
   User,
   QrCode,
+  Users,
+  Plus,
+  UserMinus,
 } from "lucide-react";
 import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
 import type { OrderStatus } from "@/generated/prisma";
@@ -31,6 +34,13 @@ interface CafeOwner {
   id: string;
   name: string;
   email: string;
+}
+
+interface StaffMember {
+  id: string;
+  name: string;
+  age: number;
+  mobileNumber: string;
 }
 
 interface CafeDetail {
@@ -99,6 +109,17 @@ export default function AdminCafeDetailPage() {
   const [resetMessage, setResetMessage] = useState("");
   const [showQRModal, setShowQRModal] = useState(false);
 
+  // Staff state
+  const [staff, setStaff] = useState<StaffMember[]>([]);
+  const [showAddStaffModal, setShowAddStaffModal] = useState(false);
+  const [staffName, setStaffName] = useState("");
+  const [staffAge, setStaffAge] = useState("");
+  const [staffMobile, setStaffMobile] = useState("");
+  const [staffSaving, setStaffSaving] = useState(false);
+  const [staffError, setStaffError] = useState("");
+  const [removeTarget, setRemoveTarget] = useState<StaffMember | null>(null);
+  const [removing, setRemoving] = useState(false);
+
   const fetchCafe = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/cafes/${id}`);
@@ -110,6 +131,56 @@ export default function AdminCafeDetailPage() {
       setLoading(false);
     }
   }, [id]);
+
+  const fetchStaff = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/cafes/${id}/staff`);
+      const data = await res.json();
+      if (data.success) setStaff(data.data);
+    } catch {
+      console.error("Failed to fetch staff");
+    }
+  }, [id]);
+
+  const handleAddStaff = async () => {
+    setStaffError("");
+    if (!staffName.trim()) { setStaffError("Name is required"); return; }
+    if (!staffAge || isNaN(Number(staffAge))) { setStaffError("Valid age is required"); return; }
+    if (!staffMobile.trim()) { setStaffError("Mobile number is required"); return; }
+    setStaffSaving(true);
+    try {
+      const res = await fetch(`/api/admin/cafes/${id}/staff`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: staffName, age: Number(staffAge), mobileNumber: staffMobile }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setShowAddStaffModal(false);
+        setStaffName(""); setStaffAge(""); setStaffMobile(""); setStaffError("");
+        fetchStaff();
+      } else {
+        setStaffError(data.error || "Failed to add staff");
+      }
+    } catch {
+      setStaffError("Network error");
+    } finally {
+      setStaffSaving(false);
+    }
+  };
+
+  const handleRemoveStaff = async () => {
+    if (!removeTarget) return;
+    setRemoving(true);
+    try {
+      const res = await fetch(`/api/admin/cafes/${id}/staff/${removeTarget.id}`, { method: "DELETE" });
+      if (res.ok) { setRemoveTarget(null); fetchStaff(); }
+    } catch {
+      console.error("Failed to remove staff");
+    } finally {
+      setRemoving(false);
+    }
+  };
 
   const fetchAnalytics = useCallback(async (r: TimeRange) => {
     setAnalyticsLoading(true);
@@ -127,7 +198,8 @@ export default function AdminCafeDetailPage() {
   useEffect(() => {
     fetchCafe();
     fetchAnalytics(range);
-  }, [fetchCafe, fetchAnalytics, range]);
+    fetchStaff();
+  }, [fetchCafe, fetchAnalytics, fetchStaff, range]);
 
   const handleRangeChange = (newRange: TimeRange) => {
     setRange(newRange);
@@ -419,6 +491,89 @@ export default function AdminCafeDetailPage() {
           ))
         )}
       </div>
+
+      {/* Staff Section */}
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold flex items-center gap-2">
+            <Users size={18} className="text-primary" />
+            Staff ({staff.length})
+          </h2>
+          <Button size="sm" onClick={() => { setShowAddStaffModal(true); setStaffError(""); }}>
+            <Plus size={14} className="mr-1" />
+            Add Staff
+          </Button>
+        </div>
+
+        {staff.length === 0 ? (
+          <div className="bg-surface rounded-2xl border border-border p-8 text-center text-muted text-sm">
+            No staff added yet
+          </div>
+        ) : (
+          <div className="bg-surface rounded-2xl border border-border overflow-hidden">
+            <div className="grid grid-cols-4 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+              <span>Name</span>
+              <span>Age</span>
+              <span>Mobile</span>
+              <span></span>
+            </div>
+            {staff.map((member, i) => (
+              <div
+                key={member.id}
+                className={cn(
+                  "grid grid-cols-4 gap-4 px-5 py-3 text-sm items-center",
+                  i < staff.length - 1 && "border-b border-border"
+                )}
+              >
+                <span className="font-medium">{member.name}</span>
+                <span className="text-muted">{member.age}</span>
+                <span className="text-muted">{member.mobileNumber}</span>
+                <span className="flex justify-end">
+                  <button
+                    onClick={() => setRemoveTarget(member)}
+                    className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors"
+                    title="Remove staff"
+                  >
+                    <UserMinus size={14} />
+                  </button>
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Add Staff Modal */}
+      <Modal isOpen={showAddStaffModal} onClose={() => setShowAddStaffModal(false)} title="Add Staff Member">
+        <div className="space-y-4">
+          <Input id="staff-name" label="Name" value={staffName} onChange={(e) => setStaffName(e.target.value)} placeholder="Full name" required />
+          <Input id="staff-age" label="Age" type="number" value={staffAge} onChange={(e) => setStaffAge(e.target.value)} placeholder="e.g. 25" required />
+          <Input id="staff-mobile" label="Mobile Number" value={staffMobile} onChange={(e) => setStaffMobile(e.target.value)} placeholder="e.g. +91 98765 43210" required />
+          {staffError && (
+            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">{staffError}</div>
+          )}
+          <Button onClick={handleAddStaff} className="w-full" loading={staffSaving}>
+            <Plus size={14} className="mr-1" /> Add Staff
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Remove Staff Confirmation */}
+      <Modal isOpen={!!removeTarget} onClose={() => setRemoveTarget(null)} title="Remove Staff">
+        {removeTarget && (
+          <div className="space-y-4">
+            <p className="text-sm text-muted">
+              Remove <strong className="text-foreground">{removeTarget.name}</strong> from this cafe?
+            </p>
+            <div className="flex gap-3">
+              <Button variant="secondary" className="flex-1" onClick={() => setRemoveTarget(null)}>Cancel</Button>
+              <Button variant="danger" className="flex-1" loading={removing} onClick={handleRemoveStaff}>
+                <UserMinus size={14} className="mr-1" /> Remove
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
 
       {/* QR Code Modal */}
       <CafeQRModal
