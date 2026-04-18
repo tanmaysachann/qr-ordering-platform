@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useCartStore } from "@/frontend/stores/cart";
 import { useSSE } from "@/frontend/hooks/use-sse";
 import { CategoryTabs } from "./category-tabs";
@@ -19,14 +19,10 @@ interface MenuPageClientProps {
 
 export function MenuPageClient({ cafe, categories: initialCategories }: MenuPageClientProps) {
   const [categories, setCategories] = useState(initialCategories);
-  const [activeCategory, setActiveCategory] = useState(
-    initialCategories.find((c) => c.items.length > 0)?.id || ""
-  );
+  const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
-  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
   const { setCafeSlug } = useCartStore();
 
   // Rehydrate cart from localStorage after mount (skipHydration in store keeps
@@ -63,10 +59,7 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
 
   const handleCategorySelect = (id: string) => {
     setActiveCategory(id);
-    const section = sectionRefs.current[id];
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const isSearching = searchQuery.trim().length > 0;
@@ -78,8 +71,9 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
 
   const filteredCategories = useMemo(() => {
     if (isSearching) return [];
-    return visibleCategories;
-  }, [visibleCategories, isSearching]);
+    if (activeCategory === "all") return visibleCategories;
+    return visibleCategories.filter((c) => c.id === activeCategory);
+  }, [visibleCategories, isSearching, activeCategory]);
 
   const searchResults = useMemo(() => {
     if (!isSearching) return [];
@@ -203,7 +197,10 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
       {/* Category Tabs */}
       {!isSearching && (
         <CategoryTabs
-          categories={visibleCategories.map((c) => ({ id: c.id, name: toTitleCase(c.name) }))}
+          categories={[
+            { id: "all", name: "All" },
+            ...visibleCategories.map((c) => ({ id: c.id, name: toTitleCase(c.name) })),
+          ]}
           activeCategory={activeCategory}
           onSelect={handleCategorySelect}
         />
@@ -239,7 +236,6 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
           {filteredCategories.map((category, catIdx) => (
             <div
               key={category.id}
-              ref={(el) => { sectionRefs.current[category.id] = el; }}
               className="animate-fade-in-up"
               style={{ animationDelay: `${catIdx * 60}ms` }}
             >
