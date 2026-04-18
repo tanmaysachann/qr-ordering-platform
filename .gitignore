@@ -15,6 +15,9 @@
 
 # next.js
 /.next/
+/.next-owner/
+/.next-admin/
+/.next-customer/
 /out/
 
 # production
@@ -31,7 +34,9 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+.env.local
+.env.production
 
 # vercel
 .vercel
@@ -39,3 +44,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
+claude.md
