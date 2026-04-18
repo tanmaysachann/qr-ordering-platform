@@ -68,6 +68,11 @@ export default function AdminCafeMenuPage() {
   const [formImageUrl, setFormImageUrl] = useState<string | null>(null);
   const [imageUploading, setImageUploading] = useState(false);
 
+  // Inline category creation state
+  const [showNewCategory, setShowNewCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategorySaving, setNewCategorySaving] = useState(false);
+
   // Confirm dialog state
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
@@ -104,6 +109,11 @@ export default function AdminCafeMenuPage() {
     fetchData();
   }, [fetchData]);
 
+  const resetCategoryInlineForm = () => {
+    setShowNewCategory(false);
+    setNewCategoryName("");
+  };
+
   const openAddModal = () => {
     setEditItem(null);
     setFormName("");
@@ -112,6 +122,7 @@ export default function AdminCafeMenuPage() {
     setFormCategory("");
     setFormIsVeg(true);
     setFormImageUrl(null);
+    resetCategoryInlineForm();
     setShowModal(true);
   };
 
@@ -123,7 +134,31 @@ export default function AdminCafeMenuPage() {
     setFormCategory(item.categoryId || "");
     setFormIsVeg(item.isVeg);
     setFormImageUrl(item.imageUrl);
+    resetCategoryInlineForm();
     setShowModal(true);
+  };
+
+  const handleCreateCategory = async () => {
+    if (!newCategoryName.trim()) return;
+    setNewCategorySaving(true);
+    try {
+      const res = await fetch(`/api/admin/cafes/${cafeId}/categories`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newCategoryName.trim() }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const created: MenuCategory = data.data;
+        setCategories((prev) => [...prev, created]);
+        setFormCategory(created.id);
+        resetCategoryInlineForm();
+      }
+    } catch (err) {
+      console.error("Failed to create category:", err);
+    } finally {
+      setNewCategorySaving(false);
+    }
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -350,7 +385,19 @@ export default function AdminCafeMenuPage() {
           />
 
           <div>
-            <label className="block text-sm font-medium mb-1.5">Category</label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-sm font-medium">Category</label>
+              {!showNewCategory && (
+                <button
+                  type="button"
+                  onClick={() => setShowNewCategory(true)}
+                  className="text-xs text-primary hover:underline flex items-center gap-1"
+                >
+                  <Plus size={12} />
+                  Create new category
+                </button>
+              )}
+            </div>
             <select
               className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary"
               value={formCategory}
@@ -363,6 +410,37 @@ export default function AdminCafeMenuPage() {
                 </option>
               ))}
             </select>
+            {showNewCategory && (
+              <div className="mt-2 flex gap-2 items-center">
+                <input
+                  type="text"
+                  autoFocus
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleCreateCategory();
+                    if (e.key === "Escape") resetCategoryInlineForm();
+                  }}
+                  placeholder="e.g. Beverages"
+                  className="flex-1 rounded-xl border border-border bg-surface px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <button
+                  type="button"
+                  onClick={handleCreateCategory}
+                  disabled={newCategorySaving || !newCategoryName.trim()}
+                  className="px-3 py-2 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-50 hover:bg-primary/90 transition-colors"
+                >
+                  {newCategorySaving ? "Saving…" : "Save"}
+                </button>
+                <button
+                  type="button"
+                  onClick={resetCategoryInlineForm}
+                  className="p-2 rounded-xl hover:bg-surface-hover text-muted"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Image upload */}
