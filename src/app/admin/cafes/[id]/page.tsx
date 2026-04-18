@@ -26,6 +26,7 @@ import {
   Users,
   Plus,
   UserMinus,
+  Pencil,
 } from "lucide-react";
 import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
 import type { OrderStatus } from "@/generated/prisma";
@@ -109,6 +110,16 @@ export default function AdminCafeDetailPage() {
   const [resetLoading, setResetLoading] = useState(false);
   const [resetMessage, setResetMessage] = useState("");
   const [showQRModal, setShowQRModal] = useState(false);
+
+  // Edit state
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editAddress, setEditAddress] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+  const [editOpeningTime, setEditOpeningTime] = useState("");
+  const [editClosingTime, setEditClosingTime] = useState("");
+  const [editSaving, setEditSaving] = useState(false);
+  const [editError, setEditError] = useState("");
 
   // Staff state
   const [staff, setStaff] = useState<StaffMember[]>([]);
@@ -248,6 +259,47 @@ export default function AdminCafeDetailPage() {
     }
   };
 
+  const openEditModal = () => {
+    if (!cafe) return;
+    setEditName(cafe.name);
+    setEditAddress(cafe.address ?? "");
+    setEditPhone(cafe.phone ?? "");
+    setEditOpeningTime(cafe.openingTime ?? "");
+    setEditClosingTime(cafe.closingTime ?? "");
+    setEditError("");
+    setShowEditModal(true);
+  };
+
+  const handleEditSave = async () => {
+    setEditError("");
+    if (!editName.trim()) { setEditError("Cafe name is required"); return; }
+    setEditSaving(true);
+    try {
+      const res = await fetch(`/api/admin/cafes/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: editName,
+          address: editAddress,
+          phone: editPhone,
+          openingTime: editOpeningTime,
+          closingTime: editClosingTime,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setShowEditModal(false);
+        fetchCafe();
+      } else {
+        setEditError(data.error || "Failed to update cafe");
+      }
+    } catch {
+      setEditError("Network error");
+    } finally {
+      setEditSaving(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -318,6 +370,10 @@ export default function AdminCafeDetailPage() {
             <ExternalLink size={14} />
             Customer View
           </a>
+          <Button size="sm" variant="secondary" onClick={openEditModal}>
+            <Pencil size={14} className="mr-1" />
+            Edit
+          </Button>
           <Button size="sm" onClick={() => setShowQRModal(true)}>
             <QrCode size={14} className="mr-1" />
             QR Code
@@ -574,6 +630,59 @@ export default function AdminCafeDetailPage() {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* Edit Cafe Modal */}
+      <Modal isOpen={showEditModal} onClose={() => setShowEditModal(false)} title="Edit Cafe Details">
+        <div className="space-y-4">
+          <Input
+            id="edit-name"
+            label="Cafe Name"
+            value={editName}
+            onChange={(e) => setEditName(e.target.value)}
+            placeholder="e.g. Brew & Bites"
+            required
+          />
+          <Input
+            id="edit-address"
+            label="Address"
+            value={editAddress}
+            onChange={(e) => setEditAddress(e.target.value)}
+            placeholder="e.g. 123 Main Street"
+          />
+          <Input
+            id="edit-phone"
+            label="Phone"
+            value={editPhone}
+            onChange={(e) => setEditPhone(e.target.value)}
+            placeholder="e.g. +91 98765 43210"
+          />
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              id="edit-opening"
+              label="Opening Time"
+              value={editOpeningTime}
+              onChange={(e) => setEditOpeningTime(e.target.value)}
+              placeholder="e.g. 08:00"
+            />
+            <Input
+              id="edit-closing"
+              label="Closing Time"
+              value={editClosingTime}
+              onChange={(e) => setEditClosingTime(e.target.value)}
+              placeholder="e.g. 22:00"
+            />
+          </div>
+          {editError && (
+            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">{editError}</div>
+          )}
+          <div className="flex gap-3">
+            <Button variant="secondary" className="flex-1" onClick={() => setShowEditModal(false)}>Cancel</Button>
+            <Button className="flex-1" loading={editSaving} onClick={handleEditSave}>
+              Save Changes
+            </Button>
+          </div>
+        </div>
       </Modal>
 
       {/* QR Code Modal */}

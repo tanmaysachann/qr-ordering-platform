@@ -26,6 +26,39 @@ export async function GET(
   }
 }
 
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await auth();
+    if (session?.user?.role !== "SUPER_ADMIN") {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = await params;
+    const body = await request.json();
+    const { name, address, phone, openingTime, closingTime } = body;
+
+    if (!name?.trim()) {
+      return NextResponse.json({ success: false, error: "Cafe name is required" }, { status: 400 });
+    }
+
+    const updated = await adminRepository.updateCafe(id, {
+      name: name.trim(),
+      address: address?.trim() || undefined,
+      phone: phone?.trim() || undefined,
+      openingTime: openingTime?.trim() || undefined,
+      closingTime: closingTime?.trim() || undefined,
+    });
+
+    return NextResponse.json({ success: true, data: updated });
+  } catch (error) {
+    console.error("Admin update cafe error:", error);
+    return NextResponse.json({ success: false, error: "Failed to update cafe" }, { status: 500 });
+  }
+}
+
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
