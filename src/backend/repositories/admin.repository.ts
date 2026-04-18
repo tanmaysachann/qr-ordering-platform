@@ -6,7 +6,13 @@ export const adminRepository = {
     return prisma.cafe.findMany({
       orderBy: { name: "asc" },
       include: {
-        _count: { select: { orders: true, menuItems: true, users: true } },
+        _count: {
+          select: {
+            orders: { where: { status: { in: ["PAID", "PREPARING", "READY", "COMPLETED"] } } },
+            menuItems: true,
+            users: true,
+          },
+        },
       },
     });
   },
@@ -15,7 +21,13 @@ export const adminRepository = {
     return prisma.cafe.findUnique({
       where: { id },
       include: {
-        _count: { select: { orders: true, menuItems: true, users: true } },
+        _count: {
+          select: {
+            orders: { where: { status: { in: ["PAID", "PREPARING", "READY", "COMPLETED"] } } },
+            menuItems: true,
+            users: true,
+          },
+        },
         users: {
           where: { role: "CAFE_OWNER", isActive: true },
           select: { id: true, name: true, email: true },
@@ -147,12 +159,12 @@ export const adminRepository = {
         const [totalOrders, todayOrders, totalRevenue, todayRevenue] =
           await Promise.all([
             prisma.order.count({
-              where: { cafeId: cafe.id, status: { notIn: ["FAILED", "CANCELLED"] } },
+              where: { cafeId: cafe.id, status: { in: ["PAID", "PREPARING", "READY", "COMPLETED"] } },
             }),
             prisma.order.count({
               where: {
                 cafeId: cafe.id,
-                status: { notIn: ["FAILED", "CANCELLED"] },
+                status: { in: ["PAID", "PREPARING", "READY", "COMPLETED"] },
                 createdAt: { gte: todayStart },
               },
             }),
