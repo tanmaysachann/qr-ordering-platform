@@ -31,6 +31,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
     ? [
         { name: "All Cafes", href: "/admin", icon: LayoutDashboard },
         { name: "All Orders", href: "/admin/orders", icon: ClipboardList },
+        { name: "Menu", href: "/admin/menu", icon: UtensilsCrossed },
       ]
     : [
         { name: "Orders", href: "/dashboard", icon: ClipboardList },
