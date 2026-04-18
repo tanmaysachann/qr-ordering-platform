@@ -7,7 +7,7 @@
     "dev:owner": "cross-env PORT=3001 NEXT_DIST_DIR=.next-owner AUTH_URL=http://localhost:3001 NEXT_PUBLIC_APP_URL=http://localhost:3001 next dev --webpack -p 3001",
     "dev:admin": "cross-env PORT=3002 NEXT_DIST_DIR=.next-admin AUTH_URL=http://localhost:3002 NEXT_PUBLIC_APP_URL=http://localhost:3002 next dev --webpack -p 3002",
     "dev:customer": "cross-env PORT=3003 NEXT_DIST_DIR=.next-customer AUTH_URL=http://localhost:3003 NEXT_PUBLIC_APP_URL=http://localhost:3003 next dev --webpack -p 3003",
-    "build": "npx prisma generate && next build",
+    "build": "npx prisma generate && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "npx prisma generate",
