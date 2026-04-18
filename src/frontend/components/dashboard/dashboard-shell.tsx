@@ -12,6 +12,7 @@ import {
   LogOut,
   Menu as MenuIcon,
   X,
+  Users,
 } from "lucide-react";
 import { cn } from "@/shared/utils/cn";
 import { useState } from "react";
@@ -37,6 +38,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         { name: "Orders", href: "/dashboard", icon: ClipboardList },
         { name: "Menu", href: "/dashboard/menu", icon: UtensilsCrossed },
         { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
+        { name: "Staff", href: "/dashboard/staff", icon: Users },
       ];
 
   return (
