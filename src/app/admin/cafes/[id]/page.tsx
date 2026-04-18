@@ -27,6 +27,7 @@ import {
   Plus,
   UserMinus,
   Pencil,
+  UtensilsCrossed,
 } from "lucide-react";
 import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
 import type { OrderStatus } from "@/generated/prisma";
@@ -370,6 +371,10 @@ export default function AdminCafeDetailPage() {
             <ExternalLink size={14} />
             Customer View
           </a>
+          <Button size="sm" variant="secondary" onClick={() => router.push(`/admin/cafes/${id}/menu`)}>
+            <UtensilsCrossed size={14} className="mr-1" />
+            Manage Menu
+          </Button>
           <Button size="sm" variant="secondary" onClick={openEditModal}>
             <Pencil size={14} className="mr-1" />
             Edit
