@@ -1,6 +1,6 @@
 // @ts-nocheck
 import "dotenv/config";
-import { PrismaClient } from "../src/generated/prisma";
+import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { createHash, randomBytes } from "crypto";
 
