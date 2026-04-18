@@ -77,6 +77,7 @@ export default function AdminCafesPage() {
   // Delete state
   const [deleteTarget, setDeleteTarget] = useState<CafeWithStats | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
 
   // QR state (accepts any cafe-shaped object with name+slug)
   const [qrTarget, setQrTarget] = useState<{ name: string; slug: string } | null>(null);
@@ -329,7 +330,7 @@ export default function AdminCafesPage() {
                         setDeleteTarget(cafe);
                       }}
                       className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors"
-                      title="Delete cafe"
+                      title={cafe._count.orders > 0 ? "Deactivate cafe" : "Delete cafe"}
                     >
                       <Trash2 size={14} />
                     </button>
@@ -494,36 +495,60 @@ export default function AdminCafesPage() {
         cafeSlug={qrTarget?.slug || ""}
       />
 
-      {/* Delete Confirmation Modal */}
+      {/* Deactivate / Delete Confirmation Modal */}
       <Modal
         isOpen={!!deleteTarget}
-        onClose={() => setDeleteTarget(null)}
-        title="Delete Cafe"
+        onClose={() => { setDeleteTarget(null); setDeleteConfirmText(""); }}
+        title={deleteTarget?._count.orders > 0 ? "Deactivate Cafe" : "Permanently Delete Cafe"}
       >
         {deleteTarget && (
           <div className="space-y-4">
-            <p className="text-sm text-muted">
-              Are you sure you want to delete <strong className="text-foreground">{deleteTarget.name}</strong>?
-            </p>
             {deleteTarget._count.orders > 0 ? (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
-                This cafe has <strong>{deleteTarget._count.orders} orders</strong>. It will be
-                deactivated to preserve order history.
-              </div>
+              <>
+                <p className="text-sm text-muted">
+                  You are about to deactivate <strong className="text-foreground">{deleteTarget.name}</strong>.
+                  The cafe will be hidden from customers but all order history will be preserved.
+                </p>
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
+                  <strong>{deleteTarget._count.orders} orders</strong> will be retained. This action can be reversed by reactivating the cafe.
+                </div>
+                <div className="flex gap-3">
+                  <Button variant="secondary" className="flex-1" onClick={() => setDeleteTarget(null)}>Cancel</Button>
+                  <Button variant="danger" className="flex-1" loading={deleting} onClick={handleDeleteCafe}>
+                    Deactivate Cafe
+                  </Button>
+                </div>
+              </>
             ) : (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-800">
-                This cafe has no orders. It will be <strong>permanently deleted</strong>.
-              </div>
+              <>
+                <p className="text-sm text-muted">
+                  You are about to <strong className="text-foreground">permanently delete</strong> {deleteTarget.name}. This will remove all menus, categories, staff and data. <strong className="text-danger">This cannot be undone.</strong>
+                </p>
+                <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-800">
+                  To confirm, type the cafe name exactly: <strong>{deleteTarget.name}</strong>
+                </div>
+                <input
+                  type="text"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder={`Type "${deleteTarget.name}" to confirm`}
+                  className="w-full px-3 py-2 text-sm border border-border rounded-xl bg-background focus:outline-none focus:ring-2 focus:ring-danger/30 focus:border-danger"
+                />
+                <div className="flex gap-3">
+                  <Button variant="secondary" className="flex-1" onClick={() => { setDeleteTarget(null); setDeleteConfirmText(""); }}>Cancel</Button>
+                  <Button
+                    variant="danger"
+                    className="flex-1"
+                    loading={deleting}
+                    onClick={handleDeleteCafe}
+                    disabled={deleteConfirmText !== deleteTarget.name}
+                  >
+                    <Trash2 size={14} className="mr-1" />
+                    Permanently Delete
+                  </Button>
+                </div>
+              </>
             )}
-            <div className="flex gap-3">
-              <Button variant="secondary" className="flex-1" onClick={() => setDeleteTarget(null)}>
-                Cancel
-              </Button>
-              <Button variant="danger" className="flex-1" loading={deleting} onClick={handleDeleteCafe}>
-                <Trash2 size={14} className="mr-1" />
-                {deleteTarget._count.orders > 0 ? "Deactivate" : "Delete"}
-              </Button>
-            </div>
           </div>
         )}
       </Modal>

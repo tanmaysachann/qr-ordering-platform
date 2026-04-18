@@ -103,6 +103,7 @@ export default function AdminCafeDetailPage() {
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [showResetModal, setShowResetModal] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
@@ -621,46 +622,59 @@ export default function AdminCafeDetailPage() {
         )}
       </Modal>
 
-      {/* Delete Confirmation Modal */}
+      {/* Deactivate / Delete Confirmation Modal */}
       <Modal
         isOpen={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        title="Delete Cafe"
+        onClose={() => { setShowDeleteModal(false); setDeleteConfirmText(""); }}
+        title={cafe._count.orders > 0 ? "Deactivate Cafe" : "Permanently Delete Cafe"}
       >
         <div className="space-y-4">
-          <p className="text-sm text-muted">
-            Are you sure you want to delete <strong className="text-foreground">{cafe.name}</strong>?
-          </p>
           {cafe._count.orders > 0 ? (
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
-              This cafe has <strong>{cafe._count.orders} orders</strong>. It will be
-              deactivated (soft-deleted) to preserve order history. It won&apos;t appear
-              to customers but data is retained.
-            </div>
+            <>
+              <p className="text-sm text-muted">
+                You are about to deactivate <strong className="text-foreground">{cafe.name}</strong>.
+                The cafe will be hidden from customers but all order history will be preserved.
+              </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
+                <strong>{cafe._count.orders} orders</strong> will be retained. This action can be reversed by reactivating the cafe.
+              </div>
+              <div className="flex gap-3">
+                <Button variant="secondary" className="flex-1" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+                <Button variant="danger" className="flex-1" loading={deleting} onClick={handleDelete}>
+                  Deactivate Cafe
+                </Button>
+              </div>
+            </>
           ) : (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-800">
-              This cafe has no orders. It will be <strong>permanently deleted</strong> along
-              with all menu items, categories, and staff accounts.
-            </div>
+            <>
+              <p className="text-sm text-muted">
+                You are about to <strong className="text-foreground">permanently delete</strong> {cafe.name}. This will remove all menus, categories, staff and data. <strong className="text-danger">This cannot be undone.</strong>
+              </p>
+              <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-800">
+                To confirm, type the cafe name exactly: <strong>{cafe.name}</strong>
+              </div>
+              <input
+                type="text"
+                value={deleteConfirmText}
+                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                placeholder={`Type "${cafe.name}" to confirm`}
+                className="w-full px-3 py-2 text-sm border border-border rounded-xl bg-background focus:outline-none focus:ring-2 focus:ring-danger/30 focus:border-danger"
+              />
+              <div className="flex gap-3">
+                <Button variant="secondary" className="flex-1" onClick={() => { setShowDeleteModal(false); setDeleteConfirmText(""); }}>Cancel</Button>
+                <Button
+                  variant="danger"
+                  className="flex-1"
+                  loading={deleting}
+                  onClick={handleDelete}
+                  disabled={deleteConfirmText !== cafe.name}
+                >
+                  <Trash2 size={14} className="mr-1" />
+                  Permanently Delete
+                </Button>
+              </div>
+            </>
           )}
-          <div className="flex gap-3">
-            <Button
-              variant="secondary"
-              className="flex-1"
-              onClick={() => setShowDeleteModal(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="danger"
-              className="flex-1"
-              loading={deleting}
-              onClick={handleDelete}
-            >
-              <Trash2 size={14} className="mr-1" />
-              {cafe._count.orders > 0 ? "Deactivate" : "Delete Forever"}
-            </Button>
-          </div>
         </div>
       </Modal>
     </div>
