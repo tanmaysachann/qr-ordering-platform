@@ -4604,7 +4604,7 @@ export namespace Prisma {
 
   export type MenuCategoryGroupByOutputType = {
     id: string
-    cafeId: string
+    cafeId: string | null
     name: string
     sortOrder: number
     isActive: boolean
@@ -4637,7 +4637,7 @@ export namespace Prisma {
     sortOrder?: boolean
     isActive?: boolean
     createdAt?: boolean
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuCategory$cafeArgs<ExtArgs>
     items?: boolean | MenuCategory$itemsArgs<ExtArgs>
     _count?: boolean | MenuCategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["menuCategory"]>
@@ -4649,7 +4649,7 @@ export namespace Prisma {
     sortOrder?: boolean
     isActive?: boolean
     createdAt?: boolean
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuCategory$cafeArgs<ExtArgs>
   }, ExtArgs["result"]["menuCategory"]>
 
   export type MenuCategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4659,7 +4659,7 @@ export namespace Prisma {
     sortOrder?: boolean
     isActive?: boolean
     createdAt?: boolean
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuCategory$cafeArgs<ExtArgs>
   }, ExtArgs["result"]["menuCategory"]>
 
   export type MenuCategorySelectScalar = {
@@ -4673,26 +4673,26 @@ export namespace Prisma {
 
   export type MenuCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cafeId" | "name" | "sortOrder" | "isActive" | "createdAt", ExtArgs["result"]["menuCategory"]>
   export type MenuCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuCategory$cafeArgs<ExtArgs>
     items?: boolean | MenuCategory$itemsArgs<ExtArgs>
     _count?: boolean | MenuCategoryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MenuCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuCategory$cafeArgs<ExtArgs>
   }
   export type MenuCategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuCategory$cafeArgs<ExtArgs>
   }
 
   export type $MenuCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MenuCategory"
     objects: {
-      cafe: Prisma.$CafePayload<ExtArgs>
+      cafe: Prisma.$CafePayload<ExtArgs> | null
       items: Prisma.$MenuItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      cafeId: string
+      cafeId: string | null
       name: string
       sortOrder: number
       isActive: boolean
@@ -5091,7 +5091,7 @@ export namespace Prisma {
    */
   export interface Prisma__MenuCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    cafe<T extends CafeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CafeDefaultArgs<ExtArgs>>): Prisma__CafeClient<$Result.GetResult<Prisma.$CafePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cafe<T extends MenuCategory$cafeArgs<ExtArgs> = {}>(args?: Subset<T, MenuCategory$cafeArgs<ExtArgs>>): Prisma__CafeClient<$Result.GetResult<Prisma.$CafePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     items<T extends MenuCategory$itemsArgs<ExtArgs> = {}>(args?: Subset<T, MenuCategory$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MenuItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5529,6 +5529,25 @@ export namespace Prisma {
   }
 
   /**
+   * MenuCategory.cafe
+   */
+  export type MenuCategory$cafeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cafe
+     */
+    select?: CafeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Cafe
+     */
+    omit?: CafeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CafeInclude<ExtArgs> | null
+    where?: CafeWhereInput
+  }
+
+  /**
    * MenuCategory.items
    */
   export type MenuCategory$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5784,7 +5803,7 @@ export namespace Prisma {
 
   export type MenuItemGroupByOutputType = {
     id: string
-    cafeId: string
+    cafeId: string | null
     categoryId: string | null
     name: string
     description: string | null
@@ -5829,7 +5848,7 @@ export namespace Prisma {
     sortOrder?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuItem$cafeArgs<ExtArgs>
     category?: boolean | MenuItem$categoryArgs<ExtArgs>
     orderItems?: boolean | MenuItem$orderItemsArgs<ExtArgs>
     _count?: boolean | MenuItemCountOutputTypeDefaultArgs<ExtArgs>
@@ -5848,7 +5867,7 @@ export namespace Prisma {
     sortOrder?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuItem$cafeArgs<ExtArgs>
     category?: boolean | MenuItem$categoryArgs<ExtArgs>
   }, ExtArgs["result"]["menuItem"]>
 
@@ -5865,7 +5884,7 @@ export namespace Prisma {
     sortOrder?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuItem$cafeArgs<ExtArgs>
     category?: boolean | MenuItem$categoryArgs<ExtArgs>
   }, ExtArgs["result"]["menuItem"]>
 
@@ -5886,30 +5905,30 @@ export namespace Prisma {
 
   export type MenuItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cafeId" | "categoryId" | "name" | "description" | "pricePaise" | "imageUrl" | "isAvailable" | "isVeg" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["menuItem"]>
   export type MenuItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuItem$cafeArgs<ExtArgs>
     category?: boolean | MenuItem$categoryArgs<ExtArgs>
     orderItems?: boolean | MenuItem$orderItemsArgs<ExtArgs>
     _count?: boolean | MenuItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MenuItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuItem$cafeArgs<ExtArgs>
     category?: boolean | MenuItem$categoryArgs<ExtArgs>
   }
   export type MenuItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cafe?: boolean | CafeDefaultArgs<ExtArgs>
+    cafe?: boolean | MenuItem$cafeArgs<ExtArgs>
     category?: boolean | MenuItem$categoryArgs<ExtArgs>
   }
 
   export type $MenuItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MenuItem"
     objects: {
-      cafe: Prisma.$CafePayload<ExtArgs>
+      cafe: Prisma.$CafePayload<ExtArgs> | null
       category: Prisma.$MenuCategoryPayload<ExtArgs> | null
       orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      cafeId: string
+      cafeId: string | null
       categoryId: string | null
       name: string
       description: string | null
@@ -6314,7 +6333,7 @@ export namespace Prisma {
    */
   export interface Prisma__MenuItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    cafe<T extends CafeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CafeDefaultArgs<ExtArgs>>): Prisma__CafeClient<$Result.GetResult<Prisma.$CafePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cafe<T extends MenuItem$cafeArgs<ExtArgs> = {}>(args?: Subset<T, MenuItem$cafeArgs<ExtArgs>>): Prisma__CafeClient<$Result.GetResult<Prisma.$CafePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     category<T extends MenuItem$categoryArgs<ExtArgs> = {}>(args?: Subset<T, MenuItem$categoryArgs<ExtArgs>>): Prisma__MenuCategoryClient<$Result.GetResult<Prisma.$MenuCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     orderItems<T extends MenuItem$orderItemsArgs<ExtArgs> = {}>(args?: Subset<T, MenuItem$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -6756,6 +6775,25 @@ export namespace Prisma {
      * Limit how many MenuItems to delete.
      */
     limit?: number
+  }
+
+  /**
+   * MenuItem.cafe
+   */
+  export type MenuItem$cafeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cafe
+     */
+    select?: CafeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Cafe
+     */
+    omit?: CafeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CafeInclude<ExtArgs> | null
+    where?: CafeWhereInput
   }
 
   /**
@@ -14273,18 +14311,18 @@ export namespace Prisma {
     OR?: MenuCategoryWhereInput[]
     NOT?: MenuCategoryWhereInput | MenuCategoryWhereInput[]
     id?: StringFilter<"MenuCategory"> | string
-    cafeId?: StringFilter<"MenuCategory"> | string
+    cafeId?: StringNullableFilter<"MenuCategory"> | string | null
     name?: StringFilter<"MenuCategory"> | string
     sortOrder?: IntFilter<"MenuCategory"> | number
     isActive?: BoolFilter<"MenuCategory"> | boolean
     createdAt?: DateTimeFilter<"MenuCategory"> | Date | string
-    cafe?: XOR<CafeScalarRelationFilter, CafeWhereInput>
+    cafe?: XOR<CafeNullableScalarRelationFilter, CafeWhereInput> | null
     items?: MenuItemListRelationFilter
   }
 
   export type MenuCategoryOrderByWithRelationInput = {
     id?: SortOrder
-    cafeId?: SortOrder
+    cafeId?: SortOrderInput | SortOrder
     name?: SortOrder
     sortOrder?: SortOrder
     isActive?: SortOrder
@@ -14298,18 +14336,18 @@ export namespace Prisma {
     AND?: MenuCategoryWhereInput | MenuCategoryWhereInput[]
     OR?: MenuCategoryWhereInput[]
     NOT?: MenuCategoryWhereInput | MenuCategoryWhereInput[]
-    cafeId?: StringFilter<"MenuCategory"> | string
+    cafeId?: StringNullableFilter<"MenuCategory"> | string | null
     name?: StringFilter<"MenuCategory"> | string
     sortOrder?: IntFilter<"MenuCategory"> | number
     isActive?: BoolFilter<"MenuCategory"> | boolean
     createdAt?: DateTimeFilter<"MenuCategory"> | Date | string
-    cafe?: XOR<CafeScalarRelationFilter, CafeWhereInput>
+    cafe?: XOR<CafeNullableScalarRelationFilter, CafeWhereInput> | null
     items?: MenuItemListRelationFilter
   }, "id">
 
   export type MenuCategoryOrderByWithAggregationInput = {
     id?: SortOrder
-    cafeId?: SortOrder
+    cafeId?: SortOrderInput | SortOrder
     name?: SortOrder
     sortOrder?: SortOrder
     isActive?: SortOrder
@@ -14326,7 +14364,7 @@ export namespace Prisma {
     OR?: MenuCategoryScalarWhereWithAggregatesInput[]
     NOT?: MenuCategoryScalarWhereWithAggregatesInput | MenuCategoryScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"MenuCategory"> | string
-    cafeId?: StringWithAggregatesFilter<"MenuCategory"> | string
+    cafeId?: StringNullableWithAggregatesFilter<"MenuCategory"> | string | null
     name?: StringWithAggregatesFilter<"MenuCategory"> | string
     sortOrder?: IntWithAggregatesFilter<"MenuCategory"> | number
     isActive?: BoolWithAggregatesFilter<"MenuCategory"> | boolean
@@ -14338,7 +14376,7 @@ export namespace Prisma {
     OR?: MenuItemWhereInput[]
     NOT?: MenuItemWhereInput | MenuItemWhereInput[]
     id?: StringFilter<"MenuItem"> | string
-    cafeId?: StringFilter<"MenuItem"> | string
+    cafeId?: StringNullableFilter<"MenuItem"> | string | null
     categoryId?: StringNullableFilter<"MenuItem"> | string | null
     name?: StringFilter<"MenuItem"> | string
     description?: StringNullableFilter<"MenuItem"> | string | null
@@ -14349,14 +14387,14 @@ export namespace Prisma {
     sortOrder?: IntFilter<"MenuItem"> | number
     createdAt?: DateTimeFilter<"MenuItem"> | Date | string
     updatedAt?: DateTimeFilter<"MenuItem"> | Date | string
-    cafe?: XOR<CafeScalarRelationFilter, CafeWhereInput>
+    cafe?: XOR<CafeNullableScalarRelationFilter, CafeWhereInput> | null
     category?: XOR<MenuCategoryNullableScalarRelationFilter, MenuCategoryWhereInput> | null
     orderItems?: OrderItemListRelationFilter
   }
 
   export type MenuItemOrderByWithRelationInput = {
     id?: SortOrder
-    cafeId?: SortOrder
+    cafeId?: SortOrderInput | SortOrder
     categoryId?: SortOrderInput | SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -14377,7 +14415,7 @@ export namespace Prisma {
     AND?: MenuItemWhereInput | MenuItemWhereInput[]
     OR?: MenuItemWhereInput[]
     NOT?: MenuItemWhereInput | MenuItemWhereInput[]
-    cafeId?: StringFilter<"MenuItem"> | string
+    cafeId?: StringNullableFilter<"MenuItem"> | string | null
     categoryId?: StringNullableFilter<"MenuItem"> | string | null
     name?: StringFilter<"MenuItem"> | string
     description?: StringNullableFilter<"MenuItem"> | string | null
@@ -14388,14 +14426,14 @@ export namespace Prisma {
     sortOrder?: IntFilter<"MenuItem"> | number
     createdAt?: DateTimeFilter<"MenuItem"> | Date | string
     updatedAt?: DateTimeFilter<"MenuItem"> | Date | string
-    cafe?: XOR<CafeScalarRelationFilter, CafeWhereInput>
+    cafe?: XOR<CafeNullableScalarRelationFilter, CafeWhereInput> | null
     category?: XOR<MenuCategoryNullableScalarRelationFilter, MenuCategoryWhereInput> | null
     orderItems?: OrderItemListRelationFilter
   }, "id">
 
   export type MenuItemOrderByWithAggregationInput = {
     id?: SortOrder
-    cafeId?: SortOrder
+    cafeId?: SortOrderInput | SortOrder
     categoryId?: SortOrderInput | SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -14418,7 +14456,7 @@ export namespace Prisma {
     OR?: MenuItemScalarWhereWithAggregatesInput[]
     NOT?: MenuItemScalarWhereWithAggregatesInput | MenuItemScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"MenuItem"> | string
-    cafeId?: StringWithAggregatesFilter<"MenuItem"> | string
+    cafeId?: StringNullableWithAggregatesFilter<"MenuItem"> | string | null
     categoryId?: StringNullableWithAggregatesFilter<"MenuItem"> | string | null
     name?: StringWithAggregatesFilter<"MenuItem"> | string
     description?: StringNullableWithAggregatesFilter<"MenuItem"> | string | null
@@ -15109,13 +15147,13 @@ export namespace Prisma {
     sortOrder?: number
     isActive?: boolean
     createdAt?: Date | string
-    cafe: CafeCreateNestedOneWithoutCategoriesInput
+    cafe?: CafeCreateNestedOneWithoutCategoriesInput
     items?: MenuItemCreateNestedManyWithoutCategoryInput
   }
 
   export type MenuCategoryUncheckedCreateInput = {
     id?: string
-    cafeId: string
+    cafeId?: string | null
     name: string
     sortOrder?: number
     isActive?: boolean
@@ -15129,13 +15167,13 @@ export namespace Prisma {
     sortOrder?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cafe?: CafeUpdateOneRequiredWithoutCategoriesNestedInput
+    cafe?: CafeUpdateOneWithoutCategoriesNestedInput
     items?: MenuItemUpdateManyWithoutCategoryNestedInput
   }
 
   export type MenuCategoryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    cafeId?: StringFieldUpdateOperationsInput | string
+    cafeId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -15145,7 +15183,7 @@ export namespace Prisma {
 
   export type MenuCategoryCreateManyInput = {
     id?: string
-    cafeId: string
+    cafeId?: string | null
     name: string
     sortOrder?: number
     isActive?: boolean
@@ -15162,7 +15200,7 @@ export namespace Prisma {
 
   export type MenuCategoryUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    cafeId?: StringFieldUpdateOperationsInput | string
+    cafeId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -15180,14 +15218,14 @@ export namespace Prisma {
     sortOrder?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    cafe: CafeCreateNestedOneWithoutMenuItemsInput
+    cafe?: CafeCreateNestedOneWithoutMenuItemsInput
     category?: MenuCategoryCreateNestedOneWithoutItemsInput
     orderItems?: OrderItemCreateNestedManyWithoutMenuItemInput
   }
 
   export type MenuItemUncheckedCreateInput = {
     id?: string
-    cafeId: string
+    cafeId?: string | null
     categoryId?: string | null
     name: string
     description?: string | null
@@ -15212,14 +15250,14 @@ export namespace Prisma {
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cafe?: CafeUpdateOneRequiredWithoutMenuItemsNestedInput
+    cafe?: CafeUpdateOneWithoutMenuItemsNestedInput
     category?: MenuCategoryUpdateOneWithoutItemsNestedInput
     orderItems?: OrderItemUpdateManyWithoutMenuItemNestedInput
   }
 
   export type MenuItemUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    cafeId?: StringFieldUpdateOperationsInput | string
+    cafeId?: NullableStringFieldUpdateOperationsInput | string | null
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15235,7 +15273,7 @@ export namespace Prisma {
 
   export type MenuItemCreateManyInput = {
     id?: string
-    cafeId: string
+    cafeId?: string | null
     categoryId?: string | null
     name: string
     description?: string | null
@@ -15263,7 +15301,7 @@ export namespace Prisma {
 
   export type MenuItemUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    cafeId?: StringFieldUpdateOperationsInput | string
+    cafeId?: NullableStringFieldUpdateOperationsInput | string | null
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16060,11 +16098,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type CafeScalarRelationFilter = {
-    is?: CafeWhereInput
-    isNot?: CafeWhereInput
-  }
-
   export type MenuCategoryCountOrderByAggregateInput = {
     id?: SortOrder
     cafeId?: SortOrder
@@ -16191,6 +16224,11 @@ export namespace Prisma {
     in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
+  }
+
+  export type CafeScalarRelationFilter = {
+    is?: CafeWhereInput
+    isNot?: CafeWhereInput
   }
 
   export type TableNullableScalarRelationFilter = {
@@ -16922,10 +16960,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type CafeUpdateOneRequiredWithoutCategoriesNestedInput = {
+  export type CafeUpdateOneWithoutCategoriesNestedInput = {
     create?: XOR<CafeCreateWithoutCategoriesInput, CafeUncheckedCreateWithoutCategoriesInput>
     connectOrCreate?: CafeCreateOrConnectWithoutCategoriesInput
     upsert?: CafeUpsertWithoutCategoriesInput
+    disconnect?: CafeWhereInput | boolean
+    delete?: CafeWhereInput | boolean
     connect?: CafeWhereUniqueInput
     update?: XOR<XOR<CafeUpdateToOneWithWhereWithoutCategoriesInput, CafeUpdateWithoutCategoriesInput>, CafeUncheckedUpdateWithoutCategoriesInput>
   }
@@ -16984,10 +17024,12 @@ export namespace Prisma {
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
   }
 
-  export type CafeUpdateOneRequiredWithoutMenuItemsNestedInput = {
+  export type CafeUpdateOneWithoutMenuItemsNestedInput = {
     create?: XOR<CafeCreateWithoutMenuItemsInput, CafeUncheckedCreateWithoutMenuItemsInput>
     connectOrCreate?: CafeCreateOrConnectWithoutMenuItemsInput
     upsert?: CafeUpsertWithoutMenuItemsInput
+    disconnect?: CafeWhereInput | boolean
+    delete?: CafeWhereInput | boolean
     connect?: CafeWhereUniqueInput
     update?: XOR<XOR<CafeUpdateToOneWithWhereWithoutMenuItemsInput, CafeUpdateWithoutMenuItemsInput>, CafeUncheckedUpdateWithoutMenuItemsInput>
   }
@@ -17786,7 +17828,7 @@ export namespace Prisma {
     OR?: MenuCategoryScalarWhereInput[]
     NOT?: MenuCategoryScalarWhereInput | MenuCategoryScalarWhereInput[]
     id?: StringFilter<"MenuCategory"> | string
-    cafeId?: StringFilter<"MenuCategory"> | string
+    cafeId?: StringNullableFilter<"MenuCategory"> | string | null
     name?: StringFilter<"MenuCategory"> | string
     sortOrder?: IntFilter<"MenuCategory"> | number
     isActive?: BoolFilter<"MenuCategory"> | boolean
@@ -17814,7 +17856,7 @@ export namespace Prisma {
     OR?: MenuItemScalarWhereInput[]
     NOT?: MenuItemScalarWhereInput | MenuItemScalarWhereInput[]
     id?: StringFilter<"MenuItem"> | string
-    cafeId?: StringFilter<"MenuItem"> | string
+    cafeId?: StringNullableFilter<"MenuItem"> | string | null
     categoryId?: StringNullableFilter<"MenuItem"> | string | null
     name?: StringFilter<"MenuItem"> | string
     description?: StringNullableFilter<"MenuItem"> | string | null
@@ -18125,13 +18167,13 @@ export namespace Prisma {
     sortOrder?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    cafe: CafeCreateNestedOneWithoutMenuItemsInput
+    cafe?: CafeCreateNestedOneWithoutMenuItemsInput
     orderItems?: OrderItemCreateNestedManyWithoutMenuItemInput
   }
 
   export type MenuItemUncheckedCreateWithoutCategoryInput = {
     id?: string
-    cafeId: string
+    cafeId?: string | null
     name: string
     description?: string | null
     pricePaise: number
@@ -18268,12 +18310,12 @@ export namespace Prisma {
     sortOrder?: number
     isActive?: boolean
     createdAt?: Date | string
-    cafe: CafeCreateNestedOneWithoutCategoriesInput
+    cafe?: CafeCreateNestedOneWithoutCategoriesInput
   }
 
   export type MenuCategoryUncheckedCreateWithoutItemsInput = {
     id?: string
-    cafeId: string
+    cafeId?: string | null
     name: string
     sortOrder?: number
     isActive?: boolean
@@ -18379,12 +18421,12 @@ export namespace Prisma {
     sortOrder?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cafe?: CafeUpdateOneRequiredWithoutCategoriesNestedInput
+    cafe?: CafeUpdateOneWithoutCategoriesNestedInput
   }
 
   export type MenuCategoryUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    cafeId?: StringFieldUpdateOperationsInput | string
+    cafeId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -18723,13 +18765,13 @@ export namespace Prisma {
     sortOrder?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    cafe: CafeCreateNestedOneWithoutMenuItemsInput
+    cafe?: CafeCreateNestedOneWithoutMenuItemsInput
     category?: MenuCategoryCreateNestedOneWithoutItemsInput
   }
 
   export type MenuItemUncheckedCreateWithoutOrderItemsInput = {
     id?: string
-    cafeId: string
+    cafeId?: string | null
     categoryId?: string | null
     name: string
     description?: string | null
@@ -18814,13 +18856,13 @@ export namespace Prisma {
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cafe?: CafeUpdateOneRequiredWithoutMenuItemsNestedInput
+    cafe?: CafeUpdateOneWithoutMenuItemsNestedInput
     category?: MenuCategoryUpdateOneWithoutItemsNestedInput
   }
 
   export type MenuItemUncheckedUpdateWithoutOrderItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    cafeId?: StringFieldUpdateOperationsInput | string
+    cafeId?: NullableStringFieldUpdateOperationsInput | string | null
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19539,7 +19581,7 @@ export namespace Prisma {
 
   export type MenuItemCreateManyCategoryInput = {
     id?: string
-    cafeId: string
+    cafeId?: string | null
     name: string
     description?: string | null
     pricePaise: number
@@ -19562,13 +19604,13 @@ export namespace Prisma {
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cafe?: CafeUpdateOneRequiredWithoutMenuItemsNestedInput
+    cafe?: CafeUpdateOneWithoutMenuItemsNestedInput
     orderItems?: OrderItemUpdateManyWithoutMenuItemNestedInput
   }
 
   export type MenuItemUncheckedUpdateWithoutCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
-    cafeId?: StringFieldUpdateOperationsInput | string
+    cafeId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pricePaise?: IntFieldUpdateOperationsInput | number
@@ -19583,7 +19625,7 @@ export namespace Prisma {
 
   export type MenuItemUncheckedUpdateManyWithoutCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
-    cafeId?: StringFieldUpdateOperationsInput | string
+    cafeId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     pricePaise?: IntFieldUpdateOperationsInput | number

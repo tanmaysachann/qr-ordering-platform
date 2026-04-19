@@ -172,7 +172,7 @@ function buildConfirmationText(args: OrderConfirmationArgs): string {
   const itemLines = args.items
     .map(
       (i) =>
-        `• ${i.itemName} x${i.quantity} — Rs.${formatRupees(i.subtotalPaise)}`
+        `• ${i.itemName} x${i.quantity}: Rs.${formatRupees(i.subtotalPaise)}`
     )
     .join("\n");
 
@@ -271,7 +271,7 @@ function buildConfirmationHtml(args: OrderConfirmationArgs): string {
           <tr>
             <td style="padding:28px 28px 8px;">
               <div style="font-size:15px;color:#1a120d;line-height:1.5;">
-                Hi <strong>${escapeHtml(args.customerName)}</strong>, thanks for ordering with us. We've got your order and payment — here are the details.
+                Hi <strong>${escapeHtml(args.customerName)}</strong>, thanks for ordering with us. We've got your order and payment. Here are the details.
               </div>
             </td>
           </tr>

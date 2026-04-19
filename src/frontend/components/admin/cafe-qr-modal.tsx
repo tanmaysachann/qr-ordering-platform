@@ -70,7 +70,7 @@ export function CafeQRModal({ isOpen, onClose, cafeName, cafeSlug }: CafeQRModal
     win.document.write(`
       <html>
         <head>
-          <title>${cafeName} — QR Code</title>
+          <title>${cafeName} QR Code</title>
           <style>
             body { font-family: system-ui, sans-serif; text-align: center; padding: 40px; }
             h1 { margin: 0 0 8px; font-size: 28px; }

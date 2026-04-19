@@ -23,6 +23,11 @@ export async function PATCH(
       return NextResponse.json({ success: false, error: "Item not found" }, { status: 404 });
     }
 
+    // Every item must have a category — reject explicit empty
+    if ("categoryId" in body && !body.categoryId) {
+      return NextResponse.json({ success: false, error: "Category is required" }, { status: 400 });
+    }
+
     const updated = await menuRepository.updateMenuItem(id, {
       name: body.name,
       description: body.description,
@@ -35,7 +40,7 @@ export async function PATCH(
     });
 
     // Notify customers viewing this cafe's menu
-    sseManager.broadcastMenuUpdate(existing.cafeId);
+    if (existing.cafeId) sseManager.broadcastMenuUpdate(existing.cafeId);
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
@@ -65,7 +70,7 @@ export async function DELETE(
     await menuRepository.deleteMenuItem(id);
 
     // Notify customers viewing this cafe's menu
-    sseManager.broadcastMenuUpdate(existing.cafeId);
+    if (existing.cafeId) sseManager.broadcastMenuUpdate(existing.cafeId);
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -3,39 +3,35 @@ import { auth } from "@/backend/lib/auth";
 import { menuRepository } from "@/backend/repositories/menu.repository";
 import { sseManager } from "@/backend/lib/sse";
 
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+// GET /api/admin/menu?cafeId=<id>  — all items, optionally filtered by cafe
+export async function GET(request: Request) {
   try {
     const session = await auth();
     if (session?.user?.role !== "SUPER_ADMIN") {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id: cafeId } = await params;
-    const items = await menuRepository.getAllMenuItems(cafeId);
-    const categories = await menuRepository.getCategories(cafeId);
+    const { searchParams } = new URL(request.url);
+    const cafeId = searchParams.get("cafeId") ?? undefined;
 
-    return NextResponse.json({ success: true, data: { items, categories } });
+    const items = await menuRepository.getAllMenuItemsAdmin(cafeId);
+    return NextResponse.json({ success: true, data: items });
   } catch (error) {
-    console.error("Admin cafe menu error:", error);
-    return NextResponse.json({ success: false, error: "Failed to fetch menu" }, { status: 500 });
+    console.error("Admin menu list error:", error);
+    return NextResponse.json({ success: false, error: "Failed to fetch items" }, { status: 500 });
   }
 }
 
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+// POST /api/admin/menu — create a global item (cafeId omitted) or cafe-specific item
+export async function POST(request: Request) {
   try {
     const session = await auth();
     if (session?.user?.role !== "SUPER_ADMIN") {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id: cafeId } = await params;
     const body = await request.json();
+    const cafeId: string | null = body.cafeId || null;
 
     if (!body.name || typeof body.pricePaise !== "number") {
       return NextResponse.json({ success: false, error: "Name and price are required" }, { status: 400 });
@@ -54,8 +50,10 @@ export async function POST(
       isVeg: body.isVeg,
     });
 
-    // Notify customers viewing this cafe
-    sseManager.broadcastMenuUpdate(cafeId);
+    // Broadcast to all cafes for global items, or just the specific cafe
+    if (cafeId) {
+      sseManager.broadcastMenuUpdate(cafeId);
+    }
 
     return NextResponse.json({ success: true, data: item }, { status: 201 });
   } catch (error) {

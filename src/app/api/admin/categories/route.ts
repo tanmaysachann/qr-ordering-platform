@@ -1,38 +1,37 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/backend/lib/auth";
 import { menuRepository } from "@/backend/repositories/menu.repository";
-import { sseManager } from "@/backend/lib/sse";
 
-export async function GET() {
+// GET /api/admin/categories?cafeId=<id|null>
+//   - no cafeId  -> all categories
+//   - cafeId="null" -> global categories only
+//   - cafeId=<uuid> -> cafe + global
+export async function GET(request: Request) {
   try {
     const session = await auth();
-    if (!session?.user) {
+    if (session?.user?.role !== "SUPER_ADMIN") {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const cafeId = session.user.cafeId;
-    if (!cafeId) {
-      return NextResponse.json({ success: true, data: [] });
-    }
+    const { searchParams } = new URL(request.url);
+    const cafeId = searchParams.get("cafeId") ?? undefined;
 
     const categories = await menuRepository.getCategories(cafeId);
     return NextResponse.json({ success: true, data: categories });
   } catch (error) {
-    console.error("Categories fetch error:", error);
+    console.error("Admin categories fetch error:", error);
     return NextResponse.json({ success: false, error: "Failed to fetch categories" }, { status: 500 });
   }
 }
 
+// POST /api/admin/categories
+//   body: { name, cafeId?: string|null, sortOrder? }
+//   cafeId omitted/null -> creates a GLOBAL category
 export async function POST(request: Request) {
   try {
     const session = await auth();
-    if (!session?.user || !["CAFE_OWNER", "SUPER_ADMIN"].includes(session.user.role)) {
+    if (session?.user?.role !== "SUPER_ADMIN") {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-    }
-
-    const cafeId = session.user.cafeId;
-    if (!cafeId) {
-      return NextResponse.json({ success: false, error: "No cafe associated" }, { status: 403 });
     }
 
     const body = await request.json();
@@ -41,17 +40,15 @@ export async function POST(request: Request) {
     }
 
     const category = await menuRepository.createCategory({
-      cafeId,
+      cafeId: body.cafeId ?? null,
       name: body.name,
       sortOrder: body.sortOrder,
     });
 
-    sseManager.broadcastMenuUpdate(cafeId);
-
     return NextResponse.json({ success: true, data: category }, { status: 201 });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
-    console.error("Category create error:", msg);
+    console.error("Admin category create error:", msg);
     return NextResponse.json({ success: false, error: msg }, { status: 500 });
   }
 }

@@ -9,21 +9,39 @@ export const menuRepository = {
   },
 
   async getMenuForCafe(cafeId: string) {
-    const categories = await prisma.menuCategory.findMany({
+    // All categories visible to this cafe: cafe-specific + global
+    const cafeCategories = await prisma.menuCategory.findMany({
       where: { cafeId, isActive: true },
       orderBy: { sortOrder: "asc" },
-      include: {
-        items: {
-          where: { isAvailable: true },
-          orderBy: { sortOrder: "asc" },
-        },
-      },
     });
-
-    const uncategorized = await prisma.menuItem.findMany({
-      where: { cafeId, isAvailable: true, categoryId: null },
+    const globalCategories = await prisma.menuCategory.findMany({
+      where: { cafeId: null, isActive: true },
       orderBy: { sortOrder: "asc" },
     });
+    const allCategories = [...cafeCategories, ...globalCategories];
+
+    // All items visible to this cafe: cafe-specific + global
+    const cafeItems = await prisma.menuItem.findMany({
+      where: { cafeId, isAvailable: true },
+      orderBy: { sortOrder: "asc" },
+    });
+    const globalItems = await prisma.menuItem.findMany({
+      where: { cafeId: null, isAvailable: true },
+      orderBy: { sortOrder: "asc" },
+    });
+    const allItems = [...cafeItems, ...globalItems];
+
+    // Group items under their categories
+    const categories = allCategories.map((cat) => ({
+      ...cat,
+      items: allItems.filter((i) => i.categoryId === cat.id),
+    }));
+
+    // Anything that didn't match a visible category falls into uncategorized (legacy data)
+    const knownCatIds = new Set(allCategories.map((c) => c.id));
+    const uncategorized = allItems.filter(
+      (i) => !i.categoryId || !knownCatIds.has(i.categoryId)
+    );
 
     return { categories, uncategorized };
   },
@@ -36,18 +54,42 @@ export const menuRepository = {
     });
   },
 
+  // Returns all items across all cafes for admin unified view.
+  // Pass cafeId="null" to fetch only global items.
+  async getAllMenuItemsAdmin(cafeId?: string) {
+    const where =
+      cafeId === "null" ? { cafeId: null as null }
+      : cafeId ? { cafeId }
+      : {};
+    return prisma.menuItem.findMany({
+      where,
+      include: { category: true, cafe: { select: { id: true, name: true, slug: true } } },
+      orderBy: [{ createdAt: "desc" }],
+    });
+  },
+
+  // Returns all global items (cafeId = null)
+  async getGlobalMenuItems() {
+    return prisma.menuItem.findMany({
+      where: { cafeId: null },
+      include: { category: true },
+      orderBy: { sortOrder: "asc" },
+    });
+  },
+
   async getMenuItemsByIds(itemIds: string[], cafeId: string) {
     return prisma.menuItem.findMany({
       where: {
         id: { in: itemIds },
-        cafeId,
         isAvailable: true,
+        // Accept items belonging to this cafe OR global items (cafeId null)
+        OR: [{ cafeId }, { cafeId: null }],
       },
     });
   },
 
   async createMenuItem(data: {
-    cafeId: string;
+    cafeId?: string | null;
     categoryId?: string;
     name: string;
     description?: string;
@@ -83,14 +125,33 @@ export const menuRepository = {
     return prisma.menuItem.delete({ where: { id } });
   },
 
-  async getCategories(cafeId: string) {
-    return prisma.menuCategory.findMany({
-      where: { cafeId },
+  // Returns categories visible to a specific cafe (cafe-specific + global),
+  // OR global-only when cafeId is "null", OR all when cafeId is undefined.
+  async getCategories(cafeId?: string) {
+    if (cafeId === undefined) {
+      return prisma.menuCategory.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+      });
+    }
+    if (cafeId === "null") {
+      return prisma.menuCategory.findMany({
+        where: { cafeId: null, isActive: true },
+        orderBy: { sortOrder: "asc" },
+      });
+    }
+    const cafeCategories = await prisma.menuCategory.findMany({
+      where: { cafeId, isActive: true },
       orderBy: { sortOrder: "asc" },
     });
+    const globalCategories = await prisma.menuCategory.findMany({
+      where: { cafeId: null, isActive: true },
+      orderBy: { sortOrder: "asc" },
+    });
+    return [...cafeCategories, ...globalCategories];
   },
 
-  async createCategory(data: { cafeId: string; name: string; sortOrder?: number }) {
+  async createCategory(data: { cafeId?: string | null; name: string; sortOrder?: number }) {
     return prisma.menuCategory.create({
       data: { ...data, name: toTitleCase(data.name) },
     });

@@ -224,6 +224,10 @@ export default function MenuManagementPage() {
 
   const handleSaveItem = async () => {
     if (!formName || !formPrice) return;
+    if (!formCategory) {
+      alert("Please select a category (or create a new one).");
+      return;
+    }
     setFormSaving(true);
 
     const apiBase = getMenuApiBase();
@@ -231,32 +235,38 @@ export default function MenuManagementPage() {
       name: formName,
       description: formDescription || null,
       pricePaise: rupeesToPaise(parseFloat(formPrice)),
-      categoryId: formCategory || null,
+      categoryId: formCategory,
       isVeg: formIsVeg,
       imageUrl: formImageUrl || null,
     };
 
     try {
-      if (editItem) {
-        const url = isAdmin && selectedCafeId
-          ? `/api/admin/cafes/${selectedCafeId}/menu/${editItem.id}`
-          : `/api/dashboard/menu/${editItem.id}`;
-        await fetch(url, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-      } else {
-        await fetch(apiBase, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+      const res = editItem
+        ? await fetch(
+            isAdmin && selectedCafeId
+              ? `/api/admin/cafes/${selectedCafeId}/menu/${editItem.id}`
+              : `/api/dashboard/menu/${editItem.id}`,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            }
+          )
+        : await fetch(apiBase, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(err.error || "Failed to save item.");
+        return;
       }
       setShowModal(false);
       refetchMenu();
     } catch (err) {
       console.error("Failed to save:", err);
+      alert("Network error — could not save item.");
     } finally {
       setFormSaving(false);
     }
@@ -631,13 +641,16 @@ export default function MenuManagementPage() {
 
           {/* Category picker + inline create */}
           <div>
-            <label className="block text-sm font-medium mb-1.5">Category</label>
+            <label className="block text-sm font-medium mb-1.5">
+              Category <span className="text-danger">*</span>
+            </label>
             <select
               className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary"
               value={formCategory}
               onChange={(e) => setFormCategory(e.target.value)}
+              required
             >
-              <option value="">No Category</option>
+              <option value="" disabled>Select a category…</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}

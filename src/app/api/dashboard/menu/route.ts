@@ -46,6 +46,14 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+
+    if (!body.name || typeof body.pricePaise !== "number") {
+      return NextResponse.json({ success: false, error: "Name and price are required" }, { status: 400 });
+    }
+    if (!body.categoryId) {
+      return NextResponse.json({ success: false, error: "Category is required" }, { status: 400 });
+    }
+
     const item = await menuRepository.createMenuItem({
       cafeId,
       name: body.name,

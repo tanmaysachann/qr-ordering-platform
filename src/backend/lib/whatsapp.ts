@@ -135,7 +135,7 @@ export async function notifyOrderPlaced(args: {
   const { customerPhone, customerName, orderNumber, totalPaise, cafeName, items } = args;
 
   const itemLines = items
-    .map((i) => `• ${i.itemName} x${i.quantity} — ₹${formatRupees(i.subtotalPaise)}`)
+    .map((i) => `• ${i.itemName} x${i.quantity}: ₹${formatRupees(i.subtotalPaise)}`)
     .join("\n");
 
   const message =

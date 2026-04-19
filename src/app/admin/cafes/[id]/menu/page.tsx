@@ -254,7 +254,7 @@ export default function AdminCafeMenuPage() {
           </button>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold">
-              Menu {cafe ? `\u2014 ${cafe.name}` : ""}
+              Menu {cafe ? `- ${cafe.name}` : ""}
             </h1>
             {cafe && (
               <a

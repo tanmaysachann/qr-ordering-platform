@@ -133,7 +133,7 @@ export default function PaymentReturnPage({
 
           <h1 className="text-2xl font-bold text-stone-50 mb-2">Payment Failed</h1>
           <p className="text-stone-400 text-sm leading-relaxed mb-3">
-            Something went wrong with your payment. No worries — if any amount was deducted, it will be refunded within 5–7 business days.
+            Something went wrong with your payment. No worries, if any amount was deducted it will be refunded within 5-7 business days.
           </p>
 
           {/* Countdown bar */}

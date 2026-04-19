@@ -7,7 +7,7 @@ export default function HomePage() {
       num: "01",
       icon: <QrCode size={22} />,
       title: "Scan QR Code",
-      desc: "Point your camera at the QR code on your table — no app needed.",
+      desc: "Point your camera at the QR code on your table. No app needed.",
     },
     {
       num: "02",
@@ -29,14 +29,14 @@ export default function HomePage() {
       {/* ── Background atmosphere ── */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Top-center amber bloom */}
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-[#b45309]/12 blur-[130px]" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full bg-[#b45309]/6 blur-[160px]" />
         {/* Bottom-right accent */}
-        <div className="absolute bottom-0 right-0 w-[500px] h-[400px] rounded-full bg-[#f43f5e]/5 blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[300px] rounded-full bg-[#f43f5e]/3 blur-[140px]" />
         {/* Bottom-left cool blue */}
-        <div className="absolute bottom-20 -left-20 w-[350px] h-[350px] rounded-full bg-[#3b82f6]/5 blur-[100px]" />
+        <div className="absolute bottom-20 -left-20 w-[300px] h-[300px] rounded-full bg-[#3b82f6]/3 blur-[120px]" />
         {/* Dot grid */}
         <div
-          className="absolute inset-0 opacity-[0.035]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
             backgroundSize: "32px 32px",
@@ -68,15 +68,15 @@ export default function HomePage() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
 
         {/* Badge */}
-        <div className="inline-flex items-center gap-1.5 border border-[#b45309]/30 bg-[#b45309]/8 px-3 py-1 rounded-full mb-8">
-          <Zap size={11} className="text-[#f59e0b]" />
-          <span className="text-[11px] font-medium text-[#f59e0b] tracking-wide">Zero wait. Zero hassle.</span>
+        <div className="inline-flex items-center gap-1.5 border border-[#b45309]/20 bg-[#b45309]/5 px-3 py-1 rounded-full mb-8">
+          <Zap size={11} className="text-[#d97706]" />
+          <span className="text-[11px] font-medium text-[#d97706]/80 tracking-wide">Zero wait. Zero hassle.</span>
         </div>
 
         {/* Logo icon — floating */}
         <div className="relative mb-8 animate-float">
-          <div className="absolute inset-0 rounded-3xl bg-[#b45309]/50 blur-2xl scale-125" />
-          <div className="relative w-24 h-24 bg-gradient-to-br from-[#f59e0b] via-[#d97706] to-[#b45309] rounded-3xl flex items-center justify-center shadow-2xl shadow-[#b45309]/30">
+          <div className="absolute inset-0 rounded-3xl bg-[#b45309]/20 blur-2xl scale-125" />
+          <div className="relative w-24 h-24 bg-gradient-to-br from-[#d97706] via-[#c2610c] to-[#92400e] rounded-3xl flex items-center justify-center shadow-xl shadow-[#b45309]/15">
             <Coffee size={44} className="text-white" />
           </div>
         </div>
@@ -84,12 +84,12 @@ export default function HomePage() {
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tighter leading-[1.05] mb-5">
           Order from your{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f59e0b] via-[#ea580c] to-[#b45309]">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d97706] to-[#92400e]">
             table.
           </span>
         </h1>
         <p className="text-[#8892a4] text-base sm:text-lg leading-relaxed max-w-md mb-14">
-          Scan the QR code, browse the menu, and pay — all without leaving your seat.
+          Scan the QR code, browse the menu, and pay. All without leaving your seat.
         </p>
 
         {/* Steps — horizontal cards */}
@@ -100,7 +100,7 @@ export default function HomePage() {
               className="relative group text-left p-5 rounded-2xl border border-[#1e2235] bg-[#0d0f1a]/80 backdrop-blur-sm overflow-hidden"
             >
               {/* Hover glow */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#b45309]/8 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#b45309]/4 to-transparent pointer-events-none" />
 
               {/* Step number — large watermark */}
               <span className="absolute top-3 right-4 text-5xl font-black text-white/[0.04] select-none leading-none">
@@ -108,7 +108,7 @@ export default function HomePage() {
               </span>
 
               {/* Icon */}
-              <div className="w-10 h-10 rounded-xl bg-[#b45309]/12 border border-[#b45309]/20 flex items-center justify-center text-[#f59e0b] mb-4">
+              <div className="w-10 h-10 rounded-xl bg-[#b45309]/8 border border-[#b45309]/12 flex items-center justify-center text-[#c2610c] mb-4">
                 {step.icon}
               </div>
 
@@ -128,7 +128,7 @@ export default function HomePage() {
         {/* CTA */}
         <Link
           href="/login"
-          className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-[#f59e0b] to-[#b45309] text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-xl shadow-[#b45309]/25 hover:shadow-[#b45309]/45 hover:brightness-110 transition-all duration-200 overflow-hidden"
+          className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-[#d97706] to-[#92400e] text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-[#b45309]/15 hover:shadow-[#b45309]/25 hover:brightness-105 transition-all duration-200 overflow-hidden"
         >
           <span className="shine-overlay" />
           Staff Login
@@ -139,7 +139,7 @@ export default function HomePage() {
       {/* ── Footer ── */}
       <footer className="relative z-10 text-center py-6">
         <p className="text-[11px] text-[#4a5268]">
-          Customers — scan the QR code at your table to start ordering
+          Customers: scan the QR code at your table to start ordering
         </p>
       </footer>
     </div>

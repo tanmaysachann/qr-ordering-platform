@@ -245,7 +245,7 @@ export default function AdminCafesPage() {
       <div className="flex items-center justify-between mb-7">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-sm text-muted mt-0.5">Welcome back — here's what's happening</p>
+          <p className="text-sm text-muted mt-0.5">Welcome back. Here's what's happening</p>
         </div>
         <Button onClick={() => setShowModal(true)}>
           <Plus size={16} className="mr-1.5" />
@@ -477,7 +477,7 @@ export default function AdminCafesPage() {
                 return (
                   <div key={member.id} className={`grid grid-cols-4 gap-4 px-5 py-3 text-sm items-center ${i < filtered.length - 1 ? "border-b border-border" : ""}`}>
                     <span className="font-medium">{member.name}</span>
-                    <span className="text-muted truncate">{cafe?.name ?? "—"}</span>
+                    <span className="text-muted truncate">{cafe?.name ?? "-"}</span>
                     <span className="text-muted">{member.age}</span>
                     <span className="text-muted">{member.mobileNumber}</span>
                   </div>

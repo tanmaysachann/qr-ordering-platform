@@ -214,7 +214,7 @@ export default function AdminOrdersPage() {
               )}
             >
               <span className="font-semibold text-primary text-xs">{order.orderNumber}</span>
-              <span className="text-muted truncate text-xs">{order.cafe?.name ?? "—"}</span>
+              <span className="text-muted truncate text-xs">{order.cafe?.name ?? "-"}</span>
               <span className="text-foreground truncate">{order.customerName || <span className="text-muted">Guest</span>}</span>
               <span className="text-right font-semibold">{paiseToCurrencyShort(order.totalPaise)}</span>
               <span className="text-right text-muted text-xs">

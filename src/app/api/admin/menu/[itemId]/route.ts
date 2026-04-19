@@ -2,20 +2,27 @@ import { NextResponse } from "next/server";
 import { auth } from "@/backend/lib/auth";
 import { menuRepository } from "@/backend/repositories/menu.repository";
 import { sseManager } from "@/backend/lib/sse";
+import { prisma } from "@/backend/lib/db";
+
+async function requireAdmin() {
+  const session = await auth();
+  if (session?.user?.role !== "SUPER_ADMIN") return null;
+  return session;
+}
 
 export async function PATCH(
   request: Request,
-  { params }: { params: Promise<{ id: string; itemId: string }> }
+  { params }: { params: Promise<{ itemId: string }> }
 ) {
   try {
-    const session = await auth();
-    if (session?.user?.role !== "SUPER_ADMIN") {
+    if (!(await requireAdmin())) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id: cafeId, itemId } = await params;
+    const { itemId } = await params;
     const body = await request.json();
 
+    // categoryId, if being changed, must be a non-empty string (every item must have a category)
     if ("categoryId" in body && !body.categoryId) {
       return NextResponse.json({ success: false, error: "Category is required" }, { status: 400 });
     }
@@ -31,7 +38,7 @@ export async function PATCH(
       sortOrder: body.sortOrder,
     });
 
-    sseManager.broadcastMenuUpdate(cafeId);
+    if (updated.cafeId) sseManager.broadcastMenuUpdate(updated.cafeId);
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
@@ -42,18 +49,20 @@ export async function PATCH(
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: Promise<{ id: string; itemId: string }> }
+  { params }: { params: Promise<{ itemId: string }> }
 ) {
   try {
-    const session = await auth();
-    if (session?.user?.role !== "SUPER_ADMIN") {
+    if (!(await requireAdmin())) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id: cafeId, itemId } = await params;
+    const { itemId } = await params;
+
+    // Fetch cafeId before deletion so we can broadcast
+    const item = await prisma.menuItem.findUnique({ where: { id: itemId }, select: { cafeId: true } });
     await menuRepository.deleteMenuItem(itemId);
 
-    sseManager.broadcastMenuUpdate(cafeId);
+    if (item?.cafeId) sseManager.broadcastMenuUpdate(item.cafeId);
 
     return NextResponse.json({ success: true });
   } catch (error) {
