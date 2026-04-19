@@ -286,9 +286,9 @@ export default function AdminMenuPage() {
   return (
     <div>
       {/* ── Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Menu Management</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">Menu Management</h1>
           <p className="text-sm text-muted mt-0.5">
             {items.length} item{items.length !== 1 ? "s" : ""} shown
           </p>
@@ -296,15 +296,17 @@ export default function AdminMenuPage() {
         <div className="flex gap-2 flex-wrap">
           <Button
             variant="secondary"
+            size="sm"
             onClick={() => openAddModal(GLOBAL)}
           >
-            <Globe size={15} className="mr-1.5" />
+            <Globe size={14} className="mr-1.5" />
             Add Global Item
           </Button>
           <Button
+            size="sm"
             onClick={() => openAddModal(resolvePresetCafe(cafeFilter))}
           >
-            <Plus size={15} className="mr-1.5" />
+            <Plus size={14} className="mr-1.5" />
             Add Item
           </Button>
         </div>

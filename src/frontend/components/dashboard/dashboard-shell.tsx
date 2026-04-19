@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
-  Coffee,
   ClipboardList,
   UtensilsCrossed,
   LayoutDashboard,
@@ -16,6 +15,32 @@ import {
   Sun,
   Moon,
 } from "lucide-react";
+
+function BrandLogo({ size = 24 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="13" height="13" rx="3" fill="url(#bl1)" />
+      <rect x="5" y="5" width="7" height="7" rx="1.5" fill="currentColor" className="text-[#07080f]" />
+      <rect x="25" y="2" width="13" height="13" rx="3" fill="url(#bl1)" />
+      <rect x="28" y="5" width="7" height="7" rx="1.5" fill="currentColor" className="text-[#07080f]" />
+      <rect x="2" y="25" width="13" height="13" rx="3" fill="url(#bl1)" />
+      <rect x="5" y="28" width="7" height="7" rx="1.5" fill="currentColor" className="text-[#07080f]" />
+      <rect x="25" y="25" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.8" />
+      <rect x="31" y="25" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.5" />
+      <rect x="25" y="31" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.5" />
+      <rect x="31" y="31" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.3" />
+      <path d="M22 15 L17 22 H20.5 L18 28 L24 20 H20.5 Z" fill="url(#bl2)" />
+      <defs>
+        <linearGradient id="bl1" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stopColor="#f59e0b" /><stop offset="100%" stopColor="#b45309" />
+        </linearGradient>
+        <linearGradient id="bl2" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0%" stopColor="#fde68a" /><stop offset="100%" stopColor="#d97706" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
 import { cn } from "@/shared/utils/cn";
 import { useState } from "react";
 import { useTheme } from "@/frontend/hooks/use-theme";
@@ -58,10 +83,8 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               {sidebarOpen ? <X size={20} /> : <MenuIcon size={20} />}
             </button>
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-600 rounded-md flex items-center justify-center">
-                <Coffee size={13} className="text-white" />
-              </div>
-              <span className="font-bold text-sm">Cafe<span className="text-primary">Order</span></span>
+              <BrandLogo size={22} />
+              <span className="font-bold text-sm">Scan<span className="text-primary">&amp;Pay</span></span>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -91,11 +114,9 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
           {/* Logo */}
           <div className="hidden lg:flex items-center justify-between px-5 py-5 border-b border-border">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center shadow-md shadow-orange-500/20">
-                <Coffee size={17} className="text-white" />
-              </div>
+              <BrandLogo size={28} />
               <span className="font-bold text-lg">
-                Cafe<span className="text-primary">Order</span>
+                Scan<span className="text-primary">&amp;Pay</span>
               </span>
             </div>
             {/* Theme toggle */}

@@ -44,33 +44,36 @@ export default function OwnerStaffPage() {
         />
       ) : (
         <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-sm">
-          {/* Header */}
-          <div className="grid grid-cols-3 gap-4 px-5 py-3 bg-surface-hover border-b border-border text-[11px] font-semibold text-muted uppercase tracking-wide">
-            <span className="flex items-center gap-1.5"><UserCircle2 size={11} /> Name</span>
-            <span>Age</span>
-            <span className="flex items-center gap-1.5"><Phone size={11} /> Mobile</span>
-          </div>
-
-          {staff.map((member, i) => (
-            <div
-              key={member.id}
-              className={`grid grid-cols-3 gap-4 px-5 py-4 items-center hover:bg-surface-hover/50 transition-colors ${i < staff.length - 1 ? "border-b border-border" : ""}`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-xs font-bold text-primary">
-                    {member.name.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <span className="font-medium text-sm">{member.name}</span>
+          <div className="overflow-x-auto">
+            <div className="min-w-[320px]">
+              <div className="grid grid-cols-3 gap-3 px-4 py-3 bg-surface-hover border-b border-border text-[11px] font-semibold text-muted uppercase tracking-wide">
+                <span className="flex items-center gap-1.5"><UserCircle2 size={11} /> Name</span>
+                <span>Age</span>
+                <span className="flex items-center gap-1.5"><Phone size={11} /> Mobile</span>
               </div>
-              <span className="text-sm text-muted">{member.age} yrs</span>
-              <span className="text-sm text-muted">{member.mobileNumber}</span>
-            </div>
-          ))}
 
-          <div className="px-5 py-3 bg-surface-hover border-t border-border text-xs text-muted">
-            {staff.length} {staff.length === 1 ? "member" : "members"} total
+              {staff.map((member, i) => (
+                <div
+                  key={member.id}
+                  className={`grid grid-cols-3 gap-3 px-4 py-3.5 items-center hover:bg-surface-hover/50 transition-colors ${i < staff.length - 1 ? "border-b border-border" : ""}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-bold text-primary">
+                        {member.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <span className="font-medium text-sm truncate">{member.name}</span>
+                  </div>
+                  <span className="text-sm text-muted">{member.age}</span>
+                  <span className="text-sm text-muted">{member.mobileNumber}</span>
+                </div>
+              ))}
+
+              <div className="px-4 py-3 bg-surface-hover border-t border-border text-xs text-muted">
+                {staff.length} {staff.length === 1 ? "member" : "members"} total
+              </div>
+            </div>
           </div>
         </div>
       )}

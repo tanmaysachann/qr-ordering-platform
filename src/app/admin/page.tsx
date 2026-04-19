@@ -242,12 +242,12 @@ export default function AdminCafesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-7">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-sm text-muted mt-0.5">Welcome back. Here's what's happening</p>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Admin Dashboard</h1>
+          <p className="text-sm text-muted mt-0.5">Welcome back. Here&apos;s what&apos;s happening</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
+        <Button onClick={() => setShowModal(true)} className="self-start sm:self-auto">
           <Plus size={16} className="mr-1.5" />
           Add Cafe
         </Button>
@@ -466,23 +466,27 @@ export default function AdminCafesPage() {
             </div>
           ) : (
             <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-              <div className="grid grid-cols-4 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
-                <span>Name</span>
-                <span>Branch</span>
-                <span>Age</span>
-                <span className="flex items-center gap-1"><Phone size={10} /> Mobile</span>
-              </div>
-              {filtered.map((member, i) => {
-                const cafe = cafes.find((c) => c.id === member.cafeId);
-                return (
-                  <div key={member.id} className={`grid grid-cols-4 gap-4 px-5 py-3 text-sm items-center ${i < filtered.length - 1 ? "border-b border-border" : ""}`}>
-                    <span className="font-medium">{member.name}</span>
-                    <span className="text-muted truncate">{cafe?.name ?? "-"}</span>
-                    <span className="text-muted">{member.age}</span>
-                    <span className="text-muted">{member.mobileNumber}</span>
+              <div className="overflow-x-auto">
+                <div className="min-w-[420px]">
+                  <div className="grid grid-cols-4 gap-3 px-4 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+                    <span>Name</span>
+                    <span>Branch</span>
+                    <span>Age</span>
+                    <span className="flex items-center gap-1"><Phone size={10} /> Mobile</span>
                   </div>
-                );
-              })}
+                  {filtered.map((member, i) => {
+                    const cafe = cafes.find((c) => c.id === member.cafeId);
+                    return (
+                      <div key={member.id} className={`grid grid-cols-4 gap-3 px-4 py-3 text-sm items-center ${i < filtered.length - 1 ? "border-b border-border" : ""}`}>
+                        <span className="font-medium truncate">{member.name}</span>
+                        <span className="text-muted truncate">{cafe?.name ?? "-"}</span>
+                        <span className="text-muted">{member.age}</span>
+                        <span className="text-muted text-xs">{member.mobileNumber}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           );
         })()}

@@ -100,58 +100,53 @@ export default function AdminAnalyticsPage() {
       {/* Per-Cafe Breakdown */}
       <h2 className="text-lg font-semibold mb-4">Per-Cafe Breakdown</h2>
       <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-        {/* Table Header */}
-        <div className="grid grid-cols-5 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
-          <span>Cafe</span>
-          <span className="text-right">Today Orders</span>
-          <span className="text-right">Today Revenue</span>
-          <span className="text-right">Total Orders</span>
-          <span className="text-right">Total Revenue</span>
-        </div>
-
-        {/* Rows */}
-        {data.cafeStats.length === 0 ? (
-          <div className="px-5 py-8 text-center text-muted text-sm">
-            No cafe data available
-          </div>
-        ) : (
-          data.cafeStats.map((cafe, i) => (
-            <div
-              key={cafe.cafeId}
-              className={cn(
-                "grid grid-cols-5 gap-4 px-5 py-4 text-sm items-center",
-                i < data.cafeStats.length - 1 && "border-b border-border"
-              )}
-            >
-              <div>
-                <p className="font-semibold">{cafe.cafeName}</p>
-                <p className="text-xs text-muted">/{cafe.cafeSlug}</p>
-              </div>
-              <div className="text-right">
-                <div className="flex items-center justify-end gap-1">
-                  <Activity size={14} className="text-muted" />
-                  <span className="font-medium">{cafe.todayOrders}</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="font-medium text-primary">
-                  {paiseToCurrencyShort(cafe.todayRevenue)}
-                </span>
-              </div>
-              <div className="text-right font-medium">
-                {cafe.totalOrders.toLocaleString()}
-              </div>
-              <div className="text-right">
-                <div className="flex items-center justify-end gap-1">
-                  <span className="font-bold text-green-600">
-                    {paiseToCurrencyShort(cafe.totalRevenue)}
-                  </span>
-                  <ArrowUpRight size={14} className="text-green-600" />
-                </div>
-              </div>
+        <div className="overflow-x-auto">
+          <div className="min-w-[540px]">
+            <div className="grid grid-cols-5 gap-3 px-4 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+              <span>Cafe</span>
+              <span className="text-right">Today Orders</span>
+              <span className="text-right">Today Revenue</span>
+              <span className="text-right">Total Orders</span>
+              <span className="text-right">Total Revenue</span>
             </div>
-          ))
-        )}
+            {data.cafeStats.length === 0 ? (
+              <div className="px-5 py-8 text-center text-muted text-sm">
+                No cafe data available
+              </div>
+            ) : (
+              data.cafeStats.map((cafe, i) => (
+                <div
+                  key={cafe.cafeId}
+                  className={cn(
+                    "grid grid-cols-5 gap-3 px-4 py-4 text-sm items-center",
+                    i < data.cafeStats.length - 1 && "border-b border-border"
+                  )}
+                >
+                  <div>
+                    <p className="font-semibold text-sm">{cafe.cafeName}</p>
+                    <p className="text-xs text-muted">/{cafe.cafeSlug}</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <Activity size={13} className="text-muted" />
+                      <span className="font-medium">{cafe.todayOrders}</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="font-medium text-primary">{paiseToCurrencyShort(cafe.todayRevenue)}</span>
+                  </div>
+                  <div className="text-right font-medium">{cafe.totalOrders.toLocaleString()}</div>
+                  <div className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <span className="font-bold text-green-600">{paiseToCurrencyShort(cafe.totalRevenue)}</span>
+                      <ArrowUpRight size={13} className="text-green-600" />
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

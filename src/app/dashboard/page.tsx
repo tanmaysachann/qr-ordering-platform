@@ -99,9 +99,9 @@ export default function DashboardOrdersPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold">Today&apos;s Orders</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <h1 className="text-xl sm:text-2xl font-bold">Today&apos;s Orders</h1>
           {newOrderAlert && (
             <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium animate-pulse">
               <Bell size={14} />
@@ -109,7 +109,7 @@ export default function DashboardOrdersPage() {
             </div>
           )}
         </div>
-        <Button variant="secondary" size="sm" onClick={fetchOrders}>
+        <Button variant="secondary" size="sm" onClick={fetchOrders} className="self-start sm:self-auto">
           <RefreshCw size={16} className="mr-1.5" />
           Refresh
         </Button>

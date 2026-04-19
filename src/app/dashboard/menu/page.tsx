@@ -388,9 +388,9 @@ export default function MenuManagementPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Menu Management</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">Menu Management</h1>
           {isAdmin && selectedCafe && (
             <a
               href={`/${selectedCafe.slug}`}
@@ -402,15 +402,15 @@ export default function MenuManagementPage() {
             </a>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-shrink-0">
           {activeTab === "categories" ? (
-            <Button onClick={openAddCatModal}>
-              <FolderPlus size={18} className="mr-1.5" />
+            <Button size="sm" onClick={openAddCatModal}>
+              <FolderPlus size={15} className="mr-1.5" />
               Add Category
             </Button>
           ) : (
-            <Button onClick={openAddModal}>
-              <Plus size={18} className="mr-1.5" />
+            <Button size="sm" onClick={openAddModal}>
+              <Plus size={15} className="mr-1.5" />
               Add Item
             </Button>
           )}
@@ -420,11 +420,13 @@ export default function MenuManagementPage() {
       {/* Cafe Picker for Admin */}
       {isAdmin && cafes.length > 0 && (
         <div className="mb-6">
-          <div className="flex items-center gap-3">
-            <Store size={18} className="text-muted" />
-            <label className="text-sm font-medium">Select Cafe:</label>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2">
+              <Store size={16} className="text-muted flex-shrink-0" />
+              <label className="text-sm font-medium whitespace-nowrap">Select Cafe:</label>
+            </div>
             <select
-              className="rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary min-w-[200px]"
+              className="w-full sm:w-auto rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary"
               value={selectedCafeId || ""}
               onChange={(e) => setSelectedCafeId(e.target.value)}
             >

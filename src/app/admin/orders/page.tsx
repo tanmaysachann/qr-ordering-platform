@@ -101,12 +101,12 @@ export default function AdminOrdersPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-7">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Completed Orders</h1>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Completed Orders</h1>
           <p className="text-sm text-muted mt-0.5">View and filter all completed orders across branches</p>
         </div>
-        <Button variant="secondary" size="sm" onClick={fetchOrders}>
+        <Button variant="secondary" size="sm" onClick={fetchOrders} className="self-start sm:self-auto">
           <RefreshCw size={14} className="mr-1.5" />
           Refresh
         </Button>
@@ -198,36 +198,40 @@ export default function AdminOrdersPage() {
         />
       ) : (
         <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-sm">
-          <div className="grid grid-cols-5 gap-4 px-5 py-3 bg-surface-hover border-b border-border text-[11px] font-semibold text-muted uppercase tracking-wide">
-            <span>Order #</span>
-            <span>Branch</span>
-            <span>Customer</span>
-            <span className="text-right">Amount</span>
-            <span className="text-right">Date & Time</span>
-          </div>
-          {orders.map((order, i) => (
-            <div
-              key={order.id}
-              className={cn(
-                "grid grid-cols-5 gap-4 px-5 py-3.5 text-sm items-center hover:bg-surface-hover/50 transition-colors",
-                i < orders.length - 1 && "border-b border-border"
-              )}
-            >
-              <span className="font-semibold text-primary text-xs">{order.orderNumber}</span>
-              <span className="text-muted truncate text-xs">{order.cafe?.name ?? "-"}</span>
-              <span className="text-foreground truncate">{order.customerName || <span className="text-muted">Guest</span>}</span>
-              <span className="text-right font-semibold">{paiseToCurrencyShort(order.totalPaise)}</span>
-              <span className="text-right text-muted text-xs">
-                {new Date(order.createdAt).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "short",
-                  year: datePreset === "all" ? "numeric" : undefined,
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
+          <div className="overflow-x-auto">
+            <div className="min-w-[520px]">
+              <div className="grid grid-cols-5 gap-3 px-4 py-3 bg-surface-hover border-b border-border text-[11px] font-semibold text-muted uppercase tracking-wide">
+                <span>Order #</span>
+                <span>Branch</span>
+                <span>Customer</span>
+                <span className="text-right">Amount</span>
+                <span className="text-right">Date & Time</span>
+              </div>
+              {orders.map((order, i) => (
+                <div
+                  key={order.id}
+                  className={cn(
+                    "grid grid-cols-5 gap-3 px-4 py-3 text-sm items-center hover:bg-surface-hover/50 transition-colors",
+                    i < orders.length - 1 && "border-b border-border"
+                  )}
+                >
+                  <span className="font-semibold text-primary text-xs">{order.orderNumber}</span>
+                  <span className="text-muted truncate text-xs">{order.cafe?.name ?? "-"}</span>
+                  <span className="text-foreground truncate text-xs">{order.customerName || <span className="text-muted">Guest</span>}</span>
+                  <span className="text-right font-semibold text-xs">{paiseToCurrencyShort(order.totalPaise)}</span>
+                  <span className="text-right text-muted text-xs">
+                    {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: datePreset === "all" ? "numeric" : undefined,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       )}
     </div>
