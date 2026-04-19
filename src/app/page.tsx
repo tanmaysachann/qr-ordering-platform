@@ -1,114 +1,147 @@
 import Link from "next/link";
-import { Coffee, QrCode, ShoppingBag, CreditCard, ArrowRight } from "lucide-react";
+import { Coffee, QrCode, ShoppingBag, CreditCard, ArrowRight, Zap } from "lucide-react";
 
 export default function HomePage() {
   const steps = [
     {
       num: "01",
-      icon: <QrCode size={20} />,
+      icon: <QrCode size={22} />,
       title: "Scan QR Code",
-      desc: "Point your camera at the QR code on your table",
+      desc: "Point your camera at the QR code on your table — no app needed.",
     },
     {
       num: "02",
-      icon: <ShoppingBag size={20} />,
+      icon: <ShoppingBag size={22} />,
       title: "Browse & Order",
-      desc: "Explore the menu and add your favourites to the cart",
+      desc: "Explore the full menu and add your favourites to the cart.",
     },
     {
       num: "03",
-      icon: <CreditCard size={20} />,
+      icon: <CreditCard size={22} />,
       title: "Pay Securely",
-      desc: "Complete payment instantly with PhonePe",
+      desc: "Complete payment instantly with PhonePe.",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0c12] flex flex-col items-center justify-center px-6 relative overflow-hidden">
+    <div className="min-h-screen bg-[#07080f] text-white flex flex-col relative overflow-hidden">
 
-      {/* Background glow blobs */}
-      <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[#b45309]/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-80px] right-[-60px] w-[300px] h-[300px] rounded-full bg-[#f43f5e]/6 blur-[100px] pointer-events-none" />
+      {/* ── Background atmosphere ── */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Top-center amber bloom */}
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-[#b45309]/12 blur-[130px]" />
+        {/* Bottom-right accent */}
+        <div className="absolute bottom-0 right-0 w-[500px] h-[400px] rounded-full bg-[#f43f5e]/5 blur-[120px]" />
+        {/* Bottom-left cool blue */}
+        <div className="absolute bottom-20 -left-20 w-[350px] h-[350px] rounded-full bg-[#3b82f6]/5 blur-[100px]" />
+        {/* Dot grid */}
+        <div
+          className="absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        {/* Radial vignette so dots fade at edges */}
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, #07080f 100%)" }} />
+      </div>
 
-      {/* Subtle dot-grid overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.04]"
-        style={{
-          backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
-
-      <div className="relative z-10 w-full max-w-sm stagger-children">
-
-        {/* Logo mark */}
-        <div className="flex flex-col items-center mb-10">
-          <div className="relative mb-5 animate-float">
-            <div className="absolute inset-0 rounded-2xl bg-[#b45309]/40 blur-xl scale-110" />
-            <div className="relative w-16 h-16 bg-gradient-to-br from-[#f59e0b] to-[#b45309] rounded-2xl flex items-center justify-center shadow-lg">
-              <Coffee size={30} className="text-white" />
-            </div>
+      {/* ── Nav bar ── */}
+      <header className="relative z-10 flex items-center justify-between px-8 py-5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-gradient-to-br from-[#f59e0b] to-[#b45309] rounded-lg flex items-center justify-center">
+            <Coffee size={16} className="text-white" />
           </div>
-
-          <h1 className="text-4xl font-bold tracking-tight text-white mb-3">
+          <span className="font-bold text-base tracking-tight">
             Cafe<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f59e0b] to-[#b45309]">Order</span>
-          </h1>
-          <p className="text-[#8892a4] text-sm text-center leading-relaxed max-w-[280px]">
-            Skip the queue. Scan, order, and pay right from your table.
-          </p>
+          </span>
+        </div>
+        <Link
+          href="/login"
+          className="text-xs font-semibold text-[#8892a4] hover:text-white transition-colors border border-[#2a2f4a] hover:border-[#b45309]/50 px-4 py-2 rounded-lg"
+        >
+          Staff Login
+        </Link>
+      </header>
+
+      {/* ── Hero ── */}
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
+
+        {/* Badge */}
+        <div className="inline-flex items-center gap-1.5 border border-[#b45309]/30 bg-[#b45309]/8 px-3 py-1 rounded-full mb-8">
+          <Zap size={11} className="text-[#f59e0b]" />
+          <span className="text-[11px] font-medium text-[#f59e0b] tracking-wide">Zero wait. Zero hassle.</span>
         </div>
 
-        {/* How it works */}
-        <div className="mb-8">
-          <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#b45309] mb-4 text-center">
-            How it works
-          </p>
-
-          <div className="relative">
-            {/* Vertical connector line */}
-            <div className="absolute left-[22px] top-8 bottom-8 w-px bg-gradient-to-b from-[#b45309]/40 via-[#b45309]/20 to-transparent" />
-
-            <div className="space-y-3">
-              {steps.map((step) => (
-                <div key={step.num} className="flex items-start gap-4 pl-1">
-                  {/* Step icon bubble */}
-                  <div className="relative flex-shrink-0">
-                    <div className="w-11 h-11 rounded-xl bg-[#1a1d27] border border-[#2a2f4a] flex items-center justify-center text-[#b45309]">
-                      {step.icon}
-                    </div>
-                    <span className="absolute -top-1.5 -right-1.5 text-[9px] font-bold text-[#b45309]/70 bg-[#0a0c12] px-0.5 leading-none">
-                      {step.num}
-                    </span>
-                  </div>
-
-                  {/* Text */}
-                  <div className="pt-1.5">
-                    <p className="text-sm font-semibold text-[#e8eaf0]">{step.title}</p>
-                    <p className="text-xs text-[#8892a4] leading-relaxed mt-0.5">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Logo icon — floating */}
+        <div className="relative mb-8 animate-float">
+          <div className="absolute inset-0 rounded-3xl bg-[#b45309]/50 blur-2xl scale-125" />
+          <div className="relative w-24 h-24 bg-gradient-to-br from-[#f59e0b] via-[#d97706] to-[#b45309] rounded-3xl flex items-center justify-center shadow-2xl shadow-[#b45309]/30">
+            <Coffee size={44} className="text-white" />
           </div>
+        </div>
+
+        {/* Headline */}
+        <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tighter leading-[1.05] mb-5">
+          Order from your{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f59e0b] via-[#ea580c] to-[#b45309]">
+            table.
+          </span>
+        </h1>
+        <p className="text-[#8892a4] text-base sm:text-lg leading-relaxed max-w-md mb-14">
+          Scan the QR code, browse the menu, and pay — all without leaving your seat.
+        </p>
+
+        {/* Steps — horizontal cards */}
+        <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-3 gap-4 mb-14">
+          {steps.map((step, i) => (
+            <div
+              key={step.num}
+              className="relative group text-left p-5 rounded-2xl border border-[#1e2235] bg-[#0d0f1a]/80 backdrop-blur-sm overflow-hidden"
+            >
+              {/* Hover glow */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#b45309]/8 to-transparent pointer-events-none" />
+
+              {/* Step number — large watermark */}
+              <span className="absolute top-3 right-4 text-5xl font-black text-white/[0.04] select-none leading-none">
+                {step.num}
+              </span>
+
+              {/* Icon */}
+              <div className="w-10 h-10 rounded-xl bg-[#b45309]/12 border border-[#b45309]/20 flex items-center justify-center text-[#f59e0b] mb-4">
+                {step.icon}
+              </div>
+
+              <p className="text-sm font-semibold text-white mb-1">{step.title}</p>
+              <p className="text-xs text-[#8892a4] leading-relaxed">{step.desc}</p>
+
+              {/* Connector arrow (not last) */}
+              {i < steps.length - 1 && (
+                <div className="hidden sm:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-[#2a2f4a]">
+                  <ArrowRight size={16} />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
 
         {/* CTA */}
-        <div className="space-y-3">
-          <Link
-            href="/login"
-            className="group relative flex items-center justify-center gap-2 w-full bg-gradient-to-r from-[#f59e0b] to-[#b45309] text-white rounded-xl py-3 text-sm font-semibold shadow-lg shadow-[#b45309]/25 hover:shadow-[#b45309]/40 hover:brightness-110 transition-all duration-200 overflow-hidden"
-          >
-            <span className="shine-overlay" />
-            Staff Login
-            <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-          </Link>
+        <Link
+          href="/login"
+          className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-[#f59e0b] to-[#b45309] text-white px-8 py-3.5 rounded-xl font-semibold text-sm shadow-xl shadow-[#b45309]/25 hover:shadow-[#b45309]/45 hover:brightness-110 transition-all duration-200 overflow-hidden"
+        >
+          <span className="shine-overlay" />
+          Staff Login
+          <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+        </Link>
+      </main>
 
-          <p className="text-[11px] text-[#8892a4] text-center">
-            Customers — scan the QR code at your table to start ordering
-          </p>
-        </div>
-
-      </div>
+      {/* ── Footer ── */}
+      <footer className="relative z-10 text-center py-6">
+        <p className="text-[11px] text-[#4a5268]">
+          Customers — scan the QR code at your table to start ordering
+        </p>
+      </footer>
     </div>
   );
 }
