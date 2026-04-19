@@ -2,6 +2,16 @@ import { NextResponse } from "next/server";
 import { auth } from "@/backend/lib/auth";
 import { menuRepository } from "@/backend/repositories/menu.repository";
 import { sseManager } from "@/backend/lib/sse";
+import { prisma } from "@/backend/lib/db";
+
+async function broadcastMenuUpdate(cafeId: string | null) {
+  if (cafeId) {
+    sseManager.broadcastMenuUpdate(cafeId);
+    return;
+  }
+  const cafes = await prisma.cafe.findMany({ where: { isActive: true }, select: { id: true } });
+  for (const c of cafes) sseManager.broadcastMenuUpdate(c.id);
+}
 
 // GET /api/admin/menu?cafeId=<id>  — all items, optionally filtered by cafe
 export async function GET(request: Request) {
@@ -50,10 +60,7 @@ export async function POST(request: Request) {
       isVeg: body.isVeg,
     });
 
-    // Broadcast to all cafes for global items, or just the specific cafe
-    if (cafeId) {
-      sseManager.broadcastMenuUpdate(cafeId);
-    }
+    await broadcastMenuUpdate(cafeId);
 
     return NextResponse.json({ success: true, data: item }, { status: 201 });
   } catch (error) {

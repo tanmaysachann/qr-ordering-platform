@@ -2,6 +2,9 @@ import { menuService } from "@/backend/services/menu.service";
 import { MenuPageClient } from "@/frontend/components/customer/menu-page-client";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface CafeMenuPageProps {
   params: Promise<{ cafeSlug: string }>;
 }

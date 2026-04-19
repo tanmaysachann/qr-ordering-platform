@@ -105,6 +105,7 @@ export const menuRepository = {
   async updateMenuItem(
     id: string,
     data: {
+      cafeId?: string | null;
       name?: string;
       description?: string;
       pricePaise?: number;
@@ -131,6 +132,7 @@ export const menuRepository = {
     if (cafeId === undefined) {
       return prisma.menuCategory.findMany({
         where: { isActive: true },
+        include: { cafe: { select: { name: true } } },
         orderBy: { sortOrder: "asc" },
       });
     }

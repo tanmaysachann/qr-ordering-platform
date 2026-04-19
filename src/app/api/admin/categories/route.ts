@@ -24,6 +24,28 @@ export async function GET(request: Request) {
   }
 }
 
+// DELETE /api/admin/categories?id=<categoryId>
+export async function DELETE(request: Request) {
+  try {
+    const session = await auth();
+    if (session?.user?.role !== "SUPER_ADMIN") {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ success: false, error: "Category ID is required" }, { status: 400 });
+    }
+
+    await menuRepository.deleteCategory(id);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Admin category delete error:", error);
+    return NextResponse.json({ success: false, error: "Failed to delete category" }, { status: 500 });
+  }
+}
+
 // POST /api/admin/categories
 //   body: { name, cafeId?: string|null, sortOrder? }
 //   cafeId omitted/null -> creates a GLOBAL category
@@ -47,8 +69,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, data: category }, { status: 201 });
   } catch (error) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.error("Admin category create error:", msg);
-    return NextResponse.json({ success: false, error: msg }, { status: 500 });
+    console.error("Admin category create error:", error);
+    return NextResponse.json({ success: false, error: "Failed to create category" }, { status: 500 });
   }
 }

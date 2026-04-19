@@ -11,7 +11,7 @@ import { paiseToCurrencyShort, rupeesToPaise } from "@/shared/utils/currency";
 import { cn } from "@/shared/utils/cn";
 import {
   Plus, UtensilsCrossed, Pencil, Trash2,
-  Eye, EyeOff, Globe, Store, ImagePlus, X, ChevronDown,
+  Eye, EyeOff, Globe, Store, ImagePlus, X, ChevronDown, Tag,
 } from "lucide-react";
 
 interface Cafe {
@@ -100,6 +100,29 @@ export default function AdminMenuPage() {
   }, [cafeFilter]);
 
   useEffect(() => { fetchItems(); }, [fetchItems]);
+
+  // Categories management
+  const [allCategories, setAllCategories] = useState<{ id: string; name: string; cafeId: string | null; cafe?: { name: string } | null }[]>([]);
+
+  const fetchAllCategories = useCallback(async () => {
+    const r = await fetch("/api/admin/categories");
+    const d = await r.json();
+    if (d.success) setAllCategories(d.data);
+  }, []);
+
+  useEffect(() => { fetchAllCategories(); }, [fetchAllCategories]);
+
+  const deleteCategory = (cat: { id: string; name: string }) => {
+    setConfirmDialog({
+      open: true,
+      message: `Delete category "${cat.name}"? Items in this category will become uncategorized.`,
+      onConfirm: async () => {
+        await fetch(`/api/admin/categories?id=${cat.id}`, { method: "DELETE" });
+        fetchAllCategories();
+        loadModalCategories();
+      },
+    });
+  };
 
   // Inline "create new category" state (used inside the item modal)
   const [showNewCat, setShowNewCat] = useState(false);
@@ -440,6 +463,59 @@ export default function AdminMenuPage() {
           </table>
         </div>
       )}
+
+      {/* ── Categories ── */}
+      <div className="mt-8">
+        <div className="flex items-center gap-2 mb-4">
+          <Tag size={16} className="text-muted" />
+          <h2 className="text-lg font-semibold">Categories</h2>
+          <span className="text-sm text-muted">({allCategories.length})</span>
+        </div>
+        {allCategories.length === 0 ? (
+          <p className="text-sm text-muted">No categories yet.</p>
+        ) : (
+          <div className="bg-surface rounded-2xl border border-border overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-muted text-xs">
+                  <th className="text-left px-4 py-3 font-medium">Name</th>
+                  <th className="text-left px-4 py-3 font-medium">Scope</th>
+                  <th className="px-4 py-3" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {allCategories.map((cat) => (
+                  <tr key={cat.id} className="hover:bg-surface-hover transition-colors">
+                    <td className="px-4 py-3 font-medium">{cat.name}</td>
+                    <td className="px-4 py-3">
+                      {cat.cafeId === null ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                          <Globe size={10} /> Global
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-surface-hover text-muted border border-border">
+                          <Store size={10} /> {cat.cafe?.name ?? "Café"}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex justify-end">
+                        <button
+                          onClick={() => deleteCategory(cat)}
+                          className="p-1.5 rounded-lg hover:bg-surface-hover text-danger/70 hover:text-danger transition-colors"
+                          title="Delete category"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
       {/* ── Add / Edit Modal ── */}
       <Modal

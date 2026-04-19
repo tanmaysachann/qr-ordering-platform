@@ -50,8 +50,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, data: category }, { status: 201 });
   } catch (error) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.error("Category create error:", msg);
-    return NextResponse.json({ success: false, error: msg }, { status: 500 });
+    console.error("Category create error:", error);
+    return NextResponse.json({ success: false, error: "Failed to create category" }, { status: 500 });
   }
 }

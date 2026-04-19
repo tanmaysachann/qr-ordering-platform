@@ -10,6 +10,15 @@ async function requireAdmin() {
   return session;
 }
 
+async function broadcastAll(cafeId: string | null) {
+  if (cafeId) {
+    sseManager.broadcastMenuUpdate(cafeId);
+    return;
+  }
+  const cafes = await prisma.cafe.findMany({ where: { isActive: true }, select: { id: true } });
+  for (const c of cafes) sseManager.broadcastMenuUpdate(c.id);
+}
+
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ itemId: string }> }
@@ -22,12 +31,16 @@ export async function PATCH(
     const { itemId } = await params;
     const body = await request.json();
 
-    // categoryId, if being changed, must be a non-empty string (every item must have a category)
     if ("categoryId" in body && !body.categoryId) {
       return NextResponse.json({ success: false, error: "Category is required" }, { status: 400 });
     }
 
+    // cafeId: null means global; undefined means don't change it
+    const cafeIdUpdate: { cafeId?: string | null } =
+      "cafeId" in body ? { cafeId: body.cafeId ?? null } : {};
+
     const updated = await menuRepository.updateMenuItem(itemId, {
+      ...cafeIdUpdate,
       name: body.name,
       description: body.description,
       pricePaise: body.pricePaise,
@@ -38,7 +51,7 @@ export async function PATCH(
       sortOrder: body.sortOrder,
     });
 
-    if (updated.cafeId) sseManager.broadcastMenuUpdate(updated.cafeId);
+    await broadcastAll(updated.cafeId);
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
@@ -58,11 +71,10 @@ export async function DELETE(
 
     const { itemId } = await params;
 
-    // Fetch cafeId before deletion so we can broadcast
     const item = await prisma.menuItem.findUnique({ where: { id: itemId }, select: { cafeId: true } });
     await menuRepository.deleteMenuItem(itemId);
 
-    if (item?.cafeId) sseManager.broadcastMenuUpdate(item.cafeId);
+    await broadcastAll(item?.cafeId ?? null);
 
     return NextResponse.json({ success: true });
   } catch (error) {
