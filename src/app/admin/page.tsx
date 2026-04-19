@@ -466,26 +466,43 @@ export default function AdminCafesPage() {
             </div>
           ) : (
             <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-              <div className="overflow-x-auto">
-                <div className="min-w-[420px]">
-                  <div className="grid grid-cols-4 gap-3 px-4 py-3 bg-background border-b border-border text-xs font-medium text-muted">
-                    <span>Name</span>
-                    <span>Branch</span>
-                    <span>Age</span>
-                    <span className="flex items-center gap-1"><Phone size={10} /> Mobile</span>
-                  </div>
-                  {filtered.map((member, i) => {
-                    const cafe = cafes.find((c) => c.id === member.cafeId);
-                    return (
-                      <div key={member.id} className={`grid grid-cols-4 gap-3 px-4 py-3 text-sm items-center ${i < filtered.length - 1 ? "border-b border-border" : ""}`}>
-                        <span className="font-medium truncate">{member.name}</span>
-                        <span className="text-muted truncate">{cafe?.name ?? "-"}</span>
-                        <span className="text-muted">{member.age}</span>
-                        <span className="text-muted text-xs">{member.mobileNumber}</span>
+              {/* Mobile cards */}
+              <div className="sm:hidden divide-y divide-border">
+                {filtered.map((member) => {
+                  const cafe = cafes.find((c) => c.id === member.cafeId);
+                  return (
+                    <div key={member.id} className="flex items-center gap-3 px-4 py-3.5">
+                      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-sm font-bold text-primary">{member.name.charAt(0).toUpperCase()}</span>
                       </div>
-                    );
-                  })}
+                      <div className="min-w-0">
+                        <p className="font-medium text-sm">{member.name}</p>
+                        <p className="text-xs text-muted mt-0.5">{cafe?.name ?? "-"} · Age {member.age} · {member.mobileNumber}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Desktop table */}
+              <div className="hidden sm:block">
+                <div className="grid grid-cols-4 gap-3 px-4 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+                  <span>Name</span>
+                  <span>Branch</span>
+                  <span>Age</span>
+                  <span className="flex items-center gap-1"><Phone size={10} /> Mobile</span>
                 </div>
+                {filtered.map((member, i) => {
+                  const cafe = cafes.find((c) => c.id === member.cafeId);
+                  return (
+                    <div key={member.id} className={`grid grid-cols-4 gap-3 px-4 py-3 text-sm items-center ${i < filtered.length - 1 ? "border-b border-border" : ""}`}>
+                      <span className="font-medium truncate">{member.name}</span>
+                      <span className="text-muted truncate">{cafe?.name ?? "-"}</span>
+                      <span className="text-muted">{member.age}</span>
+                      <span className="text-muted text-xs">{member.mobileNumber}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           );

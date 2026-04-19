@@ -329,64 +329,66 @@ export default function AdminCafeDetailPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-start justify-between mb-6">
-        <div>
-          <button
-            onClick={() => router.push("/admin")}
-            className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground mb-3 transition-colors"
-          >
-            <ArrowLeft size={16} />
-            Back to Dashboard
-          </button>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold">{cafe.name}</h1>
-            <Badge variant={cafe.isActive ? "success" : "danger"}>
-              {cafe.isActive ? "Active" : "Inactive"}
-            </Badge>
+      <div className="mb-6">
+        <button
+          onClick={() => router.push("/admin")}
+          className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground mb-3 transition-colors"
+        >
+          <ArrowLeft size={16} />
+          Back to Dashboard
+        </button>
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-xl sm:text-2xl font-bold">{cafe.name}</h1>
+              <Badge variant={cafe.isActive ? "success" : "danger"}>
+                {cafe.isActive ? "Active" : "Inactive"}
+              </Badge>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-muted">
+              {cafe.address && (
+                <span className="flex items-center gap-1">
+                  <MapPin size={14} /> {cafe.address}
+                </span>
+              )}
+              {cafe.phone && (
+                <span className="flex items-center gap-1">
+                  <Phone size={14} /> {cafe.phone}
+                </span>
+              )}
+              {cafe.openingTime && cafe.closingTime && (
+                <span className="flex items-center gap-1">
+                  <Clock size={14} /> {cafe.openingTime} - {cafe.closingTime}
+                </span>
+              )}
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-muted">
-            {cafe.address && (
-              <span className="flex items-center gap-1">
-                <MapPin size={14} /> {cafe.address}
-              </span>
-            )}
-            {cafe.phone && (
-              <span className="flex items-center gap-1">
-                <Phone size={14} /> {cafe.phone}
-              </span>
-            )}
-            {cafe.openingTime && cafe.closingTime && (
-              <span className="flex items-center gap-1">
-                <Clock size={14} /> {cafe.openingTime} - {cafe.closingTime}
-              </span>
-            )}
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              href={`/${cafe.slug}`}
+              target="_blank"
+              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+            >
+              <ExternalLink size={14} />
+              Customer View
+            </a>
+            <Button size="sm" variant="secondary" onClick={() => router.push(`/admin/cafes/${id}/menu`)}>
+              <UtensilsCrossed size={14} className="mr-1" />
+              Manage Menu
+            </Button>
+            <Button size="sm" variant="secondary" onClick={openEditModal}>
+              <Pencil size={14} className="mr-1" />
+              Edit
+            </Button>
+            <Button size="sm" onClick={() => setShowQRModal(true)}>
+              <QrCode size={14} className="mr-1" />
+              QR Code
+            </Button>
+            <Button variant="danger" size="sm" onClick={() => setShowDeleteModal(true)}>
+              <Trash2 size={14} className="mr-1" />
+              Delete
+            </Button>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <a
-            href={`/${cafe.slug}`}
-            target="_blank"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
-          >
-            <ExternalLink size={14} />
-            Customer View
-          </a>
-          <Button size="sm" variant="secondary" onClick={() => router.push(`/admin/cafes/${id}/menu`)}>
-            <UtensilsCrossed size={14} className="mr-1" />
-            Manage Menu
-          </Button>
-          <Button size="sm" variant="secondary" onClick={openEditModal}>
-            <Pencil size={14} className="mr-1" />
-            Edit
-          </Button>
-          <Button size="sm" onClick={() => setShowQRModal(true)}>
-            <QrCode size={14} className="mr-1" />
-            QR Code
-          </Button>
-          <Button variant="danger" size="sm" onClick={() => setShowDeleteModal(true)}>
-            <Trash2 size={14} className="mr-1" />
-            Delete
-          </Button>
         </div>
       </div>
 
@@ -436,18 +438,18 @@ export default function AdminCafeDetailPage() {
       )}
 
       {/* Time Range Tabs */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <h2 className="text-lg font-semibold flex items-center gap-2">
           <TrendingUp size={18} className="text-primary" />
           Revenue & Orders
         </h2>
-        <div className="flex items-center gap-1 bg-surface rounded-xl border border-border p-1">
+        <div className="flex items-center gap-1 bg-surface rounded-xl border border-border p-1 overflow-x-auto">
           {timeRanges.map((tr) => (
             <button
               key={tr.value}
               onClick={() => handleRangeChange(tr.value)}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-100",
+                "flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-100",
                 range === tr.value
                   ? "bg-primary text-white shadow-sm"
                   : "text-muted hover:text-foreground"
@@ -500,15 +502,6 @@ export default function AdminCafeDetailPage() {
       </div>
 
       <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-        {/* Table Header */}
-        <div className="grid grid-cols-5 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
-          <span>Order #</span>
-          <span>Customer</span>
-          <span>Status</span>
-          <span className="text-right">Amount</span>
-          <span className="text-right">Date</span>
-        </div>
-
         {analyticsLoading ? (
           <div className="px-5 py-8 text-center text-muted text-sm">Loading...</div>
         ) : !analytics?.recentOrders.length ? (
@@ -516,41 +509,62 @@ export default function AdminCafeDetailPage() {
             No orders in this time period
           </div>
         ) : (
-          analytics.recentOrders.map((order, i) => (
-            <div
-              key={order.id}
-              className={cn(
-                "grid grid-cols-5 gap-4 px-5 py-3 text-sm items-center",
-                i < analytics.recentOrders.length - 1 && "border-b border-border"
-              )}
-            >
-              <span className="font-medium">{order.orderNumber}</span>
-              <span className="text-muted truncate">
-                {order.customerName || "Guest"}
-              </span>
-              <span>
-                <span
+          <>
+            {/* Mobile cards */}
+            <div className="sm:hidden divide-y divide-border">
+              {analytics.recentOrders.map((order) => (
+                <div key={order.id} className="px-4 py-3.5">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-medium text-sm">{order.orderNumber}</span>
+                    <span className="font-medium text-sm">{paiseToCurrencyShort(order.totalPaise)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted">{order.customerName || "Guest"}</span>
+                    <div className="flex items-center gap-2">
+                      <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium", statusColors[order.status] || "text-gray-600 bg-gray-50")}>
+                        {order.status}
+                      </span>
+                      <span className="text-xs text-muted">
+                        {new Date(order.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop table */}
+            <div className="hidden sm:block">
+              <div className="grid grid-cols-5 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+                <span>Order #</span>
+                <span>Customer</span>
+                <span>Status</span>
+                <span className="text-right">Amount</span>
+                <span className="text-right">Date</span>
+              </div>
+              {analytics.recentOrders.map((order, i) => (
+                <div
+                  key={order.id}
                   className={cn(
-                    "inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium",
-                    statusColors[order.status] || "text-gray-600 bg-gray-50"
+                    "grid grid-cols-5 gap-4 px-5 py-3 text-sm items-center",
+                    i < analytics.recentOrders.length - 1 && "border-b border-border"
                   )}
                 >
-                  {order.status}
-                </span>
-              </span>
-              <span className="text-right font-medium">
-                {paiseToCurrencyShort(order.totalPaise)}
-              </span>
-              <span className="text-right text-muted text-xs">
-                {new Date(order.createdAt).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "short",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
+                  <span className="font-medium">{order.orderNumber}</span>
+                  <span className="text-muted truncate">{order.customerName || "Guest"}</span>
+                  <span>
+                    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium", statusColors[order.status] || "text-gray-600 bg-gray-50")}>
+                      {order.status}
+                    </span>
+                  </span>
+                  <span className="text-right font-medium">{paiseToCurrencyShort(order.totalPaise)}</span>
+                  <span className="text-right text-muted text-xs">
+                    {new Date(order.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))
+          </>
         )}
       </div>
 
@@ -573,34 +587,59 @@ export default function AdminCafeDetailPage() {
           </div>
         ) : (
           <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-            <div className="grid grid-cols-4 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
-              <span>Name</span>
-              <span>Age</span>
-              <span>Mobile</span>
-              <span></span>
-            </div>
-            {staff.map((member, i) => (
-              <div
-                key={member.id}
-                className={cn(
-                  "grid grid-cols-4 gap-4 px-5 py-3 text-sm items-center",
-                  i < staff.length - 1 && "border-b border-border"
-                )}
-              >
-                <span className="font-medium">{member.name}</span>
-                <span className="text-muted">{member.age}</span>
-                <span className="text-muted">{member.mobileNumber}</span>
-                <span className="flex justify-end">
+            {/* Mobile cards */}
+            <div className="sm:hidden divide-y divide-border">
+              {staff.map((member) => (
+                <div key={member.id} className="flex items-center gap-3 px-4 py-3.5">
+                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-sm font-bold text-primary">{member.name.charAt(0).toUpperCase()}</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm">{member.name}</p>
+                    <p className="text-xs text-muted mt-0.5">Age {member.age} · {member.mobileNumber}</p>
+                  </div>
                   <button
                     onClick={() => setRemoveTarget(member)}
-                    className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors"
+                    className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors flex-shrink-0"
                     title="Remove staff"
                   >
                     <UserMinus size={14} />
                   </button>
-                </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop table */}
+            <div className="hidden sm:block">
+              <div className="grid grid-cols-4 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+                <span>Name</span>
+                <span>Age</span>
+                <span>Mobile</span>
+                <span></span>
               </div>
-            ))}
+              {staff.map((member, i) => (
+                <div
+                  key={member.id}
+                  className={cn(
+                    "grid grid-cols-4 gap-4 px-5 py-3 text-sm items-center",
+                    i < staff.length - 1 && "border-b border-border"
+                  )}
+                >
+                  <span className="font-medium">{member.name}</span>
+                  <span className="text-muted">{member.age}</span>
+                  <span className="text-muted">{member.mobileNumber}</span>
+                  <span className="flex justify-end">
+                    <button
+                      onClick={() => setRemoveTarget(member)}
+                      className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors"
+                      title="Remove staff"
+                    >
+                      <UserMinus size={14} />
+                    </button>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -198,28 +198,20 @@ export default function AdminOrdersPage() {
         />
       ) : (
         <div className="bg-surface rounded-2xl border border-border overflow-hidden shadow-sm">
-          <div className="overflow-x-auto">
-            <div className="min-w-[520px]">
-              <div className="grid grid-cols-5 gap-3 px-4 py-3 bg-surface-hover border-b border-border text-[11px] font-semibold text-muted uppercase tracking-wide">
-                <span>Order #</span>
-                <span>Branch</span>
-                <span>Customer</span>
-                <span className="text-right">Amount</span>
-                <span className="text-right">Date & Time</span>
-              </div>
-              {orders.map((order, i) => (
-                <div
-                  key={order.id}
-                  className={cn(
-                    "grid grid-cols-5 gap-3 px-4 py-3 text-sm items-center hover:bg-surface-hover/50 transition-colors",
-                    i < orders.length - 1 && "border-b border-border"
-                  )}
-                >
+          {/* Mobile card list */}
+          <div className="sm:hidden divide-y divide-border">
+            {orders.map((order) => (
+              <div key={order.id} className="px-4 py-3.5">
+                <div className="flex items-center justify-between mb-1">
                   <span className="font-semibold text-primary text-xs">{order.orderNumber}</span>
-                  <span className="text-muted truncate text-xs">{order.cafe?.name ?? "-"}</span>
-                  <span className="text-foreground truncate text-xs">{order.customerName || <span className="text-muted">Guest</span>}</span>
-                  <span className="text-right font-semibold text-xs">{paiseToCurrencyShort(order.totalPaise)}</span>
-                  <span className="text-right text-muted text-xs">
+                  <span className="font-semibold text-sm">{paiseToCurrencyShort(order.totalPaise)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-foreground">{order.customerName || <span className="text-muted">Guest</span>}</p>
+                    <p className="text-xs text-muted">{order.cafe?.name ?? "-"}</p>
+                  </div>
+                  <span className="text-xs text-muted text-right">
                     {new Date(order.createdAt).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",
@@ -229,8 +221,42 @@ export default function AdminOrdersPage() {
                     })}
                   </span>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop table */}
+          <div className="hidden sm:block">
+            <div className="grid grid-cols-5 gap-3 px-4 py-3 bg-surface-hover border-b border-border text-[11px] font-semibold text-muted uppercase tracking-wide">
+              <span>Order #</span>
+              <span>Branch</span>
+              <span>Customer</span>
+              <span className="text-right">Amount</span>
+              <span className="text-right">Date & Time</span>
             </div>
+            {orders.map((order, i) => (
+              <div
+                key={order.id}
+                className={cn(
+                  "grid grid-cols-5 gap-3 px-4 py-3 text-sm items-center hover:bg-surface-hover/50 transition-colors",
+                  i < orders.length - 1 && "border-b border-border"
+                )}
+              >
+                <span className="font-semibold text-primary text-xs">{order.orderNumber}</span>
+                <span className="text-muted truncate text-xs">{order.cafe?.name ?? "-"}</span>
+                <span className="text-foreground truncate text-xs">{order.customerName || <span className="text-muted">Guest</span>}</span>
+                <span className="text-right font-semibold text-xs">{paiseToCurrencyShort(order.totalPaise)}</span>
+                <span className="text-right text-muted text-xs">
+                  {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: datePreset === "all" ? "numeric" : undefined,
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       )}

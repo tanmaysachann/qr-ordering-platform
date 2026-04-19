@@ -70,13 +70,13 @@ export default function OwnerAnalyticsPage() {
       </div>
 
       {/* Time Range Picker */}
-      <div className="flex items-center gap-1 bg-surface rounded-xl border border-border p-1 mb-6 w-fit">
+      <div className="flex items-center gap-1 bg-surface rounded-xl border border-border p-1 mb-6 overflow-x-auto">
         {timeRanges.map((tr) => (
           <button
             key={tr.value}
             onClick={() => setRange(tr.value)}
             className={cn(
-              "px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-100",
+              "flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-100",
               range === tr.value
                 ? "bg-primary text-white shadow-sm"
                 : "text-muted hover:text-foreground"
@@ -155,14 +155,6 @@ export default function OwnerAnalyticsPage() {
       </div>
 
       <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-        {/* Table Header */}
-        <div className="grid grid-cols-4 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
-          <span>Order #</span>
-          <span>Customer</span>
-          <span>Status</span>
-          <span className="text-right">Amount</span>
-        </div>
-
         {loading ? (
           <div className="px-5 py-8 text-center text-muted text-sm">Loading...</div>
         ) : !analytics?.recentOrders.length ? (
@@ -170,26 +162,49 @@ export default function OwnerAnalyticsPage() {
             No orders in this time period
           </div>
         ) : (
-          analytics.recentOrders.map((order, i) => (
-            <div
-              key={order.id}
-              className={cn(
-                "grid grid-cols-4 gap-4 px-5 py-3 text-sm items-center",
-                i < analytics.recentOrders.length - 1 && "border-b border-border"
-              )}
-            >
-              <span className="font-medium">{order.orderNumber}</span>
-              <span className="text-muted truncate">
-                {order.customerName || "Guest"}
-              </span>
-              <span>
-                <StatusBadge status={order.status} />
-              </span>
-              <span className="text-right font-medium">
-                {paiseToCurrencyShort(order.totalPaise)}
-              </span>
+          <>
+            {/* Mobile cards */}
+            <div className="sm:hidden divide-y divide-border">
+              {analytics.recentOrders.map((order) => (
+                <div key={order.id} className="flex items-center justify-between px-4 py-3.5">
+                  <div>
+                    <p className="font-medium text-sm">{order.orderNumber}</p>
+                    <p className="text-xs text-muted mt-0.5">{order.customerName || "Guest"}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium text-sm">{paiseToCurrencyShort(order.totalPaise)}</p>
+                    <div className="mt-0.5 flex justify-end">
+                      <StatusBadge status={order.status} />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))
+
+            {/* Desktop table */}
+            <div className="hidden sm:block">
+              <div className="grid grid-cols-4 gap-4 px-5 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+                <span>Order #</span>
+                <span>Customer</span>
+                <span>Status</span>
+                <span className="text-right">Amount</span>
+              </div>
+              {analytics.recentOrders.map((order, i) => (
+                <div
+                  key={order.id}
+                  className={cn(
+                    "grid grid-cols-4 gap-4 px-5 py-3 text-sm items-center",
+                    i < analytics.recentOrders.length - 1 && "border-b border-border"
+                  )}
+                >
+                  <span className="font-medium">{order.orderNumber}</span>
+                  <span className="text-muted truncate">{order.customerName || "Guest"}</span>
+                  <span><StatusBadge status={order.status} /></span>
+                  <span className="text-right font-medium">{paiseToCurrencyShort(order.totalPaise)}</span>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>

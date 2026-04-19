@@ -100,21 +100,50 @@ export default function AdminAnalyticsPage() {
       {/* Per-Cafe Breakdown */}
       <h2 className="text-lg font-semibold mb-4">Per-Cafe Breakdown</h2>
       <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-        <div className="overflow-x-auto">
-          <div className="min-w-[540px]">
-            <div className="grid grid-cols-5 gap-3 px-4 py-3 bg-background border-b border-border text-xs font-medium text-muted">
-              <span>Cafe</span>
-              <span className="text-right">Today Orders</span>
-              <span className="text-right">Today Revenue</span>
-              <span className="text-right">Total Orders</span>
-              <span className="text-right">Total Revenue</span>
+        {data.cafeStats.length === 0 ? (
+          <div className="px-5 py-8 text-center text-muted text-sm">No cafe data available</div>
+        ) : (
+          <>
+            {/* Mobile cards */}
+            <div className="sm:hidden divide-y divide-border">
+              {data.cafeStats.map((cafe) => (
+                <div key={cafe.cafeId} className="px-4 py-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <p className="font-semibold text-sm">{cafe.cafeName}</p>
+                      <p className="text-xs text-muted">/{cafe.cafeSlug}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-green-600 text-sm flex items-center gap-0.5">
+                        {paiseToCurrencyShort(cafe.totalRevenue)}<ArrowUpRight size={12} className="text-green-600" />
+                      </p>
+                      <p className="text-xs text-muted">{cafe.totalOrders} orders total</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 pt-2 border-t border-border/50">
+                    <div>
+                      <p className="text-[10px] text-muted uppercase tracking-wide">Today Orders</p>
+                      <p className="font-medium text-sm flex items-center gap-0.5"><Activity size={11} className="text-muted" />{cafe.todayOrders}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-muted uppercase tracking-wide">Today Revenue</p>
+                      <p className="font-medium text-sm text-primary">{paiseToCurrencyShort(cafe.todayRevenue)}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            {data.cafeStats.length === 0 ? (
-              <div className="px-5 py-8 text-center text-muted text-sm">
-                No cafe data available
+
+            {/* Desktop table */}
+            <div className="hidden sm:block">
+              <div className="grid grid-cols-5 gap-3 px-4 py-3 bg-background border-b border-border text-xs font-medium text-muted">
+                <span>Cafe</span>
+                <span className="text-right">Today Orders</span>
+                <span className="text-right">Today Revenue</span>
+                <span className="text-right">Total Orders</span>
+                <span className="text-right">Total Revenue</span>
               </div>
-            ) : (
-              data.cafeStats.map((cafe, i) => (
+              {data.cafeStats.map((cafe, i) => (
                 <div
                   key={cafe.cafeId}
                   className={cn(
@@ -143,10 +172,10 @@ export default function AdminAnalyticsPage() {
                     </div>
                   </div>
                 </div>
-              ))
-            )}
-          </div>
-        </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
