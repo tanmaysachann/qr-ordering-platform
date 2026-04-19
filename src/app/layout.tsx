@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CafeOrder - Quick & Easy Ordering",
+  title: "Scan&Pay - Quick & Easy Ordering",
   description: "Scan, order, and pay at your favourite cafe. No app download needed.",
 };
 

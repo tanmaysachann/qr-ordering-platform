@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: CafeMenuPageProps) {
   }
 
   return {
-    title: `${data.cafe.name} - Menu | CafeOrder`,
+    title: `${data.cafe.name} - Menu | Scan&Pay`,
     description: `Browse the menu and order from ${data.cafe.name}`,
   };
 }

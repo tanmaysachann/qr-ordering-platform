@@ -46,7 +46,7 @@ export async function sendEmail({
   text,
 }: EmailPayload): Promise<boolean> {
   const provider = process.env.EMAIL_PROVIDER;
-  const from = process.env.EMAIL_FROM || "CafeOrder <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM || "Scan&Pay <onboarding@resend.dev>";
   const replyTo = process.env.EMAIL_REPLY_TO;
 
   if (!provider) {

@@ -11,6 +11,6 @@ export default async function OrderStatusPage({ params }: OrderStatusPageProps) 
 }
 
 export const metadata = {
-  title: "Order Status | CafeOrder",
+  title: "Order Status | Scan&Pay",
   description: "Track your order status in real-time",
 };
