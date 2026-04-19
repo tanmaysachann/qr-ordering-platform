@@ -1,10 +1,8 @@
 import { paymentRepository } from "@/backend/repositories/payment.repository";
 import { orderRepository } from "@/backend/repositories/order.repository";
-import { adminRepository } from "@/backend/repositories/admin.repository";
 import { verifyWebhookSignature, checkPaymentStatus } from "@/backend/lib/phonepe";
 import { sseManager } from "@/backend/lib/sse";
 import { notifyOrderPlaced } from "@/backend/lib/whatsapp";
-import { notifyOrderPlacedEmail } from "@/backend/lib/email";
 import type { Prisma } from "@/generated/prisma";
 
 type FullOrder = NonNullable<Awaited<ReturnType<typeof orderRepository.getOrderById>>>;
@@ -25,32 +23,6 @@ function sendOrderPlacedWhatsApp(fullOrder: FullOrder) {
   }).catch((err) => console.error("[WhatsApp] notifyOrderPlaced failed:", err));
 }
 
-async function sendOrderPlacedEmail(fullOrder: FullOrder) {
-  if (!fullOrder.customerEmail) return;
-  const cafe = await adminRepository.getCafeById(fullOrder.cafeId).catch(() => null);
-  const payment = fullOrder.payments[0];
-
-  notifyOrderPlacedEmail({
-    customerEmail: fullOrder.customerEmail,
-    customerName: fullOrder.customerName || "there",
-    customerPhone: fullOrder.customerPhone,
-    orderNumber: fullOrder.orderNumber,
-    totalPaise: fullOrder.totalPaise,
-    cafeName: fullOrder.cafe?.name || cafe?.name || "the cafe",
-    cafeAddress: cafe?.address ?? null,
-    cafeSlug: fullOrder.cafe?.slug || "",
-    orderId: fullOrder.id,
-    notes: fullOrder.notes,
-    paymentMethod: payment?.paymentMethod ?? null,
-    placedAt: fullOrder.createdAt,
-    items: fullOrder.items.map((i) => ({
-      itemName: i.itemName,
-      quantity: i.quantity,
-      itemPricePaise: i.itemPricePaise,
-      subtotalPaise: i.subtotalPaise,
-    })),
-  }).catch((err) => console.error("[Email] notifyOrderPlacedEmail failed:", err));
-}
 
 export const paymentService = {
   async handleWebhook(
@@ -127,9 +99,6 @@ export const paymentService = {
         });
 
         sendOrderPlacedWhatsApp(fullOrder);
-        sendOrderPlacedEmail(fullOrder).catch((err) =>
-          console.error("[Email] sendOrderPlacedEmail failed:", err)
-        );
       }
     }
 
@@ -190,9 +159,6 @@ export const paymentService = {
         });
 
         sendOrderPlacedWhatsApp(fullOrder);
-        sendOrderPlacedEmail(fullOrder).catch((err) =>
-          console.error("[Email] sendOrderPlacedEmail failed:", err)
-        );
       }
     }
 

@@ -6,6 +6,7 @@ import { generateOrderNumber } from "@/backend/lib/utils/order-number";
 import { initiatePayment } from "@/backend/lib/phonepe";
 import { sseManager } from "@/backend/lib/sse";
 import { notifyOrderReady } from "@/backend/lib/sms";
+import { notifyOrderPlacedEmail } from "@/backend/lib/email";
 import type { CreateOrderRequest, CreateOrderResponse, OrderSummary } from "@/shared/types";
 import { v4 as uuid } from "uuid";
 
@@ -79,6 +80,25 @@ export const orderService = {
       idempotencyKey: request.idempotencyKey,
       items: orderItems,
     });
+
+    // Send order confirmation email (fire-and-forget)
+    if (request.customerEmail) {
+      notifyOrderPlacedEmail({
+        customerEmail: request.customerEmail,
+        customerName: request.customerName || "there",
+        customerPhone: request.customerPhone ?? null,
+        orderNumber: order.orderNumber,
+        totalPaise,
+        cafeName: cafe.name,
+        cafeAddress: cafe.address ?? null,
+        cafeSlug: cafe.slug,
+        orderId: order.id,
+        notes: request.notes ?? null,
+        paymentMethod: null,
+        placedAt: order.createdAt,
+        items: orderItems,
+      }).catch((err) => console.error("[Email] Order confirmation failed:", err));
+    }
 
     // Create payment and initiate PhonePe
     const merchantTxnId = `ORD-${order.id.slice(0, 8)}-${uuid().slice(0, 8)}`;
