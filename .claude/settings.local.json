@@ -6,7 +6,10 @@
       "Bash(grep -E \"\\\\.\\(ts|tsx|js|jsx\\)$\")",
       "Bash(npx prisma *)",
       "PowerShell(New-Item *)",
-      "Bash(dir src\\\\\\\\app /b)"
+      "Bash(dir src\\\\\\\\app /b)",
+      "Bash(where node *)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(npx eslint *)"
     ]
   }
 }

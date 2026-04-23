@@ -312,27 +312,45 @@ export default function AdminMenuPage() {
         </div>
       </div>
 
-      {/* ── Filter bar ── */}
-      <div className="flex gap-2 flex-wrap mb-5">
-        {[
-          { value: ALL, label: "All Cafés", icon: null },
-          { value: GLOBAL, label: "Global", icon: <Globe size={13} /> },
-          ...cafes.map((c) => ({ value: c.id, label: c.name, icon: <Store size={13} /> })),
-        ].map((opt) => (
-          <button
-            key={opt.value}
-            onClick={() => setCafeFilter(opt.value)}
-            className={cn(
-              "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium border transition-colors",
-              cafeFilter === opt.value
-                ? "bg-primary text-white border-primary"
-                : "bg-surface text-muted border-border hover:border-primary/40 hover:text-foreground"
+      {/* ── Filter dropdown ── */}
+      <div className="flex items-center gap-2 mb-5">
+        <label htmlFor="menu-cafe-filter" className="text-xs font-medium text-muted">
+          Filter by café:
+        </label>
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none">
+            {cafeFilter === ALL ? (
+              <UtensilsCrossed size={13} />
+            ) : cafeFilter === GLOBAL ? (
+              <Globe size={13} />
+            ) : (
+              <Store size={13} />
             )}
+          </span>
+          <select
+            id="menu-cafe-filter"
+            value={cafeFilter}
+            onChange={(e) => setCafeFilter(e.target.value)}
+            className="appearance-none bg-surface border border-border rounded-xl pl-8 pr-9 py-2 text-sm font-medium text-foreground hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary transition-colors cursor-pointer min-w-[200px]"
           >
-            {opt.icon}
-            {opt.label}
-          </button>
-        ))}
+            <option value={ALL}>All Cafés</option>
+            <option value={GLOBAL}>Global (all cafés)</option>
+            {cafes.length > 0 && (
+              <optgroup label="Cafés">
+                {cafes.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                    {c._count?.menuItems !== undefined ? ` — ${c._count.menuItems} items` : ""}
+                  </option>
+                ))}
+              </optgroup>
+            )}
+          </select>
+          <ChevronDown
+            size={14}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+          />
+        </div>
       </div>
 
       {/* ── Content ── */}

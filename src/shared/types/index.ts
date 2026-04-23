@@ -144,6 +144,44 @@ export interface CreateUserRequest {
   cafeId?: string;
 }
 
+// ─── Deep Insights (Admin) ──────────────────────────────
+
+export interface TopItemInsight {
+  menuItemId: string;
+  name: string;
+  quantitySold: number;
+  revenuePaise: number;
+}
+
+export interface CafeInsights {
+  cafeId: string;
+  cafeName: string;
+  cafeSlug: string;
+  totalOrders: number;
+  totalRevenue: number;
+  avgOrderValuePaise: number;
+  uniqueCustomers: number;
+  repeatCustomers: number;
+  repeatRate: number; // 0..1
+  peakHour: number | null; // 0..23
+  peakHourOrders: number;
+  peakDayOfWeek: number | null; // 0=Sun..6=Sat
+  peakDayOrders: number;
+  hourHistogram: number[]; // length 24
+  dayHistogram: number[]; // length 7
+  last7DaysRevenue: { date: string; revenuePaise: number; orders: number }[];
+  topItemsByQuantity: TopItemInsight[];
+  topItemByRevenue: TopItemInsight | null;
+  mostUsedTable: { tableNumber: string; orders: number } | null;
+  lastOrderAt: string | null;
+}
+
+export interface DeepInsightsResponse {
+  windowDays: number;
+  generatedAt: string;
+  cafes: CafeInsights[];
+}
+
 // ─── Payment Types ──────────────────────────────────────
 
 export interface PaymentInfo {

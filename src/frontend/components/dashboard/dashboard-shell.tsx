@@ -14,6 +14,7 @@ import {
   Users,
   Sun,
   Moon,
+  Sparkles,
 } from "lucide-react";
 
 function BrandLogo({ size = 24 }: { size?: number }) {
@@ -62,11 +63,13 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         { name: "All Cafes", href: "/admin", icon: LayoutDashboard },
         { name: "All Orders", href: "/admin/orders", icon: ClipboardList },
         { name: "Menu", href: "/admin/menu", icon: UtensilsCrossed },
+        { name: "Deep Insights", href: "/admin/insights", icon: Sparkles },
       ]
     : [
         { name: "Orders", href: "/dashboard", icon: ClipboardList },
         { name: "Menu", href: "/dashboard/menu", icon: UtensilsCrossed },
         { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
+        { name: "Deep Insights", href: "/dashboard/insights", icon: Sparkles },
         { name: "Staff", href: "/dashboard/staff", icon: Users },
       ];
 
