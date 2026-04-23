@@ -44,7 +44,7 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
         setCategories(data.data.categories);
       }
     } catch {
-      // Silently fail — user still has stale data
+      // Silently fail - user still has stale data
     }
   }, [cafe.slug]);
 
@@ -206,7 +206,7 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
         />
       )}
 
-      {/* Search results — flat list, no category headers */}
+      {/* Search results - flat list, no category headers */}
       {isSearching ? (
         <div className="px-4 mt-4">
           {searchResults.length > 0 ? (

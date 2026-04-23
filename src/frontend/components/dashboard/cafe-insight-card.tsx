@@ -19,7 +19,7 @@ export const WINDOW_OPTIONS = [7, 30, 90] as const;
 export const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function formatHour(h: number | null): string {
-  if (h === null) return "—";
+  if (h === null) return "-";
   const suffix = h < 12 ? "AM" : "PM";
   const display = h % 12 === 0 ? 12 : h % 12;
   const nextHour = (h + 1) % 24;
@@ -70,7 +70,7 @@ export function CafeInsightCard({
             <InsightRow
               icon={<Calendar size={16} className="text-blue-500" />}
               label="Busiest day of week"
-              value={cafe.peakDayOfWeek !== null ? DAY_NAMES[cafe.peakDayOfWeek] : "—"}
+              value={cafe.peakDayOfWeek !== null ? DAY_NAMES[cafe.peakDayOfWeek] : "-"}
               sub={`${cafe.peakDayOrders} orders`}
             />
 
@@ -104,7 +104,7 @@ export function CafeInsightCard({
             />
 
             <InteractiveBars
-              title="Revenue — last 7 days"
+              title="Revenue - last 7 days"
               color="green"
               values={cafe.last7DaysRevenue.map((d) => ({
                 key: d.date,
@@ -187,7 +187,7 @@ export function CafeInsightCard({
                             <span className="text-foreground font-medium">
                               {paiseToCurrencyShort(item.revenuePaise)}
                             </span>{" "}
-                            — avg{" "}
+                            - avg{" "}
                             {paiseToCurrencyShort(
                               Math.round(item.revenuePaise / Math.max(1, item.quantitySold))
                             )}{" "}

@@ -173,7 +173,7 @@ body {
   animation: wiggle 0.5s ease-in-out;
 }
 
-/* Sliding shine overlay — use on a child span with overflow-hidden parent */
+/* Sliding shine overlay - use on a child span with overflow-hidden parent */
 .shine-overlay {
   position: absolute;
   inset: 0;

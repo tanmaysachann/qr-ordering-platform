@@ -127,7 +127,7 @@ export default function OwnerDeepInsightsPage() {
             <SummaryTile
               icon={<Clock size={18} />}
               label="Busiest hour"
-              value={cafe.peakHour !== null ? formatHour(cafe.peakHour) : "—"}
+              value={cafe.peakHour !== null ? formatHour(cafe.peakHour) : "-"}
               color="text-primary bg-primary/10"
             />
           </div>

@@ -91,7 +91,7 @@ export default function DeepInsightsPage() {
             <h1 className="text-2xl font-bold">Deep Insights</h1>
           </div>
           <p className="text-sm text-muted mt-1">
-            Business intelligence across every cafe — peak hours, top sellers, repeat customers.
+            Business intelligence across every cafe - peak hours, top sellers, repeat customers.
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -153,7 +153,7 @@ export default function DeepInsightsPage() {
                 label={summary.scoped ? "Selected cafe" : "Cafes with activity"}
                 value={
                   summary.scoped
-                    ? visibleCafes[0]?.cafeName ?? "—"
+                    ? visibleCafes[0]?.cafeName ?? "-"
                     : `${summary.activeCafes} / ${summary.totalCafes}`
                 }
                 color="text-purple-600 bg-purple-50 dark:bg-purple-500/10"
@@ -173,7 +173,7 @@ export default function DeepInsightsPage() {
               <SummaryTile
                 icon={<Clock size={18} />}
                 label={summary.scoped ? "Busiest hour" : "Busiest hour (network)"}
-                value={summary.peak !== null ? formatHour(summary.peak) : "—"}
+                value={summary.peak !== null ? formatHour(summary.peak) : "-"}
                 color="text-primary bg-primary/10"
               />
             </div>

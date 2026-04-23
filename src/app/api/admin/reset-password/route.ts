@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Only super admin can reset passwords — owners cannot reset their own or others'
+    // Only super admin can reset passwords - owners cannot reset their own or others'
     const passwordHash = await hashPassword(newPassword);
     await prisma.user.update({
       where: { id: userId },

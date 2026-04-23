@@ -87,7 +87,7 @@ export default function PaymentReturnPage({
           return;
         }
 
-        // Still pending — wait and poll again
+        // Still pending - wait and poll again
         await new Promise((r) => setTimeout(r, 2000));
         return pollOrderStatus(oid, attempts + 1);
       } catch {

@@ -266,7 +266,7 @@ export default function MenuManagementPage() {
       refetchMenu();
     } catch (err) {
       console.error("Failed to save:", err);
-      alert("Network error — could not save item.");
+      alert("Network error - could not save item.");
     } finally {
       setFormSaving(false);
     }
@@ -321,7 +321,7 @@ export default function MenuManagementPage() {
       if (editCat) {
         const url = isAdmin && selectedCafeId
           ? `/api/admin/cafes/${selectedCafeId}/categories/${editCat.id}`
-          : base; // owner can only create, not edit — but we keep parity
+          : base; // owner can only create, not edit - but we keep parity
         await fetch(url, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

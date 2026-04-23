@@ -152,7 +152,7 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
           </span>
         </div>
 
-        {/* Quantity Controls — overlapping image bottom */}
+        {/* Quantity Controls - overlapping image bottom */}
         <div className="absolute -bottom-3.5 left-1/2 -translate-x-1/2">
           {quantity === 0 ? (
             <button

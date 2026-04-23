@@ -13,7 +13,7 @@ async function broadcastMenuUpdate(cafeId: string | null) {
   for (const c of cafes) sseManager.broadcastMenuUpdate(c.id);
 }
 
-// GET /api/admin/menu?cafeId=<id>  — all items, optionally filtered by cafe
+// GET /api/admin/menu?cafeId=<id>  - all items, optionally filtered by cafe
 export async function GET(request: Request) {
   try {
     const session = await auth();
@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   }
 }
 
-// POST /api/admin/menu — create a global item (cafeId omitted) or cafe-specific item
+// POST /api/admin/menu - create a global item (cafeId omitted) or cafe-specific item
 export async function POST(request: Request) {
   try {
     const session = await auth();

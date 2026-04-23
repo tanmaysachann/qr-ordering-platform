@@ -259,7 +259,7 @@ export default function AdminMenuPage() {
       fetchItems();
     } catch (err) {
       console.error("Failed to save:", err);
-      alert("Network error — could not save item.");
+      alert("Network error - could not save item.");
     } finally { setFormSaving(false); }
   };
 
@@ -340,7 +340,7 @@ export default function AdminMenuPage() {
                 {cafes.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
-                    {c._count?.menuItems !== undefined ? ` — ${c._count.menuItems} items` : ""}
+                    {c._count?.menuItems !== undefined ? ` - ${c._count.menuItems} items` : ""}
                   </option>
                 ))}
               </optgroup>

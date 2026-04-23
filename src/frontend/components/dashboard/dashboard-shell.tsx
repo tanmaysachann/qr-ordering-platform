@@ -18,28 +18,20 @@ import {
 } from "lucide-react";
 
 function BrandLogo({ size = 24 }: { size?: number }) {
+  const inner = Math.round(size * 0.57);
   return (
-    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="2" y="2" width="13" height="13" rx="3" fill="url(#bl1)" />
-      <rect x="5" y="5" width="7" height="7" rx="1.5" fill="currentColor" className="text-[#07080f]" />
-      <rect x="25" y="2" width="13" height="13" rx="3" fill="url(#bl1)" />
-      <rect x="28" y="5" width="7" height="7" rx="1.5" fill="currentColor" className="text-[#07080f]" />
-      <rect x="2" y="25" width="13" height="13" rx="3" fill="url(#bl1)" />
-      <rect x="5" y="28" width="7" height="7" rx="1.5" fill="currentColor" className="text-[#07080f]" />
-      <rect x="25" y="25" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.8" />
-      <rect x="31" y="25" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.5" />
-      <rect x="25" y="31" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.5" />
-      <rect x="31" y="31" width="4" height="4" rx="1" fill="#f59e0b" opacity="0.3" />
-      <path d="M22 15 L17 22 H20.5 L18 28 L24 20 H20.5 Z" fill="url(#bl2)" />
-      <defs>
-        <linearGradient id="bl1" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#f59e0b" /><stop offset="100%" stopColor="#b45309" />
-        </linearGradient>
-        <linearGradient id="bl2" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-          <stop offset="0%" stopColor="#fde68a" /><stop offset="100%" stopColor="#d97706" />
-        </linearGradient>
-      </defs>
-    </svg>
+    <div
+      style={{ width: size, height: size }}
+      className="rounded-lg bg-primary flex items-center justify-center flex-shrink-0"
+    >
+      <svg width={inner} height={inner} viewBox="0 0 20 20" fill="none" aria-hidden>
+        <path d="M3.5 7V3.5H7"     stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M16.5 7V3.5H13"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M3.5 13V16.5H7"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M16.5 13V16.5H13" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="10" cy="10" r="1.6" fill="white"/>
+      </svg>
+    </div>
   );
 }
 import { cn } from "@/shared/utils/cn";
@@ -87,7 +79,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
             </button>
             <div className="flex items-center gap-2">
               <BrandLogo size={22} />
-              <span className="font-bold text-sm">Scan<span className="text-primary">&amp;Pay</span></span>
+              <span className="font-bold text-sm">Scan<span className="text-primary">&amp;</span>Pay</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -119,7 +111,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
             <div className="flex items-center gap-2.5">
               <BrandLogo size={28} />
               <span className="font-bold text-lg">
-                Scan<span className="text-primary">&amp;Pay</span>
+                Scan<span className="text-primary">&amp;</span>Pay
               </span>
             </div>
             {/* Theme toggle */}
@@ -176,7 +168,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
           {/* Logout */}
           <div className="p-3 border-t border-border">
             <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
+              onClick={() => signOut({ callbackUrl: "/" })}
               className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-muted hover:text-danger hover:bg-red-500/10 transition-colors w-full rounded-xl"
             >
               <LogOut size={16} />

@@ -63,7 +63,7 @@ export const adminRepository = {
   },
 
   async deleteCafe(id: string) {
-    // Soft delete — deactivate instead of hard-deleting to preserve order history
+    // Soft delete - deactivate instead of hard-deleting to preserve order history
     return prisma.cafe.update({
       where: { id },
       data: { isActive: false },

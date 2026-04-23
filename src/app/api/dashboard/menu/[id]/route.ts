@@ -23,7 +23,7 @@ export async function PATCH(
       return NextResponse.json({ success: false, error: "Item not found" }, { status: 404 });
     }
 
-    // Every item must have a category — reject explicit empty
+    // Every item must have a category - reject explicit empty
     if ("categoryId" in body && !body.categoryId) {
       return NextResponse.json({ success: false, error: "Category is required" }, { status: 400 });
     }
