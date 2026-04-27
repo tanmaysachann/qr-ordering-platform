@@ -1,9 +1,23 @@
 import { createHash } from "crypto";
 
 const PHONEPE_BASE_URL = process.env.PHONEPE_BASE_URL || "https://api-preprod.phonepe.com/apis/pg-sandbox";
-const MERCHANT_ID = process.env.PHONEPE_MERCHANT_ID || "";
-const SALT_KEY = process.env.PHONEPE_SALT_KEY || "";
-const SALT_INDEX = process.env.PHONEPE_SALT_INDEX || "1";
+const GLOBAL_MERCHANT_ID = process.env.PHONEPE_MERCHANT_ID || "";
+const GLOBAL_SALT_KEY = process.env.PHONEPE_SALT_KEY || "";
+const GLOBAL_SALT_INDEX = process.env.PHONEPE_SALT_INDEX || "1";
+
+export interface PhonePeCredentials {
+  merchantId: string;
+  saltKey: string;
+  saltIndex?: string;
+}
+
+function resolveCredentials(override?: PhonePeCredentials): Required<PhonePeCredentials> {
+  return {
+    merchantId: override?.merchantId || GLOBAL_MERCHANT_ID,
+    saltKey: override?.saltKey || GLOBAL_SALT_KEY,
+    saltIndex: override?.saltIndex || GLOBAL_SALT_INDEX,
+  };
+}
 
 interface InitiatePaymentParams {
   merchantTransactionId: string;
@@ -11,6 +25,7 @@ interface InitiatePaymentParams {
   redirectUrl: string;
   callbackUrl: string;
   customerPhone?: string;
+  credentials?: PhonePeCredentials;
 }
 
 interface PhonePePayResponse {
@@ -22,8 +37,10 @@ interface PhonePePayResponse {
 export async function initiatePayment(
   params: InitiatePaymentParams
 ): Promise<PhonePePayResponse> {
+  const creds = resolveCredentials(params.credentials);
+
   const payload = {
-    merchantId: MERCHANT_ID,
+    merchantId: creds.merchantId,
     merchantTransactionId: params.merchantTransactionId,
     merchantUserId: `CUST-${params.merchantTransactionId.slice(0, 12)}`,
     amount: params.amount,
@@ -39,7 +56,7 @@ export async function initiatePayment(
   };
 
   const base64Payload = Buffer.from(JSON.stringify(payload)).toString("base64");
-  const checksum = generateChecksum(base64Payload, "/pg/v1/pay");
+  const checksum = generateChecksum(base64Payload, "/pg/v1/pay", creds.saltKey, creds.saltIndex);
 
   try {
     const response = await fetch(`${PHONEPE_BASE_URL}/pg/v1/pay`, {
@@ -70,10 +87,12 @@ export async function initiatePayment(
 }
 
 export async function checkPaymentStatus(
-  merchantTransactionId: string
+  merchantTransactionId: string,
+  credentials?: PhonePeCredentials
 ): Promise<{ success: boolean; status: string; data?: Record<string, unknown> }> {
-  const path = `/pg/v1/status/${MERCHANT_ID}/${merchantTransactionId}`;
-  const checksum = generateChecksum("", path);
+  const creds = resolveCredentials(credentials);
+  const path = `/pg/v1/status/${creds.merchantId}/${merchantTransactionId}`;
+  const checksum = generateChecksum("", path, creds.saltKey, creds.saltIndex);
 
   try {
     const response = await fetch(`${PHONEPE_BASE_URL}${path}`, {
@@ -81,7 +100,7 @@ export async function checkPaymentStatus(
       headers: {
         "Content-Type": "application/json",
         "X-VERIFY": checksum,
-        "X-MERCHANT-ID": MERCHANT_ID,
+        "X-MERCHANT-ID": creds.merchantId,
       },
     });
 
@@ -98,23 +117,32 @@ export async function checkPaymentStatus(
 
 export function verifyWebhookSignature(
   responseBody: string,
-  xVerifyHeader: string
+  xVerifyHeader: string,
+  saltKey?: string,
+  saltIndex?: string
 ): boolean {
+  const key = saltKey || GLOBAL_SALT_KEY;
+  const index = saltIndex || GLOBAL_SALT_INDEX;
   const expectedChecksum =
     createHash("sha256")
-      .update(responseBody + SALT_KEY)
+      .update(responseBody + key)
       .digest("hex") +
     "###" +
-    SALT_INDEX;
+    index;
 
   return expectedChecksum === xVerifyHeader;
 }
 
-function generateChecksum(base64Payload: string, apiEndpoint: string): string {
-  const stringToHash = base64Payload + apiEndpoint + SALT_KEY;
+function generateChecksum(
+  base64Payload: string,
+  apiEndpoint: string,
+  saltKey: string,
+  saltIndex: string
+): string {
+  const stringToHash = base64Payload + apiEndpoint + saltKey;
   return (
     createHash("sha256").update(stringToHash).digest("hex") +
     "###" +
-    SALT_INDEX
+    saltIndex
   );
 }

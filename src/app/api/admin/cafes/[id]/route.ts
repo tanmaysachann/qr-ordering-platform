@@ -19,7 +19,9 @@ export async function GET(
       return NextResponse.json({ success: false, error: "Cafe not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, data: cafe });
+    // Strip the salt key — never expose it to the client
+    const { phonepeSaltKey: _saltKey, ...safeData } = cafe as typeof cafe & { phonepeSaltKey?: string };
+    return NextResponse.json({ success: true, data: safeData });
   } catch (error) {
     console.error("Admin cafe detail error:", error);
     return NextResponse.json({ success: false, error: "Failed to fetch cafe" }, { status: 500 });

@@ -100,6 +100,18 @@ export const orderService = {
       }).catch((err) => console.error("[Email] Order confirmation failed:", err));
     }
 
+    // Validate that this cafe has PhonePe credentials configured
+    if (!cafe.phonepeMerchantId || !cafe.phonepeSaltKey) {
+      await orderRepository.updateOrderStatus(order.id, "FAILED");
+      throw new Error("Payment is not configured for this cafe. Please contact support.");
+    }
+
+    const cafeCredentials = {
+      merchantId: cafe.phonepeMerchantId,
+      saltKey: cafe.phonepeSaltKey,
+      saltIndex: cafe.phonepeSaltIndex ?? "1",
+    };
+
     // Create payment and initiate PhonePe
     const merchantTxnId = `ORD-${order.id.slice(0, 8)}-${uuid().slice(0, 8)}`;
 
@@ -107,6 +119,7 @@ export const orderService = {
       orderId: order.id,
       amountPaise: totalPaise,
       merchantTxnId,
+      phonepeMerchantId: cafe.phonepeMerchantId,
     });
 
     const paymentResult = await initiatePayment({
@@ -115,6 +128,7 @@ export const orderService = {
       redirectUrl: `${APP_URL}/${cafe.slug}/order/payment-return?txn=${merchantTxnId}&orderId=${order.id}`,
       callbackUrl: `${APP_URL}/api/webhooks/phonepe`,
       customerPhone: request.customerPhone,
+      credentials: cafeCredentials,
     });
 
     if (!paymentResult.success || !paymentResult.redirectUrl) {

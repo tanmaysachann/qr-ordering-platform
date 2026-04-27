@@ -1994,6 +1994,9 @@ export namespace Prisma {
     isActive: boolean | null
     openingTime: string | null
     closingTime: string | null
+    phonepeMerchantId: string | null
+    phonepeSaltKey: string | null
+    phonepeSaltIndex: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2008,6 +2011,9 @@ export namespace Prisma {
     isActive: boolean | null
     openingTime: string | null
     closingTime: string | null
+    phonepeMerchantId: string | null
+    phonepeSaltKey: string | null
+    phonepeSaltIndex: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2022,6 +2028,9 @@ export namespace Prisma {
     isActive: number
     openingTime: number
     closingTime: number
+    phonepeMerchantId: number
+    phonepeSaltKey: number
+    phonepeSaltIndex: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2038,6 +2047,9 @@ export namespace Prisma {
     isActive?: true
     openingTime?: true
     closingTime?: true
+    phonepeMerchantId?: true
+    phonepeSaltKey?: true
+    phonepeSaltIndex?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2052,6 +2064,9 @@ export namespace Prisma {
     isActive?: true
     openingTime?: true
     closingTime?: true
+    phonepeMerchantId?: true
+    phonepeSaltKey?: true
+    phonepeSaltIndex?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2066,6 +2081,9 @@ export namespace Prisma {
     isActive?: true
     openingTime?: true
     closingTime?: true
+    phonepeMerchantId?: true
+    phonepeSaltKey?: true
+    phonepeSaltIndex?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2153,6 +2171,9 @@ export namespace Prisma {
     isActive: boolean
     openingTime: string | null
     closingTime: string | null
+    phonepeMerchantId: string | null
+    phonepeSaltKey: string | null
+    phonepeSaltIndex: string | null
     createdAt: Date
     updatedAt: Date
     _count: CafeCountAggregateOutputType | null
@@ -2184,6 +2205,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: boolean
     closingTime?: boolean
+    phonepeMerchantId?: boolean
+    phonepeSaltKey?: boolean
+    phonepeSaltIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     users?: boolean | Cafe$usersArgs<ExtArgs>
@@ -2205,6 +2229,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: boolean
     closingTime?: boolean
+    phonepeMerchantId?: boolean
+    phonepeSaltKey?: boolean
+    phonepeSaltIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["cafe"]>
@@ -2219,6 +2246,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: boolean
     closingTime?: boolean
+    phonepeMerchantId?: boolean
+    phonepeSaltKey?: boolean
+    phonepeSaltIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["cafe"]>
@@ -2233,11 +2263,14 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: boolean
     closingTime?: boolean
+    phonepeMerchantId?: boolean
+    phonepeSaltKey?: boolean
+    phonepeSaltIndex?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CafeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "address" | "phone" | "imageUrl" | "isActive" | "openingTime" | "closingTime" | "createdAt" | "updatedAt", ExtArgs["result"]["cafe"]>
+  export type CafeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "address" | "phone" | "imageUrl" | "isActive" | "openingTime" | "closingTime" | "phonepeMerchantId" | "phonepeSaltKey" | "phonepeSaltIndex" | "createdAt" | "updatedAt", ExtArgs["result"]["cafe"]>
   export type CafeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Cafe$usersArgs<ExtArgs>
     categories?: boolean | Cafe$categoriesArgs<ExtArgs>
@@ -2270,6 +2303,9 @@ export namespace Prisma {
       isActive: boolean
       openingTime: string | null
       closingTime: string | null
+      phonepeMerchantId: string | null
+      phonepeSaltKey: string | null
+      phonepeSaltIndex: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["cafe"]>
@@ -2710,6 +2746,9 @@ export namespace Prisma {
     readonly isActive: FieldRef<"Cafe", 'Boolean'>
     readonly openingTime: FieldRef<"Cafe", 'String'>
     readonly closingTime: FieldRef<"Cafe", 'String'>
+    readonly phonepeMerchantId: FieldRef<"Cafe", 'String'>
+    readonly phonepeSaltKey: FieldRef<"Cafe", 'String'>
+    readonly phonepeSaltIndex: FieldRef<"Cafe", 'String'>
     readonly createdAt: FieldRef<"Cafe", 'DateTime'>
     readonly updatedAt: FieldRef<"Cafe", 'DateTime'>
   }
@@ -9310,6 +9349,7 @@ export namespace Prisma {
     status: $Enums.PaymentStatus | null
     phonepeTxnId: string | null
     merchantTxnId: string | null
+    phonepeMerchantId: string | null
     paymentMethod: string | null
     paidAt: Date | null
     createdAt: Date | null
@@ -9323,6 +9363,7 @@ export namespace Prisma {
     status: $Enums.PaymentStatus | null
     phonepeTxnId: string | null
     merchantTxnId: string | null
+    phonepeMerchantId: string | null
     paymentMethod: string | null
     paidAt: Date | null
     createdAt: Date | null
@@ -9336,6 +9377,7 @@ export namespace Prisma {
     status: number
     phonepeTxnId: number
     merchantTxnId: number
+    phonepeMerchantId: number
     paymentMethod: number
     webhookPayload: number
     paidAt: number
@@ -9360,6 +9402,7 @@ export namespace Prisma {
     status?: true
     phonepeTxnId?: true
     merchantTxnId?: true
+    phonepeMerchantId?: true
     paymentMethod?: true
     paidAt?: true
     createdAt?: true
@@ -9373,6 +9416,7 @@ export namespace Prisma {
     status?: true
     phonepeTxnId?: true
     merchantTxnId?: true
+    phonepeMerchantId?: true
     paymentMethod?: true
     paidAt?: true
     createdAt?: true
@@ -9386,6 +9430,7 @@ export namespace Prisma {
     status?: true
     phonepeTxnId?: true
     merchantTxnId?: true
+    phonepeMerchantId?: true
     paymentMethod?: true
     webhookPayload?: true
     paidAt?: true
@@ -9487,6 +9532,7 @@ export namespace Prisma {
     status: $Enums.PaymentStatus
     phonepeTxnId: string | null
     merchantTxnId: string
+    phonepeMerchantId: string | null
     paymentMethod: string | null
     webhookPayload: JsonValue | null
     paidAt: Date | null
@@ -9520,6 +9566,7 @@ export namespace Prisma {
     status?: boolean
     phonepeTxnId?: boolean
     merchantTxnId?: boolean
+    phonepeMerchantId?: boolean
     paymentMethod?: boolean
     webhookPayload?: boolean
     paidAt?: boolean
@@ -9535,6 +9582,7 @@ export namespace Prisma {
     status?: boolean
     phonepeTxnId?: boolean
     merchantTxnId?: boolean
+    phonepeMerchantId?: boolean
     paymentMethod?: boolean
     webhookPayload?: boolean
     paidAt?: boolean
@@ -9550,6 +9598,7 @@ export namespace Prisma {
     status?: boolean
     phonepeTxnId?: boolean
     merchantTxnId?: boolean
+    phonepeMerchantId?: boolean
     paymentMethod?: boolean
     webhookPayload?: boolean
     paidAt?: boolean
@@ -9565,6 +9614,7 @@ export namespace Prisma {
     status?: boolean
     phonepeTxnId?: boolean
     merchantTxnId?: boolean
+    phonepeMerchantId?: boolean
     paymentMethod?: boolean
     webhookPayload?: boolean
     paidAt?: boolean
@@ -9572,7 +9622,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "amountPaise" | "status" | "phonepeTxnId" | "merchantTxnId" | "paymentMethod" | "webhookPayload" | "paidAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "amountPaise" | "status" | "phonepeTxnId" | "merchantTxnId" | "phonepeMerchantId" | "paymentMethod" | "webhookPayload" | "paidAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
   }
@@ -9595,6 +9645,7 @@ export namespace Prisma {
       status: $Enums.PaymentStatus
       phonepeTxnId: string | null
       merchantTxnId: string
+      phonepeMerchantId: string | null
       paymentMethod: string | null
       webhookPayload: Prisma.JsonValue | null
       paidAt: Date | null
@@ -10030,6 +10081,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Payment", 'PaymentStatus'>
     readonly phonepeTxnId: FieldRef<"Payment", 'String'>
     readonly merchantTxnId: FieldRef<"Payment", 'String'>
+    readonly phonepeMerchantId: FieldRef<"Payment", 'String'>
     readonly paymentMethod: FieldRef<"Payment", 'String'>
     readonly webhookPayload: FieldRef<"Payment", 'Json'>
     readonly paidAt: FieldRef<"Payment", 'DateTime'>
@@ -13820,6 +13872,9 @@ export namespace Prisma {
     isActive: 'isActive',
     openingTime: 'openingTime',
     closingTime: 'closingTime',
+    phonepeMerchantId: 'phonepeMerchantId',
+    phonepeSaltKey: 'phonepeSaltKey',
+    phonepeSaltIndex: 'phonepeSaltIndex',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13911,6 +13966,7 @@ export namespace Prisma {
     status: 'status',
     phonepeTxnId: 'phonepeTxnId',
     merchantTxnId: 'merchantTxnId',
+    phonepeMerchantId: 'phonepeMerchantId',
     paymentMethod: 'paymentMethod',
     webhookPayload: 'webhookPayload',
     paidAt: 'paidAt',
@@ -14141,6 +14197,9 @@ export namespace Prisma {
     isActive?: BoolFilter<"Cafe"> | boolean
     openingTime?: StringNullableFilter<"Cafe"> | string | null
     closingTime?: StringNullableFilter<"Cafe"> | string | null
+    phonepeMerchantId?: StringNullableFilter<"Cafe"> | string | null
+    phonepeSaltKey?: StringNullableFilter<"Cafe"> | string | null
+    phonepeSaltIndex?: StringNullableFilter<"Cafe"> | string | null
     createdAt?: DateTimeFilter<"Cafe"> | Date | string
     updatedAt?: DateTimeFilter<"Cafe"> | Date | string
     users?: UserListRelationFilter
@@ -14161,6 +14220,9 @@ export namespace Prisma {
     isActive?: SortOrder
     openingTime?: SortOrderInput | SortOrder
     closingTime?: SortOrderInput | SortOrder
+    phonepeMerchantId?: SortOrderInput | SortOrder
+    phonepeSaltKey?: SortOrderInput | SortOrder
+    phonepeSaltIndex?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     users?: UserOrderByRelationAggregateInput
@@ -14184,6 +14246,9 @@ export namespace Prisma {
     isActive?: BoolFilter<"Cafe"> | boolean
     openingTime?: StringNullableFilter<"Cafe"> | string | null
     closingTime?: StringNullableFilter<"Cafe"> | string | null
+    phonepeMerchantId?: StringNullableFilter<"Cafe"> | string | null
+    phonepeSaltKey?: StringNullableFilter<"Cafe"> | string | null
+    phonepeSaltIndex?: StringNullableFilter<"Cafe"> | string | null
     createdAt?: DateTimeFilter<"Cafe"> | Date | string
     updatedAt?: DateTimeFilter<"Cafe"> | Date | string
     users?: UserListRelationFilter
@@ -14204,6 +14269,9 @@ export namespace Prisma {
     isActive?: SortOrder
     openingTime?: SortOrderInput | SortOrder
     closingTime?: SortOrderInput | SortOrder
+    phonepeMerchantId?: SortOrderInput | SortOrder
+    phonepeSaltKey?: SortOrderInput | SortOrder
+    phonepeSaltIndex?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CafeCountOrderByAggregateInput
@@ -14224,6 +14292,9 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"Cafe"> | boolean
     openingTime?: StringNullableWithAggregatesFilter<"Cafe"> | string | null
     closingTime?: StringNullableWithAggregatesFilter<"Cafe"> | string | null
+    phonepeMerchantId?: StringNullableWithAggregatesFilter<"Cafe"> | string | null
+    phonepeSaltKey?: StringNullableWithAggregatesFilter<"Cafe"> | string | null
+    phonepeSaltIndex?: StringNullableWithAggregatesFilter<"Cafe"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Cafe"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Cafe"> | Date | string
   }
@@ -14655,6 +14726,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
     phonepeTxnId?: StringNullableFilter<"Payment"> | string | null
     merchantTxnId?: StringFilter<"Payment"> | string
+    phonepeMerchantId?: StringNullableFilter<"Payment"> | string | null
     paymentMethod?: StringNullableFilter<"Payment"> | string | null
     webhookPayload?: JsonNullableFilter<"Payment">
     paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
@@ -14670,6 +14742,7 @@ export namespace Prisma {
     status?: SortOrder
     phonepeTxnId?: SortOrderInput | SortOrder
     merchantTxnId?: SortOrder
+    phonepeMerchantId?: SortOrderInput | SortOrder
     paymentMethod?: SortOrderInput | SortOrder
     webhookPayload?: SortOrderInput | SortOrder
     paidAt?: SortOrderInput | SortOrder
@@ -14688,6 +14761,7 @@ export namespace Prisma {
     orderId?: StringFilter<"Payment"> | string
     amountPaise?: IntFilter<"Payment"> | number
     status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
+    phonepeMerchantId?: StringNullableFilter<"Payment"> | string | null
     paymentMethod?: StringNullableFilter<"Payment"> | string | null
     webhookPayload?: JsonNullableFilter<"Payment">
     paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
@@ -14703,6 +14777,7 @@ export namespace Prisma {
     status?: SortOrder
     phonepeTxnId?: SortOrderInput | SortOrder
     merchantTxnId?: SortOrder
+    phonepeMerchantId?: SortOrderInput | SortOrder
     paymentMethod?: SortOrderInput | SortOrder
     webhookPayload?: SortOrderInput | SortOrder
     paidAt?: SortOrderInput | SortOrder
@@ -14725,6 +14800,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus
     phonepeTxnId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     merchantTxnId?: StringWithAggregatesFilter<"Payment"> | string
+    phonepeMerchantId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     paymentMethod?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     webhookPayload?: JsonNullableWithAggregatesFilter<"Payment">
     paidAt?: DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
@@ -14942,6 +15018,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutCafeInput
@@ -14962,6 +15041,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutCafeInput
@@ -14982,6 +15064,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutCafeNestedInput
@@ -15002,6 +15087,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutCafeNestedInput
@@ -15022,6 +15110,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15036,6 +15127,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15050,6 +15144,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15506,6 +15603,7 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     phonepeTxnId?: string | null
     merchantTxnId: string
+    phonepeMerchantId?: string | null
     paymentMethod?: string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: Date | string | null
@@ -15521,6 +15619,7 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     phonepeTxnId?: string | null
     merchantTxnId: string
+    phonepeMerchantId?: string | null
     paymentMethod?: string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: Date | string | null
@@ -15534,6 +15633,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     phonepeTxnId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantTxnId?: StringFieldUpdateOperationsInput | string
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15549,6 +15649,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     phonepeTxnId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantTxnId?: StringFieldUpdateOperationsInput | string
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15563,6 +15664,7 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     phonepeTxnId?: string | null
     merchantTxnId: string
+    phonepeMerchantId?: string | null
     paymentMethod?: string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: Date | string | null
@@ -15576,6 +15678,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     phonepeTxnId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantTxnId?: StringFieldUpdateOperationsInput | string
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15590,6 +15693,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     phonepeTxnId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantTxnId?: StringFieldUpdateOperationsInput | string
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15929,6 +16033,9 @@ export namespace Prisma {
     isActive?: SortOrder
     openingTime?: SortOrder
     closingTime?: SortOrder
+    phonepeMerchantId?: SortOrder
+    phonepeSaltKey?: SortOrder
+    phonepeSaltIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15943,6 +16050,9 @@ export namespace Prisma {
     isActive?: SortOrder
     openingTime?: SortOrder
     closingTime?: SortOrder
+    phonepeMerchantId?: SortOrder
+    phonepeSaltKey?: SortOrder
+    phonepeSaltIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15957,6 +16067,9 @@ export namespace Prisma {
     isActive?: SortOrder
     openingTime?: SortOrder
     closingTime?: SortOrder
+    phonepeMerchantId?: SortOrder
+    phonepeSaltKey?: SortOrder
+    phonepeSaltIndex?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16412,6 +16525,7 @@ export namespace Prisma {
     status?: SortOrder
     phonepeTxnId?: SortOrder
     merchantTxnId?: SortOrder
+    phonepeMerchantId?: SortOrder
     paymentMethod?: SortOrder
     webhookPayload?: SortOrder
     paidAt?: SortOrder
@@ -16430,6 +16544,7 @@ export namespace Prisma {
     status?: SortOrder
     phonepeTxnId?: SortOrder
     merchantTxnId?: SortOrder
+    phonepeMerchantId?: SortOrder
     paymentMethod?: SortOrder
     paidAt?: SortOrder
     createdAt?: SortOrder
@@ -16443,6 +16558,7 @@ export namespace Prisma {
     status?: SortOrder
     phonepeTxnId?: SortOrder
     merchantTxnId?: SortOrder
+    phonepeMerchantId?: SortOrder
     paymentMethod?: SortOrder
     paidAt?: SortOrder
     createdAt?: SortOrder
@@ -17971,6 +18087,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     categories?: MenuCategoryCreateNestedManyWithoutCafeInput
@@ -17990,6 +18109,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     categories?: MenuCategoryUncheckedCreateNestedManyWithoutCafeInput
@@ -18055,6 +18177,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     categories?: MenuCategoryUpdateManyWithoutCafeNestedInput
@@ -18074,6 +18199,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     categories?: MenuCategoryUncheckedUpdateManyWithoutCafeNestedInput
@@ -18123,6 +18251,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutCafeInput
@@ -18142,6 +18273,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutCafeInput
@@ -18217,6 +18351,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutCafeNestedInput
@@ -18236,6 +18373,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutCafeNestedInput
@@ -18271,6 +18411,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutCafeInput
@@ -18290,6 +18433,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutCafeInput
@@ -18376,6 +18522,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutCafeNestedInput
@@ -18395,6 +18544,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutCafeNestedInput
@@ -18472,6 +18624,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutCafeInput
@@ -18491,6 +18646,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutCafeInput
@@ -18560,6 +18718,7 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     phonepeTxnId?: string | null
     merchantTxnId: string
+    phonepeMerchantId?: string | null
     paymentMethod?: string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: Date | string | null
@@ -18573,6 +18732,7 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     phonepeTxnId?: string | null
     merchantTxnId: string
+    phonepeMerchantId?: string | null
     paymentMethod?: string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: Date | string | null
@@ -18611,6 +18771,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutCafeNestedInput
@@ -18630,6 +18793,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutCafeNestedInput
@@ -18708,6 +18874,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
     phonepeTxnId?: StringNullableFilter<"Payment"> | string | null
     merchantTxnId?: StringFilter<"Payment"> | string
+    phonepeMerchantId?: StringNullableFilter<"Payment"> | string | null
     paymentMethod?: StringNullableFilter<"Payment"> | string | null
     webhookPayload?: JsonNullableFilter<"Payment">
     paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
@@ -18969,6 +19136,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutCafeInput
@@ -18988,6 +19158,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutCafeInput
@@ -19067,6 +19240,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutCafeNestedInput
@@ -19086,6 +19262,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutCafeNestedInput
@@ -19121,6 +19300,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutCafeInput
@@ -19140,6 +19322,9 @@ export namespace Prisma {
     isActive?: boolean
     openingTime?: string | null
     closingTime?: string | null
+    phonepeMerchantId?: string | null
+    phonepeSaltKey?: string | null
+    phonepeSaltIndex?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutCafeInput
@@ -19175,6 +19360,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutCafeNestedInput
@@ -19194,6 +19382,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     openingTime?: NullableStringFieldUpdateOperationsInput | string | null
     closingTime?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltKey?: NullableStringFieldUpdateOperationsInput | string | null
+    phonepeSaltIndex?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutCafeNestedInput
@@ -19688,6 +19879,7 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     phonepeTxnId?: string | null
     merchantTxnId: string
+    phonepeMerchantId?: string | null
     paymentMethod?: string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: Date | string | null
@@ -19728,6 +19920,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     phonepeTxnId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantTxnId?: StringFieldUpdateOperationsInput | string
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19741,6 +19934,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     phonepeTxnId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantTxnId?: StringFieldUpdateOperationsInput | string
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19754,6 +19948,7 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     phonepeTxnId?: NullableStringFieldUpdateOperationsInput | string | null
     merchantTxnId?: StringFieldUpdateOperationsInput | string
+    phonepeMerchantId?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     webhookPayload?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

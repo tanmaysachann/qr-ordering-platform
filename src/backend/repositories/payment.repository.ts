@@ -6,6 +6,7 @@ export const paymentRepository = {
     orderId: string;
     amountPaise: number;
     merchantTxnId: string;
+    phonepeMerchantId?: string;
   }) {
     return prisma.payment.create({ data });
   },
@@ -13,7 +14,20 @@ export const paymentRepository = {
   async findByMerchantTxnId(merchantTxnId: string) {
     return prisma.payment.findUnique({
       where: { merchantTxnId },
-      include: { order: true },
+      include: {
+        order: {
+          include: {
+            cafe: {
+              select: {
+                id: true,
+                phonepeSaltKey: true,
+                phonepeSaltIndex: true,
+                phonepeMerchantId: true,
+              },
+            },
+          },
+        },
+      },
     });
   },
 

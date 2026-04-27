@@ -62,6 +62,42 @@ export const adminRepository = {
     return prisma.cafe.update({ where: { id }, data });
   },
 
+  async updateCafePaymentCredentials(
+    id: string,
+    data: {
+      phonepeMerchantId: string;
+      phonepeSaltKey: string;
+      phonepeSaltIndex?: string;
+    }
+  ) {
+    return prisma.cafe.update({
+      where: { id },
+      data: {
+        phonepeMerchantId: data.phonepeMerchantId,
+        phonepeSaltKey: data.phonepeSaltKey,
+        phonepeSaltIndex: data.phonepeSaltIndex || "1",
+      },
+      select: {
+        id: true,
+        phonepeMerchantId: true,
+        phonepeSaltIndex: true,
+        // phonepeSaltKey intentionally excluded from response
+      },
+    });
+  },
+
+  async clearCafePaymentCredentials(id: string) {
+    return prisma.cafe.update({
+      where: { id },
+      data: {
+        phonepeMerchantId: null,
+        phonepeSaltKey: null,
+        phonepeSaltIndex: "1",
+      },
+      select: { id: true },
+    });
+  },
+
   async deleteCafe(id: string) {
     // Soft delete - deactivate instead of hard-deleting to preserve order history
     return prisma.cafe.update({

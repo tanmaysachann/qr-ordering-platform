@@ -130,6 +130,9 @@ exports.Prisma.CafeScalarFieldEnum = {
   isActive: 'isActive',
   openingTime: 'openingTime',
   closingTime: 'closingTime',
+  phonepeMerchantId: 'phonepeMerchantId',
+  phonepeSaltKey: 'phonepeSaltKey',
+  phonepeSaltIndex: 'phonepeSaltIndex',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -203,6 +206,7 @@ exports.Prisma.PaymentScalarFieldEnum = {
   status: 'status',
   phonepeTxnId: 'phonepeTxnId',
   merchantTxnId: 'merchantTxnId',
+  phonepeMerchantId: 'phonepeMerchantId',
   paymentMethod: 'paymentMethod',
   webhookPayload: 'webhookPayload',
   paidAt: 'paidAt',

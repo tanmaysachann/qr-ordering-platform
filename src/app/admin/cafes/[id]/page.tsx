@@ -28,6 +28,11 @@ import {
   UserMinus,
   Pencil,
   UtensilsCrossed,
+  CreditCard,
+  CheckCircle2,
+  AlertCircle,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
 import type { OrderStatus } from "@/generated/prisma";
@@ -55,6 +60,8 @@ interface CafeDetail {
   isActive: boolean;
   openingTime: string | null;
   closingTime: string | null;
+  phonepeMerchantId: string | null;
+  phonepeSaltIndex: string | null;
   _count: { orders: number; menuItems: number; users: number };
   users: CafeOwner[];
 }
@@ -133,6 +140,15 @@ export default function AdminCafeDetailPage() {
   const [removeTarget, setRemoveTarget] = useState<StaffMember | null>(null);
   const [removing, setRemoving] = useState(false);
 
+  // Payment settings state
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentMerchantId, setPaymentMerchantId] = useState("");
+  const [paymentSaltKey, setPaymentSaltKey] = useState("");
+  const [paymentSaltIndex, setPaymentSaltIndex] = useState("1");
+  const [paymentSaving, setPaymentSaving] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const [showSaltKey, setShowSaltKey] = useState(false);
+
   const fetchCafe = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/cafes/${id}`);
@@ -192,6 +208,45 @@ export default function AdminCafeDetailPage() {
       console.error("Failed to remove staff");
     } finally {
       setRemoving(false);
+    }
+  };
+
+  const openPaymentModal = () => {
+    setPaymentMerchantId(cafe?.phonepeMerchantId ?? "");
+    setPaymentSaltKey("");
+    setPaymentSaltIndex(cafe?.phonepeSaltIndex ?? "1");
+    setPaymentError("");
+    setShowSaltKey(false);
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSave = async () => {
+    setPaymentError("");
+    if (!paymentMerchantId.trim()) { setPaymentError("Merchant ID is required"); return; }
+    // Only require salt key on first-time setup; for updates, blank = keep existing
+    if (!paymentSaltKey.trim() && !cafe?.phonepeMerchantId) { setPaymentError("Salt Key is required"); return; }
+    setPaymentSaving(true);
+    try {
+      const res = await fetch(`/api/admin/cafes/${id}/payment-settings`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phonepeMerchantId: paymentMerchantId,
+          phonepeSaltKey: paymentSaltKey,
+          phonepeSaltIndex: paymentSaltIndex,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setShowPaymentModal(false);
+        fetchCafe();
+      } else {
+        setPaymentError(data.error || "Failed to save payment settings");
+      }
+    } catch {
+      setPaymentError("Network error");
+    } finally {
+      setPaymentSaving(false);
     }
   };
 
@@ -436,6 +491,37 @@ export default function AdminCafeDetailPage() {
           </Button>
         </div>
       )}
+
+      {/* Payment Settings */}
+      <div className="bg-surface rounded-2xl border border-border p-4 mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+              <CreditCard size={18} className="text-primary" />
+            </div>
+            <div>
+              <p className="font-semibold text-sm">PhonePe Payment</p>
+              {cafe.phonepeMerchantId ? (
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <CheckCircle2 size={12} className="text-green-600" />
+                  <p className="text-xs text-green-700">
+                    Configured · Merchant ID: <span className="font-mono">{cafe.phonepeMerchantId}</span>
+                  </p>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <AlertCircle size={12} className="text-amber-600" />
+                  <p className="text-xs text-amber-700">Not configured — payments will fail</p>
+                </div>
+              )}
+            </div>
+          </div>
+          <Button size="sm" variant="secondary" onClick={openPaymentModal}>
+            <Pencil size={14} className="mr-1" />
+            {cafe.phonepeMerchantId ? "Update" : "Configure"}
+          </Button>
+        </div>
+      </div>
 
       {/* Time Range Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
@@ -773,6 +859,64 @@ export default function AdminCafeDetailPage() {
             </Button>
           </div>
         )}
+      </Modal>
+
+      {/* Payment Settings Modal */}
+      <Modal isOpen={showPaymentModal} onClose={() => setShowPaymentModal(false)} title="PhonePe Payment Settings">
+        <div className="space-y-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-800">
+            Enter the PhonePe Business credentials for <strong>{cafe.name}</strong>. Payments from customers will be collected directly into this cafe owner&apos;s PhonePe-linked bank account.
+          </div>
+          <Input
+            id="payment-merchant-id"
+            label="Merchant ID"
+            value={paymentMerchantId}
+            onChange={(e) => setPaymentMerchantId(e.target.value)}
+            placeholder="e.g. MERCHANTUAT"
+            required
+          />
+          <div className="space-y-1">
+            <label className="block text-xs font-medium text-foreground">
+              Salt Key <span className="text-danger">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type={showSaltKey ? "text" : "password"}
+                value={paymentSaltKey}
+                onChange={(e) => setPaymentSaltKey(e.target.value)}
+                placeholder={cafe.phonepeMerchantId ? "Enter new salt key to update" : "Paste salt key from PhonePe dashboard"}
+                className="w-full px-3 py-2 pr-10 text-sm border border-border rounded-xl bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setShowSaltKey((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground"
+              >
+                {showSaltKey ? <EyeOff size={14} /> : <Eye size={14} />}
+              </button>
+            </div>
+            {cafe.phonepeMerchantId && (
+              <p className="text-xs text-muted">Leave blank to keep the existing salt key.</p>
+            )}
+          </div>
+          <Input
+            id="payment-salt-index"
+            label="Salt Index"
+            value={paymentSaltIndex}
+            onChange={(e) => setPaymentSaltIndex(e.target.value)}
+            placeholder="1"
+          />
+          {paymentError && (
+            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">{paymentError}</div>
+          )}
+          <div className="flex gap-3">
+            <Button variant="secondary" className="flex-1" onClick={() => setShowPaymentModal(false)}>Cancel</Button>
+            <Button className="flex-1" loading={paymentSaving} onClick={handlePaymentSave}>
+              <CreditCard size={14} className="mr-1" />
+              Save Credentials
+            </Button>
+          </div>
+        </div>
       </Modal>
 
       {/* Deactivate / Delete Confirmation Modal */}

@@ -11,7 +11,12 @@ export async function GET() {
     }
 
     const cafes = await adminRepository.getAllCafes();
-    return NextResponse.json({ success: true, data: cafes });
+    // Strip salt keys — never expose them to the client
+    const safeCafes = cafes.map((c) => {
+      const { phonepeSaltKey: _sk, ...rest } = c as typeof c & { phonepeSaltKey?: string | null };
+      return rest;
+    });
+    return NextResponse.json({ success: true, data: safeCafes });
   } catch (error) {
     console.error("Admin cafes error:", error);
     return NextResponse.json({ success: false, error: "Failed to fetch cafes" }, { status: 500 });
