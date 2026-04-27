@@ -111,7 +111,7 @@ export async function POST(request: Request) {
       passwordHash,
       name: name.trim(),
       role: role as UserRole,
-      cafeId: normalizedCafeId,
+      cafeId: normalizedCafeId ?? undefined,
     });
 
     await audit({
