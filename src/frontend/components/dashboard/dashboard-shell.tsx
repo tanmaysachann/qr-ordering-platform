@@ -15,7 +15,10 @@ import {
   Sun,
   Moon,
   Sparkles,
+  ExternalLink,
+  QrCode,
 } from "lucide-react";
+import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
 
 function BrandLogo({ size = 24 }: { size?: number }) {
   const inner = Math.round(size * 0.57);
@@ -35,7 +38,7 @@ function BrandLogo({ size = 24 }: { size?: number }) {
   );
 }
 import { cn } from "@/shared/utils/cn";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "@/frontend/hooks/use-theme";
 import type { UserRole } from "@/generated/prisma";
 
@@ -49,6 +52,17 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { dark, toggle } = useTheme();
   const isAdmin = user.role === "SUPER_ADMIN";
+
+  const [qrOpen, setQrOpen] = useState(false);
+  const [cafeInfo, setCafeInfo] = useState<{ name: string; slug: string } | null>(null);
+
+  useEffect(() => {
+    if (!isAdmin && user.cafeId) {
+      fetch("/api/dashboard/cafe")
+        .then((r) => r.json())
+        .then((d) => { if (d.success) setCafeInfo(d.data); });
+    }
+  }, [isAdmin, user.cafeId]);
 
   const navigation = isAdmin
     ? [
@@ -165,6 +179,28 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
             })}
           </nav>
 
+          {/* Owner-only quick actions */}
+          {!isAdmin && cafeInfo && (
+            <div className="px-3 pb-2 space-y-2">
+              <a
+                href={`/${cafeInfo.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface-hover transition-colors w-full rounded-xl border border-border"
+              >
+                <ExternalLink size={16} />
+                Customer View
+              </a>
+              <button
+                onClick={() => setQrOpen(true)}
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary/10 transition-colors w-full rounded-xl border border-primary/20"
+              >
+                <QrCode size={16} />
+                My QR Code
+              </button>
+            </div>
+          )}
+
           {/* Logout */}
           <div className="p-3 border-t border-border">
             <button
@@ -190,6 +226,16 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
           <div className="p-4 lg:p-8">{children}</div>
         </main>
       </div>
+
+      {/* QR Modal — rendered at root so it isn't constrained by sidebar transform */}
+      {cafeInfo && (
+        <CafeQRModal
+          isOpen={qrOpen}
+          onClose={() => setQrOpen(false)}
+          cafeName={cafeInfo.name}
+          cafeSlug={cafeInfo.slug}
+        />
+      )}
     </div>
   );
 }
