@@ -48,7 +48,7 @@ export const menuRepository = {
 
   async getAllMenuItems(cafeId: string) {
     return prisma.menuItem.findMany({
-      where: { cafeId },
+      where: { OR: [{ cafeId }, { cafeId: null }] },
       include: { category: true },
       orderBy: { sortOrder: "asc" },
     });
