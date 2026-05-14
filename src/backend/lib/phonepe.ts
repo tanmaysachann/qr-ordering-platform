@@ -1,4 +1,4 @@
-import { createHash, timingSafeEqual } from "crypto";
+import { createHash } from "crypto";
 
 const PHONEPE_BASE_URL = process.env.PHONEPE_BASE_URL || "https://api-preprod.phonepe.com/apis/pg-sandbox";
 const GLOBAL_MERCHANT_ID = process.env.PHONEPE_MERCHANT_ID || "";
@@ -121,11 +121,8 @@ export function verifyWebhookSignature(
   saltKey?: string,
   saltIndex?: string
 ): boolean {
-  if (typeof responseBody !== "string" || typeof xVerifyHeader !== "string") return false;
   const key = saltKey || GLOBAL_SALT_KEY;
   const index = saltIndex || GLOBAL_SALT_INDEX;
-  if (!key) return false;
-
   const expectedChecksum =
     createHash("sha256")
       .update(responseBody + key)
@@ -133,15 +130,7 @@ export function verifyWebhookSignature(
     "###" +
     index;
 
-  // Constant-time comparison to prevent timing attacks against the salt key.
-  const a = Buffer.from(expectedChecksum, "utf8");
-  const b = Buffer.from(xVerifyHeader, "utf8");
-  if (a.length !== b.length) return false;
-  try {
-    return timingSafeEqual(a, b);
-  } catch {
-    return false;
-  }
+  return expectedChecksum === xVerifyHeader;
 }
 
 function generateChecksum(

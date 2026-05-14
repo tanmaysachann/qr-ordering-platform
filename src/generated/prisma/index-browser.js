@@ -233,6 +233,18 @@ exports.Prisma.StaffScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ExpenseScalarFieldEnum = {
+  id: 'id',
+  cafeId: 'cafeId',
+  title: 'title',
+  description: 'description',
+  amountPaise: 'amountPaise',
+  category: 'category',
+  date: 'date',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
   entityType: 'entityType',
@@ -303,6 +315,7 @@ exports.Prisma.ModelName = {
   Payment: 'Payment',
   Table: 'Table',
   Staff: 'Staff',
+  Expense: 'Expense',
   AuditLog: 'AuditLog'
 };
 

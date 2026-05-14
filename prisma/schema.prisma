@@ -57,6 +57,7 @@ model Cafe {
   orders     Order[]
   tables     Table[]
   staff      Staff[]
+  expenses   Expense[]
 
   @@map("cafes")
 }
@@ -202,6 +203,23 @@ model Staff {
   cafe Cafe @relation(fields: [cafeId], references: [id])
 
   @@map("staff")
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  cafeId      String   @map("cafe_id")
+  title       String
+  description String?
+  amountPaise Int      @map("amount_paise")
+  category    String   @default("General")
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  cafe Cafe @relation(fields: [cafeId], references: [id])
+
+  @@index([cafeId, date(sort: Desc)])
+  @@map("expenses")
 }
 
 model AuditLog {

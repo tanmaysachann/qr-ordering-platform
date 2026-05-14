@@ -29,7 +29,11 @@ export default function LoginPage() {
       console.log("[Login] signIn result:", result);
 
       if (result?.error) {
-        setError("Invalid email or password");
+        setError(
+          result.error === "db_unavailable"
+            ? "Database unavailable. Please try again in a moment."
+            : "Invalid email or password"
+        );
       } else {
         const session = await getSession();
         const dest = session?.user?.role === "SUPER_ADMIN" ? "/admin" : "/dashboard";

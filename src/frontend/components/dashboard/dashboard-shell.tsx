@@ -17,6 +17,7 @@ import {
   Sparkles,
   ExternalLink,
   QrCode,
+  Wallet,
 } from "lucide-react";
 import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
 
@@ -77,6 +78,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
         { name: "Deep Insights", href: "/dashboard/insights", icon: Sparkles },
         { name: "Staff", href: "/dashboard/staff", icon: Users },
+        { name: "Accounts", href: "/dashboard/accounts", icon: Wallet },
       ];
 
   return (
