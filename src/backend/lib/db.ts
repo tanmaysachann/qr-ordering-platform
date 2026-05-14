@@ -1,10 +1,8 @@
 import { PrismaClient } from "@/generated/prisma";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from "pg";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
-  pgPool: Pool | undefined;
 };
 
 function createPrismaClient(): PrismaClient {
@@ -14,24 +12,19 @@ function createPrismaClient(): PrismaClient {
     return new PrismaClient({ accelerateUrl: url });
   }
 
-  // pg doesn't support channel_binding — strip it to avoid connection issues
+  // Strip channel_binding=require — unsupported by pg driver
   const cleanUrl = url.replace(/[?&]channel_binding=[^&]*/g, "").replace(/\?$/, "");
 
-  // Reuse the pool across hot reloads to avoid stale connection errors (P1017)
-  const pool =
-    globalForPrisma.pgPool ??
-    new Pool({
-      connectionString: cleanUrl,
-      ssl: { rejectUnauthorized: false },
-      keepAlive: true,
-      max: 10,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 15000,
-    });
+  // Pass config directly to PrismaPg to avoid type conflicts with pg's Pool
+  const adapter = new PrismaPg({
+    connectionString: cleanUrl,
+    ssl: { rejectUnauthorized: false },
+    keepAlive: true,
+    max: 10,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 15000,
+  });
 
-  if (process.env.NODE_ENV !== "production") globalForPrisma.pgPool = pool;
-
-  const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }
 
