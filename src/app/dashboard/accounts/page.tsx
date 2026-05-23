@@ -218,7 +218,7 @@ export default function AccountsPage() {
               <div>
                 <p className="text-xs text-muted">Top Category</p>
                 <p className="text-xl font-bold truncate">
-                  {Object.entries(byCategory).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "—"}
+                  {Object.entries(byCategory).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "/"}
                 </p>
               </div>
             </div>
@@ -274,7 +274,7 @@ export default function AccountsPage() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                  className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors text-foreground"
                 >
                   {CATEGORIES.map((c) => (
                     <option key={c} value={c}>{c}</option>
@@ -288,11 +288,11 @@ export default function AccountsPage() {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Any additional notes..."
                   rows={2}
-                  className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors resize-none"
+                  className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors resize-none text-foreground"
                 />
               </div>
               {formError && (
-                <p className="text-sm text-danger bg-red-50 border border-red-200 rounded-xl px-3 py-2">
+                <p className="text-sm text-danger bg-danger/10 border border-danger/25 rounded-xl px-3 py-2">
                   {formError}
                 </p>
               )}
@@ -377,7 +377,7 @@ export default function AccountsPage() {
                     <button
                       onClick={() => handleDelete(expense.id)}
                       disabled={deleting === expense.id}
-                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-500/10 transition-all"
+                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-muted hover:text-danger hover:bg-danger/100/10 transition-all"
                     >
                       <Trash2 size={14} />
                     </button>

@@ -91,8 +91,8 @@ export default function OwnerAnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         <Card>
           <CardContent className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
-              <DollarSign size={24} className="text-green-600" />
+            <div className="w-12 h-12 rounded-xl bg-success/20 flex items-center justify-center">
+              <DollarSign size={24} className="text-success" />
             </div>
             <div>
               <p className="text-sm text-muted">
@@ -110,8 +110,8 @@ export default function OwnerAnalyticsPage() {
         </Card>
         <Card>
           <CardContent className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
-              <ShoppingBag size={24} className="text-blue-600" />
+            <div className="w-12 h-12 rounded-xl bg-info/20 flex items-center justify-center">
+              <ShoppingBag size={24} className="text-info" />
             </div>
             <div>
               <p className="text-sm text-muted">
@@ -134,8 +134,8 @@ export default function OwnerAnalyticsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           <Card>
             <CardContent className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center">
-                <TrendingUp size={24} className="text-purple-600" />
+              <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                <TrendingUp size={24} className="text-primary" />
               </div>
               <div>
                 <p className="text-sm text-muted">Avg Order Value</p>

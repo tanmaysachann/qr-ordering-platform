@@ -93,12 +93,12 @@ const timeRanges: { value: TimeRange; label: string }[] = [
 ];
 
 const statusColors: Record<string, string> = {
-  PAID: "text-blue-600 bg-blue-50",
-  PREPARING: "text-amber-600 bg-amber-50",
-  READY: "text-purple-600 bg-purple-50",
-  COMPLETED: "text-green-600 bg-green-50",
-  CANCELLED: "text-red-600 bg-red-50",
-  FAILED: "text-red-600 bg-red-50",
+  PAID: "text-info bg-info/20",
+  PREPARING: "text-warning bg-warning/10",
+  READY: "text-primary bg-primary/10",
+  COMPLETED: "text-success bg-success/20",
+  CANCELLED: "text-danger bg-danger/10",
+  FAILED: "text-danger bg-danger/10",
 };
 
 export default function AdminCafeDetailPage() {
@@ -473,7 +473,7 @@ export default function AdminCafeDetailPage() {
       {owner && (
         <div className="bg-surface rounded-2xl border border-border p-4 mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
               <User size={18} className="text-primary" />
             </div>
             <div>
@@ -496,7 +496,7 @@ export default function AdminCafeDetailPage() {
       <div className="bg-surface rounded-2xl border border-border p-4 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
               <CreditCard size={18} className="text-primary" />
             </div>
             <div>
@@ -511,7 +511,7 @@ export default function AdminCafeDetailPage() {
               ) : (
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <AlertCircle size={12} className="text-amber-600" />
-                  <p className="text-xs text-amber-700">Not configured — payments will fail</p>
+                  <p className="text-xs text-amber-700">Not configured / payments will fail</p>
                 </div>
               )}
             </div>
@@ -551,7 +551,7 @@ export default function AdminCafeDetailPage() {
       <div className="grid grid-cols-2 gap-4 mb-6">
         <Card>
           <CardContent className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-green-50 text-green-600">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-success/20 text-success">
               <DollarSign size={20} />
             </div>
             <div>
@@ -566,7 +566,7 @@ export default function AdminCafeDetailPage() {
         </Card>
         <Card>
           <CardContent className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-blue-50 text-blue-600">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-info/20 text-info">
               <ShoppingBag size={20} />
             </div>
             <div>
@@ -607,7 +607,7 @@ export default function AdminCafeDetailPage() {
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted">{order.customerName || "Guest"}</span>
                     <div className="flex items-center gap-2">
-                      <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium", statusColors[order.status] || "text-gray-600 bg-gray-50")}>
+                      <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium", statusColors[order.status] || "text-muted bg-surface")}>
                         {order.status}
                       </span>
                       <span className="text-xs text-muted">
@@ -639,7 +639,7 @@ export default function AdminCafeDetailPage() {
                   <span className="font-medium">{order.orderNumber}</span>
                   <span className="text-muted truncate">{order.customerName || "Guest"}</span>
                   <span>
-                    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium", statusColors[order.status] || "text-gray-600 bg-gray-50")}>
+                    <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium", statusColors[order.status] || "text-muted bg-surface")}>
                       {order.status}
                     </span>
                   </span>
@@ -677,7 +677,7 @@ export default function AdminCafeDetailPage() {
             <div className="sm:hidden divide-y divide-border">
               {staff.map((member) => (
                 <div key={member.id} className="flex items-center gap-3 px-4 py-3.5">
-                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                     <span className="text-sm font-bold text-primary">{member.name.charAt(0).toUpperCase()}</span>
                   </div>
                   <div className="min-w-0 flex-1">
@@ -686,7 +686,7 @@ export default function AdminCafeDetailPage() {
                   </div>
                   <button
                     onClick={() => setRemoveTarget(member)}
-                    className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors flex-shrink-0"
+                    className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-danger/10 transition-colors flex-shrink-0"
                     title="Remove staff"
                   >
                     <UserMinus size={14} />
@@ -717,7 +717,7 @@ export default function AdminCafeDetailPage() {
                   <span className="flex justify-end">
                     <button
                       onClick={() => setRemoveTarget(member)}
-                      className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors"
+                      className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-danger/10 transition-colors"
                       title="Remove staff"
                     >
                       <UserMinus size={14} />
@@ -737,7 +737,7 @@ export default function AdminCafeDetailPage() {
           <Input id="staff-age" label="Age" type="number" value={staffAge} onChange={(e) => setStaffAge(e.target.value)} placeholder="e.g. 25" required />
           <Input id="staff-mobile" label="Mobile Number" value={staffMobile} onChange={(e) => setStaffMobile(e.target.value)} placeholder="e.g. +91 98765 43210" required />
           {staffError && (
-            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">{staffError}</div>
+            <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl border border-danger/25">{staffError}</div>
           )}
           <Button onClick={handleAddStaff} className="w-full" loading={staffSaving}>
             <Plus size={14} className="mr-1" /> Add Staff
@@ -804,7 +804,7 @@ export default function AdminCafeDetailPage() {
             />
           </div>
           {editError && (
-            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">{editError}</div>
+            <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl border border-danger/25">{editError}</div>
           )}
           <div className="flex gap-3">
             <Button variant="secondary" className="flex-1" onClick={() => setShowEditModal(false)}>Cancel</Button>
@@ -864,7 +864,7 @@ export default function AdminCafeDetailPage() {
       {/* Payment Settings Modal */}
       <Modal isOpen={showPaymentModal} onClose={() => setShowPaymentModal(false)} title="PhonePe Payment Settings">
         <div className="space-y-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-800">
+          <div className="bg-info/20 border border-info/25 rounded-xl p-3 text-xs text-info">
             Enter the PhonePe Business credentials for <strong>{cafe.name}</strong>. Payments from customers will be collected directly into this cafe owner&apos;s PhonePe-linked bank account.
           </div>
           <Input
@@ -907,7 +907,7 @@ export default function AdminCafeDetailPage() {
             placeholder="1"
           />
           {paymentError && (
-            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">{paymentError}</div>
+            <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl border border-danger/25">{paymentError}</div>
           )}
           <div className="flex gap-3">
             <Button variant="secondary" className="flex-1" onClick={() => setShowPaymentModal(false)}>Cancel</Button>
@@ -932,7 +932,7 @@ export default function AdminCafeDetailPage() {
                 You are about to deactivate <strong className="text-foreground">{cafe.name}</strong>.
                 The cafe will be hidden from customers but all order history will be preserved.
               </p>
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
+              <div className="bg-warning/10 border border-warning/25 rounded-xl p-3 text-sm text-warning">
                 <strong>{cafe._count.orders} orders</strong> will be retained. This action can be reversed by reactivating the cafe.
               </div>
               <div className="flex gap-3">
@@ -947,7 +947,7 @@ export default function AdminCafeDetailPage() {
               <p className="text-sm text-muted">
                 You are about to <strong className="text-foreground">permanently delete</strong> {cafe.name}. This will remove all menus, categories, staff and data. <strong className="text-danger">This cannot be undone.</strong>
               </p>
-              <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-800">
+              <div className="bg-danger/10 border border-danger/25 rounded-xl p-3 text-sm text-danger">
                 To confirm, type the cafe name exactly: <strong>{cafe.name}</strong>
               </div>
               <input

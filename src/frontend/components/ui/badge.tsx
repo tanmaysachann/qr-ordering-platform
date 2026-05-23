@@ -7,13 +7,13 @@ interface BadgeProps {
 }
 
 const variantStyles = {
-  default: "bg-gray-100 text-gray-700",
-  success: "bg-green-100 text-green-700",
-  warning: "bg-amber-100 text-amber-700",
-  danger: "bg-red-100 text-red-700",
-  info: "bg-blue-100 text-blue-700",
-  veg: "bg-green-100 text-green-700 border border-green-300",
-  nonveg: "bg-red-100 text-red-700 border border-red-300",
+  default: "bg-white/[0.06] text-muted border border-white/[0.08]",
+  success: "bg-success/10 text-success border border-success/20",
+  warning: "bg-warning/10 text-warning border border-warning/20",
+  danger: "bg-danger/10 text-danger border border-danger/20",
+  info: "bg-info/10 text-info border border-info/20",
+  veg: "bg-success/10 text-success border border-success/25",
+  nonveg: "bg-danger/10 text-danger border border-danger/25",
 };
 
 export function Badge({ variant = "default", children, className }: BadgeProps) {

@@ -12,19 +12,19 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", loading, children, disabled, ...props }, ref) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium rounded-xl transition-[background-color,box-shadow,transform] duration-100 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.97]";
+      "inline-flex items-center justify-center font-medium rounded-xl transition-[background-color,box-shadow,opacity,transform] duration-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97]";
 
     const variants = {
       primary:
-        "bg-primary text-white hover:bg-primary-dark focus:ring-primary shadow-sm hover:shadow-md",
+        "bg-primary text-white hover:bg-primary-dark shadow-[0_1px_0_0_rgba(0,0,0,0.4),inset_0_1px_0_0_rgba(255,255,255,0.1)] hover:shadow-[0_2px_8px_rgba(99,102,241,0.35)]",
       secondary:
-        "bg-surface text-foreground border border-border hover:bg-surface-hover focus:ring-primary",
+        "bg-surface text-foreground border border-white/[0.08] hover:bg-surface-hover hover:border-white/[0.12]",
       outline:
-        "border-2 border-primary text-primary hover:bg-primary hover:text-white focus:ring-primary",
+        "border border-primary/40 text-primary hover:bg-primary/10 hover:border-primary/60",
       ghost:
-        "text-foreground hover:bg-surface-hover focus:ring-primary",
+        "text-muted hover:text-foreground hover:bg-white/[0.05]",
       danger:
-        "bg-danger text-white hover:bg-red-700 focus:ring-danger",
+        "bg-danger/15 text-danger border border-danger/30 hover:bg-danger/25 hover:border-danger/50",
     };
 
     const sizes = {

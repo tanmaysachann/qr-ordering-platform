@@ -422,7 +422,7 @@ export default function AdminCafeMenuPage() {
                     if (e.key === "Escape") resetCategoryInlineForm();
                   }}
                   placeholder="e.g. Beverages"
-                  className="flex-1 rounded-xl border border-border bg-surface px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="flex-1 rounded-xl border border-border bg-surface px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
                 />
                 <button
                   type="button"
@@ -489,7 +489,7 @@ export default function AdminCafeMenuPage() {
               onClick={() => setFormIsVeg(true)}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors",
-                formIsVeg ? "bg-green-100 border-green-400 text-green-700" : "border-border text-muted"
+                formIsVeg ? "bg-success/15 border-success/50 text-success" : "border-border text-muted"
               )}
             >
               Veg
@@ -499,7 +499,7 @@ export default function AdminCafeMenuPage() {
               onClick={() => setFormIsVeg(false)}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors",
-                !formIsVeg ? "bg-red-100 border-red-400 text-red-700" : "border-border text-muted"
+                !formIsVeg ? "bg-danger/15 border-danger/50 text-danger" : "border-border text-muted"
               )}
             >
               Non-Veg

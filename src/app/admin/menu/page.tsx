@@ -682,7 +682,7 @@ export default function AdminMenuPage() {
               onClick={() => setFormIsVeg(true)}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors",
-                formIsVeg ? "bg-green-100 border-green-400 text-green-700 dark:bg-green-900/30 dark:text-green-400" : "border-border text-muted"
+                formIsVeg ? "bg-success/15 border-success/50 text-success" : "border-border text-muted"
               )}
             >
               Veg
@@ -692,7 +692,7 @@ export default function AdminMenuPage() {
               onClick={() => setFormIsVeg(false)}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors",
-                !formIsVeg ? "bg-red-100 border-red-400 text-red-700 dark:bg-red-900/30 dark:text-red-400" : "border-border text-muted"
+                !formIsVeg ? "bg-danger/15 border-danger/50 text-danger" : "border-border text-muted"
               )}
             >
               Non-Veg

@@ -426,7 +426,7 @@ export default function MenuManagementPage() {
               <label className="text-sm font-medium whitespace-nowrap">Select Cafe:</label>
             </div>
             <select
-              className="w-full sm:w-auto rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full sm:w-auto rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
               value={selectedCafeId || ""}
               onChange={(e) => setSelectedCafeId(e.target.value)}
             >
@@ -662,7 +662,7 @@ export default function MenuManagementPage() {
             {/* Inline new category */}
             <div className="flex gap-2 mt-2">
               <input
-                className="flex-1 rounded-lg border border-border bg-surface px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted"
+                className="flex-1 rounded-lg border border-border bg-surface px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted text-foreground"
                 placeholder="New category name"
                 value={inlineNewCat}
                 onChange={(e) => setInlineNewCat(e.target.value)}
@@ -727,7 +727,7 @@ export default function MenuManagementPage() {
               onClick={() => setFormIsVeg(true)}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors",
-                formIsVeg ? "bg-green-100 border-green-400 text-green-700" : "border-border text-muted"
+                formIsVeg ? "bg-success/15 border-success/50 text-success" : "border-border text-muted"
               )}
             >
               Veg
@@ -737,7 +737,7 @@ export default function MenuManagementPage() {
               onClick={() => setFormIsVeg(false)}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors",
-                !formIsVeg ? "bg-red-100 border-red-400 text-red-700" : "border-border text-muted"
+                !formIsVeg ? "bg-danger/15 border-danger/50 text-danger" : "border-border text-muted"
               )}
             >
               Non-Veg

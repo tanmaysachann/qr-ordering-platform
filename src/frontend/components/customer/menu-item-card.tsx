@@ -22,7 +22,6 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
   const prevQty = useRef(quantity);
   const [popImage, setPopImage] = useState(false);
 
-  // Trigger ripple + check burst whenever quantity increases
   useEffect(() => {
     if (quantity > prevQty.current) {
       const id = Date.now();
@@ -49,12 +48,13 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
   return (
     <div
       className={cn(
-        "group relative flex gap-3 p-3 rounded-2xl border transition-[border-color,box-shadow,transform] duration-150",
-        "bg-surface hover:shadow-lg active:scale-[0.995]",
+        "group relative flex gap-3 p-3 border-2 transition-all duration-150",
+        "glass-card",
         inCart
-          ? "border-primary/60 shadow-md shadow-primary/10 ring-1 ring-primary/30"
-          : "border-border/70 hover:border-primary/30 hover:shadow-primary/5"
+          ? "border-[#cdf200] neo-shadow-sm"
+          : "border-[#494454] hover:border-[#a078ff] neo-shadow"
       )}
+      style={{ borderRadius: 0 }}
     >
       {/* Item Details */}
       <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
@@ -63,30 +63,39 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
             {/* Veg/Non-veg badge */}
             <span
               className={cn(
-                "w-[18px] h-[18px] rounded border-[1.5px] flex items-center justify-center flex-shrink-0 transition-transform",
-                item.isVeg ? "border-green-600" : "border-red-500",
+                "w-[18px] h-[18px] border-[1.5px] flex items-center justify-center flex-shrink-0 transition-transform",
+                item.isVeg ? "border-green-400" : "border-red-400",
                 inCart && "animate-wiggle"
               )}
             >
               <span
                 className={cn(
                   "w-[9px] h-[9px] rounded-full",
-                  item.isVeg ? "bg-green-600" : "bg-red-500"
+                  item.isVeg ? "bg-green-400" : "bg-red-400"
                 )}
               />
             </span>
-            <h3 className="font-semibold text-foreground text-[15px] leading-tight truncate">
+            <h3
+              className="font-bold text-[#e2e0f8] text-[15px] leading-tight truncate uppercase tracking-tight"
+              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+            >
               {toTitleCase(item.name)}
             </h3>
             {inCart && (
-              <span className="inline-flex items-center gap-0.5 bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-scale-in">
+              <span
+                className="inline-flex items-center gap-0.5 bg-[#cdf200] text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-scale-in"
+                style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+              >
                 <Check size={10} strokeWidth={3} />
                 {quantity}
               </span>
             )}
           </div>
           {item.description && (
-            <p className="text-xs text-muted leading-relaxed line-clamp-2 mt-0.5 mb-2 pr-1">
+            <p
+              className="text-xs text-[#cbc3d7] leading-relaxed line-clamp-2 mt-0.5 mb-2 pr-1"
+              style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+            >
               {item.description}
             </p>
           )}
@@ -94,8 +103,9 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
         <p
           className={cn(
             "font-bold text-base transition-colors",
-            inCart ? "text-primary" : "text-foreground"
+            inCart ? "text-[#cdf200]" : "text-[#e2e0f8]"
           )}
+          style={{ fontFamily: "var(--font-jb-mono), monospace" }}
         >
           {paiseToCurrencyShort(item.pricePaise)}
         </p>
@@ -105,38 +115,42 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
       <div className="relative flex flex-col items-center flex-shrink-0">
         <div
           className={cn(
-            "w-[108px] h-24 rounded-xl overflow-hidden shadow-sm transition-transform duration-200",
+            "w-[108px] h-24 overflow-hidden border-2 border-[#494454] transition-transform duration-200",
             popImage && "animate-pop"
           )}
+          style={{ borderRadius: 0 }}
         >
           {item.imageUrl ? (
             <img
               src={item.imageUrl}
               alt={item.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover contrast-110 saturate-110"
               loading="lazy"
             />
           ) : (
             <div className={cn(
               "w-full h-full flex items-center justify-center",
               item.isVeg
-                ? "bg-gradient-to-br from-amber-50 to-orange-100"
-                : "bg-gradient-to-br from-rose-50 to-pink-100"
+                ? "bg-[#1e1e2f]"
+                : "bg-[#1a1a2b]"
             )}>
               <span className="text-3xl">
                 {item.isVeg ? "\u{1F96C}" : "\u{1F357}"}
               </span>
             </div>
           )}
-          {/* Subtle shine on hover for added items */}
-          {inCart && <span className="shine-overlay" />}
 
-          {/* Add feedback: expanding amber ring + check burst */}
-          <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
+          {/* Cart glow overlay */}
+          {inCart && (
+            <div className="absolute inset-0 border-2 border-[#cdf200]/40 pointer-events-none" />
+          )}
+
+          {/* Ripple + check burst */}
+          <span className="pointer-events-none absolute inset-0 overflow-hidden">
             {bursts.map((id) => (
               <span
                 key={`ring-${id}`}
-                className="absolute inset-0 rounded-xl border-2 border-primary/60 animate-add-ripple"
+                className="absolute inset-0 border-2 border-[#cdf200]/70 animate-add-ripple"
               />
             ))}
           </span>
@@ -144,7 +158,7 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
             {bursts.map((id) => (
               <span
                 key={`check-${id}`}
-                className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 animate-check-burst"
+                className="w-8 h-8 rounded-full bg-[#cdf200] text-black flex items-center justify-center shadow-lg animate-check-burst"
               >
                 <Check size={16} strokeWidth={3.5} />
               </span>
@@ -158,36 +172,39 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
             <button
               onClick={handleAdd}
               className={cn(
-                "relative overflow-hidden px-6 py-1.5 text-sm font-bold rounded-lg",
-                "bg-white text-primary border border-primary/30",
-                "shadow-sm hover:shadow-md active:scale-90",
-                "transition-[box-shadow,transform,background-color,color] duration-100",
-                "uppercase tracking-wide",
-                "hover:bg-primary hover:text-white hover:border-primary"
+                "relative overflow-hidden px-5 py-1.5 text-sm font-bold",
+                "bg-[#cdf200] text-black border-2 border-black",
+                "neo-shadow-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
+                "transition-all duration-75 uppercase tracking-wide rounded-full",
+                "hover:bg-[#b4d400]"
               )}
+              style={{ fontFamily: "var(--font-jb-mono), monospace" }}
             >
-              <span className="relative z-10">Add</span>
+              Add
             </button>
           ) : (
-            <div className="flex items-center bg-gradient-to-r from-amber-600 to-orange-700 rounded-lg shadow-md shadow-primary/30 overflow-hidden animate-scale-in">
+            <div
+              className="flex items-center bg-[#cdf200] border-2 border-black neo-shadow-sm overflow-hidden animate-scale-in rounded-full"
+            >
               <button
                 onClick={() =>
                   quantity === 1 ? removeItem(item.id) : updateQuantity(item.id, quantity - 1)
                 }
-                className="px-3 py-1.5 text-white hover:bg-black/10 active:scale-90 transition-[background-color,transform] duration-75"
+                className="px-3 py-1.5 text-black hover:bg-black/10 active:scale-90 transition-[background-color,transform] duration-75"
                 aria-label="Decrease quantity"
               >
                 <Minus size={14} strokeWidth={3} />
               </button>
               <span
                 key={quantity}
-                className="px-1 py-1.5 text-white font-bold text-sm min-w-[24px] text-center animate-pop"
+                className="px-1 py-1.5 text-black font-bold text-sm min-w-[24px] text-center animate-pop"
+                style={{ fontFamily: "var(--font-jb-mono), monospace" }}
               >
                 {quantity}
               </span>
               <button
                 onClick={() => updateQuantity(item.id, quantity + 1)}
-                className="px-3 py-1.5 text-white hover:bg-black/10 active:scale-90 transition-[background-color,transform] duration-75"
+                className="px-3 py-1.5 text-black hover:bg-black/10 active:scale-90 transition-[background-color,transform] duration-75"
                 aria-label="Increase quantity"
               >
                 <Plus size={14} strokeWidth={3} />

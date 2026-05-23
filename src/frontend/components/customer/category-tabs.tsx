@@ -10,8 +10,8 @@ interface CategoryTabsProps {
 
 export function CategoryTabs({ categories, activeCategory, onSelect }: CategoryTabsProps) {
   return (
-    <div className="sticky top-0 z-20 bg-background/85 backdrop-blur-xl border-b border-border/60">
-      <div className="flex gap-2 px-4 py-2.5 overflow-x-auto menu-scroll">
+    <div className="sticky top-0 z-20 bg-[#111222]/90 backdrop-blur-xl border-b-2 border-[#494454]">
+      <div className="flex gap-2.5 px-4 py-3 overflow-x-auto no-scrollbar">
         {categories.map((cat) => {
           const isActive = activeCategory === cat.id;
           return (
@@ -19,13 +19,13 @@ export function CategoryTabs({ categories, activeCategory, onSelect }: CategoryT
               key={cat.id}
               onClick={() => onSelect(cat.id)}
               className={cn(
-                "flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap",
-                "transition-[background-color,color,box-shadow,transform] duration-150",
-                "active:scale-95",
+                "flex-shrink-0 px-4 py-2 text-xs font-bold whitespace-nowrap rounded-full border-2 uppercase tracking-wider",
+                "transition-all duration-150 active:scale-95",
                 isActive
-                  ? "bg-gradient-to-r from-amber-600 to-orange-700 text-white shadow-lg shadow-amber-700/25"
-                  : "bg-surface text-muted hover:text-foreground hover:bg-surface-hover border border-border/60"
+                  ? "bg-[#cdf200] text-black border-black neo-shadow-sm"
+                  : "bg-transparent text-[#cbc3d7] border-[#494454] hover:border-[#a078ff] hover:text-[#e2e0f8]"
               )}
+              style={{ fontFamily: "var(--font-jb-mono), monospace" }}
             >
               {cat.name}
             </button>

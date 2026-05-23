@@ -54,25 +54,25 @@ export default function AdminAnalyticsPage() {
       label: "Total Revenue",
       value: paiseToCurrencyShort(data.totalRevenue),
       icon: <DollarSign size={20} />,
-      color: "text-green-600 bg-green-50",
+      color: "text-success bg-success/20",
     },
     {
       label: "Today's Revenue",
       value: paiseToCurrencyShort(data.todayRevenue),
       icon: <TrendingUp size={20} />,
-      color: "text-primary bg-primary/10",
+      color: "text-primary bg-primary/20",
     },
     {
       label: "Total Orders",
       value: data.totalOrders.toLocaleString(),
       icon: <ShoppingBag size={20} />,
-      color: "text-blue-600 bg-blue-50",
+      color: "text-info bg-info/20",
     },
     {
       label: "Active Cafes",
       value: String(data.activeCafes),
       icon: <Store size={20} />,
-      color: "text-purple-600 bg-purple-50",
+      color: "text-primary-light bg-primary/20",
     },
   ];
 
@@ -114,8 +114,8 @@ export default function AdminAnalyticsPage() {
                       <p className="text-xs text-muted">/{cafe.cafeSlug}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-green-600 text-sm flex items-center gap-0.5">
-                        {paiseToCurrencyShort(cafe.totalRevenue)}<ArrowUpRight size={12} className="text-green-600" />
+                      <p className="font-bold text-success text-sm flex items-center gap-0.5">
+                        {paiseToCurrencyShort(cafe.totalRevenue)}<ArrowUpRight size={12} className="text-success" />
                       </p>
                       <p className="text-xs text-muted">{cafe.totalOrders} orders total</p>
                     </div>
@@ -167,8 +167,8 @@ export default function AdminAnalyticsPage() {
                   <div className="text-right font-medium">{cafe.totalOrders.toLocaleString()}</div>
                   <div className="text-right">
                     <div className="flex items-center justify-end gap-1">
-                      <span className="font-bold text-green-600">{paiseToCurrencyShort(cafe.totalRevenue)}</span>
-                      <ArrowUpRight size={13} className="text-green-600" />
+                      <span className="font-bold text-success">{paiseToCurrencyShort(cafe.totalRevenue)}</span>
+                      <ArrowUpRight size={13} className="text-success" />
                     </div>
                   </div>
                 </div>

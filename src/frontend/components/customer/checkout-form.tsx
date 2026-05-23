@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useCartStore } from "@/frontend/stores/cart";
 import { paiseToCurrencyShort } from "@/shared/utils/currency";
 import { Input } from "@/frontend/components/ui/input";
-import { ShieldCheck, ArrowLeft, Receipt, User, Lock, ArrowRight } from "lucide-react";
+import { ShieldCheck, ArrowLeft, Receipt, User, ArrowRight } from "lucide-react";
 import { v4 as uuid } from "uuid";
 import { cn } from "@/shared/utils/cn";
 import {
@@ -118,27 +118,59 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div
+      className="min-h-screen"
+      style={{
+        background: "#111222",
+        backgroundImage:
+          "radial-gradient(at 0% 0%, rgba(160,120,255,0.08) 0px, transparent 50%)",
+        backgroundAttachment: "fixed",
+      }}
+    >
       {/* Header */}
-      <div className="bg-surface border-b border-border sticky top-0 z-10">
+      <div
+        className="bg-[#0c0d1d] border-b-2 border-[#494454] sticky top-0 z-10"
+        style={{ boxShadow: "0 4px 0px 0px rgba(0,0,0,1)" }}
+      >
         <div className="flex items-center gap-3 px-4 py-3.5">
-          <button onClick={onBack} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-hover transition-colors duration-75">
+          <button
+            onClick={onBack}
+            className="w-9 h-9 border-2 border-[#494454] flex items-center justify-center text-[#cbc3d7] hover:border-[#e2e0f8] hover:text-[#e2e0f8] transition-colors duration-75"
+          >
             <ArrowLeft size={20} />
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold leading-tight">Checkout</h1>
-            <p className="text-xs text-muted">{cafeName}</p>
+            <h1
+              className="text-lg font-extrabold leading-tight text-[#e2e0f8] uppercase"
+              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+            >
+              Checkout
+            </h1>
+            <p
+              className="text-xs text-[#cbc3d7]"
+              style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+            >
+              {cafeName}
+            </p>
           </div>
-          <Lock size={16} className="text-muted" />
+          <ShieldCheck size={16} className="text-[#cdf200]" />
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="p-4 space-y-4 pb-32">
         {/* Order Summary */}
-        <div className="bg-surface rounded-2xl border border-border overflow-hidden animate-fade-in-up">
-          <div className="flex items-center gap-2 px-4 py-3 bg-surface-hover/50 border-b border-border">
-            <Receipt size={15} className="text-primary" />
-            <h2 className="font-semibold text-sm">Order Summary</h2>
+        <div
+          className="bg-[#1e1e2f] border-2 border-[#494454] overflow-hidden animate-fade-in-up"
+          style={{ borderRadius: 0 }}
+        >
+          <div className="flex items-center gap-2 px-4 py-3 bg-[#28283a] border-b-2 border-[#494454]">
+            <Receipt size={15} className="text-[#a078ff]" />
+            <h2
+              className="font-bold text-sm text-[#e2e0f8] uppercase tracking-wider"
+              style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+            >
+              Order Summary
+            </h2>
           </div>
           <div className="p-4 space-y-2.5">
             {items.map((item) => (
@@ -146,28 +178,49 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   <span
                     className={cn(
-                      "w-[14px] h-[14px] rounded border-[1.5px] flex items-center justify-center flex-shrink-0",
-                      item.isVeg ? "border-green-600" : "border-red-500"
+                      "w-[14px] h-[14px] border-[1.5px] flex items-center justify-center flex-shrink-0",
+                      item.isVeg ? "border-green-400" : "border-red-400"
                     )}
                   >
                     <span
                       className={cn(
                         "w-[7px] h-[7px] rounded-full",
-                        item.isVeg ? "bg-green-600" : "bg-red-500"
+                        item.isVeg ? "bg-green-400" : "bg-red-400"
                       )}
                     />
                   </span>
-                  <span className="text-muted truncate">{item.name}</span>
-                  <span className="text-muted flex-shrink-0">x{item.quantity}</span>
+                  <span
+                    className="text-[#cbc3d7] truncate"
+                    style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+                  >
+                    {item.name}
+                  </span>
+                  <span
+                    className="text-[#cbc3d7] flex-shrink-0"
+                    style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+                  >
+                    x{item.quantity}
+                  </span>
                 </div>
-                <span className="font-semibold ml-3">
+                <span
+                  className="font-bold ml-3 text-[#e2e0f8]"
+                  style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+                >
                   {paiseToCurrencyShort(item.pricePaise * item.quantity)}
                 </span>
               </div>
             ))}
-            <div className="mt-3 pt-3 border-t border-dashed border-border flex justify-between items-center">
-              <span className="font-bold">Total</span>
-              <span className="font-extrabold text-primary text-xl">
+            <div className="mt-3 pt-3 border-t-2 border-dashed border-[#494454] flex justify-between items-center">
+              <span
+                className="font-bold text-[#e2e0f8] uppercase"
+                style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+              >
+                Total
+              </span>
+              <span
+                className="font-extrabold text-xl text-[#cdf200]"
+                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              >
                 {paiseToCurrencyShort(total)}
               </span>
             </div>
@@ -175,20 +228,31 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
         </div>
 
         {/* Customer Details */}
-        <div className="bg-surface rounded-2xl border border-border overflow-hidden animate-fade-in-up" style={{ animationDelay: '60ms' }}>
-          <div className="flex items-center justify-between px-4 py-3 bg-surface-hover/50 border-b border-border">
+        <div
+          className="bg-[#1e1e2f] border-2 border-[#494454] overflow-hidden animate-fade-in-up"
+          style={{ borderRadius: 0, animationDelay: "60ms" }}
+        >
+          <div className="flex items-center justify-between px-4 py-3 bg-[#28283a] border-b-2 border-[#494454]">
             <div className="flex items-center gap-2">
-              <User size={15} className="text-primary" />
-              <h2 className="font-semibold text-sm">Your Details</h2>
+              <User size={15} className="text-[#a078ff]" />
+              <h2
+                className="font-bold text-sm text-[#e2e0f8] uppercase tracking-wider"
+                style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+              >
+                Your Details
+              </h2>
             </div>
-            <span className="text-[11px] text-muted">
-              <span className="text-danger">*</span> Required
+            <span
+              className="text-[11px] text-[#cbc3d7]"
+              style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+            >
+              <span className="text-[#ffb4ab]">*</span> Required
             </span>
           </div>
           <div className="p-4 space-y-3">
             <Input
               id="name"
-              label={<>Name <span className="text-danger">*</span></>}
+              label={<>Name <span className="text-[#ffb4ab]">*</span></>}
               placeholder="Your name for the order"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
@@ -199,7 +263,7 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
             />
             <Input
               id="phone"
-              label={<>Mobile Number <span className="text-danger">*</span></>}
+              label={<>Mobile Number <span className="text-[#ffb4ab]">*</span></>}
               placeholder="10-digit mobile number"
               type="tel"
               inputMode="numeric"
@@ -213,7 +277,7 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
             />
             <Input
               id="email"
-              label={<>Email <span className="text-danger">*</span></>}
+              label={<>Email <span className="text-[#ffb4ab]">*</span></>}
               placeholder="you@example.com"
               type="email"
               inputMode="email"
@@ -224,16 +288,27 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
               autoComplete="email"
               required
             />
-            <p className="text-[11px] text-muted -mt-1">
+            <p
+              className="text-[11px] text-[#cbc3d7] -mt-1"
+              style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+            >
               We&apos;ll send your order confirmation here.
             </p>
             <div>
-              <label htmlFor="notes" className="block text-sm font-medium text-foreground mb-1.5">
+              <label
+                htmlFor="notes"
+                className="block text-sm font-bold text-[#e2e0f8] mb-1.5 uppercase tracking-wider"
+                style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+              >
                 Special Instructions
               </label>
               <textarea
                 id="notes"
-                className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none text-sm"
+                className="w-full border-2 border-[#494454] bg-[#111222] px-4 py-2.5 text-[#e2e0f8] placeholder:text-[#494454] focus:outline-none focus:border-[#cdf200] resize-none text-sm transition-colors"
+                style={{
+                  borderRadius: 0,
+                  fontFamily: "var(--font-jb-mono), monospace",
+                }}
                 rows={2}
                 placeholder="Any special requests..."
                 value={notes}
@@ -244,26 +319,33 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
         </div>
 
         {error && (
-          <div className="bg-red-50 text-danger text-sm p-3.5 rounded-xl border border-red-200 flex items-start gap-2 animate-fade-in-up">
-            <span className="flex-shrink-0 mt-0.5">!</span>
+          <div
+            className="bg-[#ffb4ab]/10 text-[#ffb4ab] text-sm p-3.5 border-2 border-[#ffb4ab]/40 flex items-start gap-2 animate-fade-in-up"
+            style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+          >
+            <span className="flex-shrink-0 mt-0.5 font-bold">!</span>
             <span>{error}</span>
           </div>
         )}
 
         {/* Secure Payment Note */}
-        <div className="flex items-center gap-2 text-xs text-muted justify-center pt-2 animate-fade-in-up" style={{ animationDelay: '120ms' }}>
-          <ShieldCheck size={14} className="text-primary" />
+        <div
+          className="flex items-center gap-2 text-xs text-[#cbc3d7] justify-center pt-2 animate-fade-in-up"
+          style={{ fontFamily: "var(--font-jb-mono), monospace", animationDelay: "120ms" }}
+        >
+          <ShieldCheck size={14} className="text-[#cdf200]" />
           <span>Secure payment via PhonePe</span>
         </div>
       </form>
 
       {/* Fixed Bottom Pay Button */}
-      <div className="fixed bottom-0 left-0 right-0 bg-surface/95 backdrop-blur-md border-t border-border p-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#0c0d1d]/95 backdrop-blur-md border-t-2 border-[#494454] p-4">
         <button
           type="submit"
           disabled={loading}
           onClick={handleSubmit}
-          className="w-full bg-gradient-to-r from-amber-600 to-orange-700 disabled:from-slate-400 disabled:to-slate-400 text-white py-4 rounded-2xl font-bold text-base shadow-lg shadow-amber-800/25 active:scale-[0.98] transition-transform duration-75 flex items-center justify-center gap-2"
+          className="w-full bg-[#cdf200] disabled:bg-[#333345] disabled:text-[#cbc3d7] text-black border-2 border-black py-4 font-bold text-sm uppercase tracking-wider neo-shadow active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-75 flex items-center justify-center gap-2 rounded-full"
+          style={{ fontFamily: "var(--font-jb-mono), monospace" }}
         >
           {loading ? (
             <>

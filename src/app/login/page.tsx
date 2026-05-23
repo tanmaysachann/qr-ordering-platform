@@ -5,7 +5,28 @@ import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/frontend/components/ui/button";
 import { Input } from "@/frontend/components/ui/input";
-import { Coffee, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
+import Link from "next/link";
+import { ThemeToggle } from "@/frontend/components/ui/theme-toggle";
+
+function ScanPayMark() {
+  return (
+    <div className="flex items-center gap-2.5 justify-center">
+      <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+          <path d="M3.5 7V3.5H7"     stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M16.5 7V3.5H13"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M3.5 13V16.5H7"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M16.5 13V16.5H13" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="10" cy="10" r="1.6" fill="white"/>
+        </svg>
+      </div>
+      <span className="font-bold text-xl tracking-tight text-foreground">
+        Scan<span className="text-primary">&amp;</span>Pay
+      </span>
+    </div>
+  );
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -49,21 +70,40 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Subtle glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: 500,
+          height: 500,
+          top: "30%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          background: "radial-gradient(circle, rgba(14,165,233,0.10) 0%, transparent 70%)",
+          borderRadius: "50%",
+        }}
+      />
+      {/* Noise overlay */}
+      <div
+        className="fixed inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
+
+      <div className="relative w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/25">
-            <Coffee size={32} className="text-white" />
-          </div>
-          <h1 className="text-2xl font-bold">
-            Cafe<span className="text-primary">Order</span>
-          </h1>
-          <p className="text-muted text-sm mt-1">Staff & Admin Login</p>
+          <ScanPayMark />
+          <p className="text-muted text-sm mt-3 uppercase tracking-wider font-medium">
+            Staff &amp; Admin Login
+          </p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-surface rounded-2xl border border-border p-6 space-y-4 shadow-sm">
+        {/* Glass card */}
+        <div className="glass-panel-landing rounded-2xl p-7 space-y-5">
           <Input
             id="email"
             label="Email"
@@ -84,20 +124,32 @@ export default function LoginPage() {
           />
 
           {error && (
-            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">
-              {error}
+            <div className="bg-danger/10 text-danger text-sm p-3.5 rounded-xl border border-danger/30 flex items-start gap-2">
+              <span className="font-bold flex-shrink-0">!</span>
+              <span>{error}</span>
             </div>
           )}
 
-          <Button type="submit" className="w-full" loading={loading}>
-            <LogIn size={18} className="mr-2" />
+          <Button type="submit" className="w-full" loading={loading} onClick={handleSubmit}>
+            <LogIn size={16} className="mr-2" />
             Sign In
           </Button>
 
           <p className="text-xs text-center text-muted pt-1">
             Forgot your password? Contact your administrator.
           </p>
-        </form>
+        </div>
+
+        {/* Theme toggle + back link */}
+        <div className="flex items-center justify-between mt-5">
+          <Link href="/" className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground transition-colors group">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="group-hover:-translate-x-0.5 transition-transform">
+              <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Home
+          </Link>
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

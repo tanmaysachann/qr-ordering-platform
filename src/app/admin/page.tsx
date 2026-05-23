@@ -196,28 +196,28 @@ export default function AdminCafesPage() {
           label: "Total Revenue",
           value: paiseToCurrencyShort(analytics.totalRevenue),
           icon: <DollarSign size={18} />,
-          iconBg: "bg-emerald-50 text-emerald-600",
+          iconBg: "bg-success/20 text-success",
           accent: "from-emerald-400 to-teal-500",
         },
         {
           label: "Today's Revenue",
           value: paiseToCurrencyShort(analytics.todayRevenue),
           icon: <TrendingUp size={18} />,
-          iconBg: "bg-amber-50 text-amber-600",
+          iconBg: "bg-warning/20 text-warning",
           accent: "from-amber-400 to-orange-500",
         },
         {
           label: "Total Orders",
           value: String(analytics.totalOrders),
           icon: <ShoppingBag size={18} />,
-          iconBg: "bg-blue-50 text-blue-600",
+          iconBg: "bg-info/20 text-info",
           accent: "from-blue-400 to-indigo-500",
         },
         {
           label: "Today's Orders",
           value: String(analytics.todayOrders),
           icon: <Activity size={18} />,
-          iconBg: "bg-violet-50 text-violet-600",
+          iconBg: "bg-primary/20 text-primary",
           accent: "from-violet-400 to-purple-500",
         },
       ]
@@ -331,7 +331,7 @@ export default function AdminCafesPage() {
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); setDeleteTarget(cafe); }}
-                    className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-red-50 transition-colors"
+                    className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-danger/10 transition-colors"
                     title={cafe._count.orders > 0 ? "Deactivate cafe" : "Delete cafe"}
                   >
                     <Trash2 size={13} />
@@ -396,7 +396,7 @@ export default function AdminCafesPage() {
                 Format: <code className="font-mono bg-surface-hover px-1.5 py-0.5 rounded">owner@branch-name.com</code>
                 {derivedSlug ? (
                   <>
-                    {" "}· URL: <code className="font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">/{derivedSlug}</code>
+                    {" "}· URL: <code className="font-mono bg-primary/20 text-primary px-1.5 py-0.5 rounded">/{derivedSlug}</code>
                   </>
                 ) : null}
               </div>
@@ -413,7 +413,7 @@ export default function AdminCafesPage() {
           </div>
 
           {formError && (
-            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">
+            <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl border border-danger/25">
               {formError}
             </div>
           )}
@@ -531,7 +531,7 @@ export default function AdminCafesPage() {
                   You are about to deactivate <strong className="text-foreground">{deleteTarget.name}</strong>.
                   The cafe will be hidden from customers but all order history will be preserved.
                 </p>
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-800">
+                <div className="bg-warning/10 border border-warning/25 rounded-xl p-3 text-sm text-warning">
                   <strong>{deleteTarget._count.orders} orders</strong> will be retained. This action can be reversed by reactivating the cafe.
                 </div>
                 <div className="flex gap-3">
@@ -546,7 +546,7 @@ export default function AdminCafesPage() {
                 <p className="text-sm text-muted">
                   You are about to <strong className="text-foreground">permanently delete</strong> {deleteTarget.name}. This will remove all menus, categories, staff and data. <strong className="text-danger">This cannot be undone.</strong>
                 </p>
-                <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-800">
+                <div className="bg-danger/10 border border-danger/25 rounded-xl p-3 text-sm text-danger">
                   To confirm, type the cafe name exactly: <strong>{deleteTarget.name}</strong>
                 </div>
                 <input

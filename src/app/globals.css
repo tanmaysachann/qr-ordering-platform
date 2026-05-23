@@ -1,29 +1,88 @@
 @import "tailwindcss";
 
+/* ── Light mode (premium indigo) ── */
 :root {
-  --background: #f8f9fc;
-  --foreground: #0f172a;
-  --primary: #b45309;
-  --primary-light: #f59e0b;
-  --primary-dark: #78350f;
-  --accent: #f43f5e;
+  --background: #f5f5f8;
+  --foreground: #111118;
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --primary-dark: #4f46e5;
+  --accent: #818cf8;
   --surface: #ffffff;
-  --surface-hover: #f1f5f9;
-  --border: #e2e8f0;
-  --muted: #64748b;
-  --success: #10b981;
-  --danger: #ef4444;
-  --warning: #f59e0b;
-  --info: #3b82f6;
+  --surface-hover: #ededf5;
+  --border: #e2e2ec;
+  --muted: #6b6b8a;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --warning: #d97706;
+  --info: #2563eb;
 }
 
+/* ── Dark mode — landing/login (indigo on near-black) ── */
 .dark {
-  --background: #0f1117;
-  --foreground: #e8eaf0;
-  --surface: #1a1d27;
-  --surface-hover: #22263a;
-  --border: #2a2f4a;
-  --muted: #8892a4;
+  --background: #101115;
+  --foreground: #e8e8f0;
+  --primary: #818cf8;
+  --primary-light: #a5b4fc;
+  --primary-dark: #6366f1;
+  --accent: #a5b4fc;
+  --surface: #18181f;
+  --surface-hover: #24242e;
+  --border: #32323f;
+  --muted: #8888a8;
+  --success: #6ee7b7;
+  --danger: #ffb4ab;
+  --warning: #fbbf24;
+  --info: #93c5fd;
+}
+
+/* ── Dashboard / Admin light mode — inherits :root, just cascade color ── */
+.dashboard-app {
+  color: var(--foreground);
+  background: var(--background);
+  color-scheme: light;
+}
+
+/* ── Dashboard / Admin dark mode — Obsidian + Indigo (premium SaaS) ── */
+.dark .dashboard-app {
+  --background: #0c0c0f;
+  --foreground: #f1f1f3;
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --primary-dark: #4f46e5;
+  --accent: #818cf8;
+  --surface: #1c1c20;
+  --surface-hover: #28282e;
+  --border: #3a3a42;
+  --muted: #9191a4;
+  --success: #4ade80;
+  --danger: #fb7185;
+  --warning: #fbbf24;
+  --info: #60a5fa;
+  color: var(--foreground);
+  background: var(--background);
+  color-scheme: dark;
+}
+
+/* ── Voltage Mono Customer Design System ── */
+.customer-app {
+  --background: #111222;
+  --foreground: #e2e0f8;
+  --primary: #a078ff;
+  --primary-light: #d0bcff;
+  --primary-dark: #6d3bd7;
+  --accent: #cdf200;
+  --surface: #1e1e2f;
+  --surface-hover: #28283a;
+  --border: #494454;
+  --muted: #cbc3d7;
+  --success: #cdf200;
+  --danger: #ffb4ab;
+  --warning: #cdf200;
+  --info: #d0bcff;
+  /* Force correct color cascade regardless of .dark toggle on <html> */
+  color: var(--foreground);
+  background: var(--background);
 }
 
 @theme inline {
@@ -43,6 +102,8 @@
   --color-info: var(--info);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-syne: var(--font-syne);
+  --font-jb-mono: var(--font-jb-mono);
 }
 
 * {
@@ -53,19 +114,83 @@ button, a, input, select, textarea, [role="button"] {
   touch-action: manipulation;
 }
 
+/* Ensure native form elements inherit the scoped palette */
+.dashboard-app select,
+.dashboard-app textarea,
+.dashboard-app input {
+  color: var(--foreground);
+}
+
+.dark .dashboard-app select,
+.dark .dashboard-app textarea,
+.dark .dashboard-app input {
+  color-scheme: dark;
+}
+
+.customer-app select,
+.customer-app textarea,
+.customer-app input {
+  color: var(--foreground);
+  color-scheme: dark;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar for menu */
-.menu-scroll::-webkit-scrollbar {
+/* ── Neo-brutalist shadows ── */
+.neo-shadow {
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+}
+.neo-shadow-sm {
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+}
+
+/* ── Glassmorphic card (Voltage Mono) ── */
+.glass-card {
+  background: rgba(160, 120, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ── Landing glass panel (CraveFlow) — adapts to light/dark ── */
+.glass-panel-landing {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.dark .glass-panel-landing {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Grain texture overlay ── */
+.grain-overlay {
+  position: relative;
+}
+.grain-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.12'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.15;
+  z-index: 1;
+}
+
+/* ── Custom scrollbar ── */
+.menu-scroll::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-.menu-scroll {
+.menu-scroll,
+.no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -173,7 +298,6 @@ body {
   animation: wiggle 0.5s ease-in-out;
 }
 
-/* Sliding shine overlay - use on a child span with overflow-hidden parent */
 .shine-overlay {
   position: absolute;
   inset: 0;
@@ -192,7 +316,6 @@ body {
   animation: shine 2.8s ease-in-out infinite;
 }
 
-/* Stagger children animations */
 .stagger-children > * {
   animation: fadeInUp 0.35s ease-out both;
 }
@@ -207,14 +330,12 @@ body {
 .stagger-children > *:nth-child(9) { animation-delay: 320ms; }
 .stagger-children > *:nth-child(10) { animation-delay: 360ms; }
 
-/* Glassmorphism utility */
 .glass {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* Smooth page transitions */
 .page-enter {
   opacity: 0;
   transform: translateY(8px);

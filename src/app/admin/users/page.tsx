@@ -214,7 +214,7 @@ export default function AdminUsersPage() {
           <div>
             <label className="block text-sm font-medium mb-1.5">Role</label>
             <select
-              className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               value={formRole}
               onChange={(e) => setFormRole(e.target.value as UserRole)}
             >
@@ -228,7 +228,7 @@ export default function AdminUsersPage() {
             <div>
               <label className="block text-sm font-medium mb-1.5">Assign to Cafe</label>
               <select
-                className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 value={formCafeId}
                 onChange={(e) => setFormCafeId(e.target.value)}
               >
@@ -241,7 +241,7 @@ export default function AdminUsersPage() {
           )}
 
           {formError && (
-            <div className="bg-red-50 text-danger text-sm p-3 rounded-xl border border-red-200">
+            <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl border border-danger/25">
               {formError}
             </div>
           )}

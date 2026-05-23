@@ -21,23 +21,25 @@ import {
 } from "lucide-react";
 import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
 
-function BrandLogo({ size = 24 }: { size?: number }) {
-  const inner = Math.round(size * 0.57);
+function BrandMark() {
   return (
-    <div
-      style={{ width: size, height: size }}
-      className="rounded-lg bg-primary flex items-center justify-center flex-shrink-0"
-    >
-      <svg width={inner} height={inner} viewBox="0 0 20 20" fill="none" aria-hidden>
-        <path d="M3.5 7V3.5H7"     stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M16.5 7V3.5H13"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M3.5 13V16.5H7"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M16.5 13V16.5H13" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-        <circle cx="10" cy="10" r="1.6" fill="white"/>
-      </svg>
+    <div className="flex items-center gap-2.5">
+      <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
+          <path d="M3.5 7V3.5H7"     stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M16.5 7V3.5H13"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M3.5 13V16.5H7"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M16.5 13V16.5H13" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          <circle cx="10" cy="10" r="1.6" fill="white"/>
+        </svg>
+      </div>
+      <span className="font-bold text-base tracking-tight text-foreground">
+        Scan<span className="text-primary">&amp;</span>Pay
+      </span>
     </div>
   );
 }
+
 import { cn } from "@/shared/utils/cn";
 import { useState, useEffect } from "react";
 import { useTheme } from "@/frontend/hooks/use-theme";
@@ -67,24 +69,33 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
 
   const navigation = isAdmin
     ? [
-        { name: "All Cafes", href: "/admin", icon: LayoutDashboard },
-        { name: "All Orders", href: "/admin/orders", icon: ClipboardList },
-        { name: "Menu", href: "/admin/menu", icon: UtensilsCrossed },
-        { name: "Deep Insights", href: "/admin/insights", icon: Sparkles },
+        { name: "All Cafes",    href: "/admin",           icon: LayoutDashboard },
+        { name: "All Orders",   href: "/admin/orders",    icon: ClipboardList },
+        { name: "Menu",         href: "/admin/menu",      icon: UtensilsCrossed },
+        { name: "Deep Insights",href: "/admin/insights",  icon: Sparkles },
       ]
     : [
-        { name: "Orders", href: "/dashboard", icon: ClipboardList },
-        { name: "Menu", href: "/dashboard/menu", icon: UtensilsCrossed },
-        { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
-        { name: "Deep Insights", href: "/dashboard/insights", icon: Sparkles },
-        { name: "Staff", href: "/dashboard/staff", icon: Users },
-        { name: "Accounts", href: "/dashboard/accounts", icon: Wallet },
+        { name: "Orders",       href: "/dashboard",            icon: ClipboardList },
+        { name: "Menu",         href: "/dashboard/menu",       icon: UtensilsCrossed },
+        { name: "Analytics",    href: "/dashboard/analytics",  icon: BarChart3 },
+        { name: "Deep Insights",href: "/dashboard/insights",   icon: Sparkles },
+        { name: "Staff",        href: "/dashboard/staff",      icon: Users },
+        { name: "Accounts",     href: "/dashboard/accounts",   icon: Wallet },
       ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dashboard-app min-h-screen bg-background">
+      {/* Noise overlay */}
+      <div
+        className="fixed inset-0 pointer-events-none z-[9998] opacity-[0.025]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
+
       {/* Mobile Header */}
-      <div className="lg:hidden bg-surface border-b border-border sticky top-0 z-30">
+      <div className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border sticky top-0 z-30">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2.5">
             <button
@@ -93,10 +104,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
             >
               {sidebarOpen ? <X size={20} /> : <MenuIcon size={20} />}
             </button>
-            <div className="flex items-center gap-2">
-              <BrandLogo size={22} />
-              <span className="font-bold text-sm">Scan<span className="text-primary">&amp;</span>Pay</span>
-            </div>
+            <BrandMark />
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -107,7 +115,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               {dark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <div className="text-right">
-              <p className="text-xs font-medium">{user.name}</p>
+              <p className="text-xs font-medium text-foreground">{user.name}</p>
               <p className="text-[10px] text-muted">{user.role.replace("_", " ")}</p>
             </div>
           </div>
@@ -118,19 +126,13 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         {/* Sidebar */}
         <aside
           className={cn(
-            "fixed inset-y-0 left-0 z-40 w-64 bg-surface border-r border-border transform transition-transform flex flex-col lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:z-auto",
+            "fixed inset-y-0 left-0 z-40 w-60 bg-background border-r border-border transform transition-transform flex flex-col lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:z-auto",
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
           {/* Logo */}
           <div className="hidden lg:flex items-center justify-between px-5 py-5 border-b border-border">
-            <div className="flex items-center gap-2.5">
-              <BrandLogo size={28} />
-              <span className="font-bold text-lg">
-                Scan<span className="text-primary">&amp;</span>Pay
-              </span>
-            </div>
-            {/* Theme toggle */}
+            <BrandMark />
             <button
               onClick={toggle}
               className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
@@ -143,17 +145,17 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
           {/* User Info */}
           <div className="px-4 py-4 border-b border-border">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center flex-shrink-0">
                 <span className="text-sm font-bold text-primary">
                   {user.name.charAt(0).toUpperCase()}
                 </span>
               </div>
               <div className="min-w-0">
-                <p className="font-semibold text-sm truncate">{user.name}</p>
+                <p className="font-semibold text-sm truncate text-foreground">{user.name}</p>
                 <p className="text-[11px] text-muted truncate">{user.email}</p>
               </div>
             </div>
-            <span className="inline-block mt-3 text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full font-medium tracking-wide">
+            <span className="inline-block mt-3 text-[10px] bg-primary/20 text-primary-light border border-primary/30 px-2 py-0.5 rounded-full font-medium tracking-wide uppercase">
               {user.role.replace("_", " ")}
             </span>
           </div>
@@ -170,8 +172,8 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-100",
                     isActive
-                      ? "bg-primary text-white shadow-sm shadow-primary/25"
-                      : "text-muted hover:bg-surface-hover hover:text-foreground"
+                      ? "bg-primary/10 text-primary border border-primary/20 shadow-[0_0_12px_rgba(99,102,241,0.15)]"
+                      : "text-muted hover:bg-white/[0.04] hover:text-foreground"
                   )}
                 >
                   <item.icon size={17} />
@@ -188,14 +190,14 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
                 href={`/${cafeInfo.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface-hover transition-colors w-full rounded-xl border border-border"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-muted hover:text-foreground hover:bg-white/[0.04] transition-colors w-full rounded-xl border border-border"
               >
                 <ExternalLink size={16} />
                 Customer View
               </a>
               <button
                 onClick={() => setQrOpen(true)}
-                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary/10 transition-colors w-full rounded-xl border border-primary/20"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary/[0.08] transition-colors w-full rounded-xl border border-primary/20"
               >
                 <QrCode size={16} />
                 My QR Code
@@ -204,10 +206,10 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
           )}
 
           {/* Logout */}
-          <div className="p-3 border-t border-border">
+          <div className="p-3 border-t border-border/60">
             <button
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-muted hover:text-danger hover:bg-red-500/10 transition-colors w-full rounded-xl"
+              className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-muted hover:text-danger hover:bg-danger/10 transition-colors w-full rounded-xl"
             >
               <LogOut size={16} />
               Sign Out
@@ -229,7 +231,6 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         </main>
       </div>
 
-      {/* QR Modal — rendered at root so it isn't constrained by sidebar transform */}
       {cafeInfo && (
         <CafeQRModal
           isOpen={qrOpen}
