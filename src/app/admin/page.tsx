@@ -197,28 +197,28 @@ export default function AdminCafesPage() {
           value: paiseToCurrencyShort(analytics.totalRevenue),
           icon: <DollarSign size={18} />,
           iconBg: "bg-success/20 text-success",
-          accent: "from-emerald-400 to-teal-500",
+          accent: "from-stone-400 to-stone-600",
         },
         {
           label: "Today's Revenue",
           value: paiseToCurrencyShort(analytics.todayRevenue),
           icon: <TrendingUp size={18} />,
           iconBg: "bg-warning/20 text-warning",
-          accent: "from-amber-400 to-orange-500",
+          accent: "from-amber-600 to-amber-800",
         },
         {
           label: "Total Orders",
           value: String(analytics.totalOrders),
           icon: <ShoppingBag size={18} />,
           iconBg: "bg-info/20 text-info",
-          accent: "from-blue-400 to-indigo-500",
+          accent: "from-stone-500 to-stone-700",
         },
         {
           label: "Today's Orders",
           value: String(analytics.todayOrders),
           icon: <Activity size={18} />,
           iconBg: "bg-primary/20 text-primary",
-          accent: "from-violet-400 to-purple-500",
+          accent: "from-stone-300 to-stone-500",
         },
       ]
     : [];

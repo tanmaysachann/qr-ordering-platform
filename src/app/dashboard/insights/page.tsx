@@ -110,7 +110,7 @@ export default function OwnerDeepInsightsPage() {
               icon={<Receipt size={18} />}
               label="Orders"
               value={cafe.totalOrders.toLocaleString()}
-              color="text-blue-600 bg-blue-50 dark:bg-blue-500/10"
+              color="text-foreground bg-surface"
             />
             <SummaryTile
               icon={<TrendingUp size={18} />}

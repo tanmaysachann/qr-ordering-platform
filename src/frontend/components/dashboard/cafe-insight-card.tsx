@@ -68,7 +68,7 @@ export function CafeInsightCard({
               sub={`${cafe.peakHourOrders} orders`}
             />
             <InsightRow
-              icon={<Calendar size={16} className="text-blue-500" />}
+              icon={<Calendar size={16} className="text-muted" />}
               label="Busiest day of week"
               value={cafe.peakDayOfWeek !== null ? DAY_NAMES[cafe.peakDayOfWeek] : "-"}
               sub={`${cafe.peakDayOrders} orders`}
@@ -226,7 +226,7 @@ export function CafeInsightCard({
 
             {cafe.mostUsedTable && (
               <InsightRow
-                icon={<Armchair size={16} className="text-blue-500" />}
+                icon={<Armchair size={16} className="text-muted" />}
                 label="Most-used table"
                 value={`Table ${cafe.mostUsedTable.tableNumber}`}
                 sub={`${cafe.mostUsedTable.orders} orders`}
@@ -282,7 +282,7 @@ interface BarDatum {
 
 const BAR_COLORS = {
   primary: { idle: "bg-primary/60", hover: "bg-primary", empty: "bg-border/40" },
-  blue: { idle: "bg-blue-500/60", hover: "bg-blue-500", empty: "bg-border/40" },
+  blue: { idle: "bg-primary/40", hover: "bg-primary/70", empty: "bg-border/40" },
   green: { idle: "bg-green-500/60", hover: "bg-green-500", empty: "bg-border/40" },
 } as const;
 
