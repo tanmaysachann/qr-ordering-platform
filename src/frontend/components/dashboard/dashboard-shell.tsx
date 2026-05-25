@@ -45,6 +45,110 @@ import { useState, useEffect } from "react";
 import { useTheme } from "@/frontend/hooks/use-theme";
 import type { UserRole } from "@/generated/prisma";
 
+interface SidebarContentProps {
+  user: { name: string; role: UserRole; email: string; cafeId: string | null };
+  navigation: { name: string; href: string; icon: React.ElementType }[];
+  isAdmin: boolean;
+  cafeInfo: { name: string; slug: string } | null;
+  dark: boolean;
+  toggle: () => void;
+  onClose: () => void;
+  onQrOpen: () => void;
+}
+
+function SidebarContent({ user, navigation, isAdmin, cafeInfo, dark, toggle, onClose, onQrOpen }: SidebarContentProps) {
+  const pathname = usePathname();
+  return (
+    <>
+      {/* Logo */}
+      <div className="flex items-center justify-between px-5 py-5 border-b border-border">
+        <BrandMark />
+        <button
+          onClick={toggle}
+          className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
+          title={dark ? "Light mode" : "Dark mode"}
+        >
+          {dark ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
+      </div>
+
+      {/* User Info */}
+      <div className="px-4 py-4 border-b border-border">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center flex-shrink-0">
+            <span className="text-sm font-bold text-primary">
+              {user.name.charAt(0).toUpperCase()}
+            </span>
+          </div>
+          <div className="min-w-0">
+            <p className="font-semibold text-sm truncate text-foreground">{user.name}</p>
+            <p className="text-[11px] text-muted truncate">{user.email}</p>
+          </div>
+        </div>
+        <span className="inline-block mt-3 text-[10px] bg-primary/20 text-primary-light border border-primary/30 px-2 py-0.5 rounded-full font-medium tracking-wide uppercase">
+          {user.role.replace("_", " ")}
+        </span>
+      </div>
+
+      {/* Navigation */}
+      <nav className="px-3 py-4 space-y-0.5 flex-1 overflow-y-auto">
+        {navigation.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              onClick={onClose}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-100",
+                isActive
+                  ? "bg-primary/10 text-primary border border-primary/20"
+                  : "text-muted hover:bg-surface-hover hover:text-foreground"
+              )}
+            >
+              <item.icon size={17} />
+              {item.name}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Owner-only quick actions */}
+      {!isAdmin && cafeInfo && (
+        <div className="px-3 pb-2 space-y-2">
+          <a
+            href={`/${cafeInfo.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-muted hover:text-foreground hover:bg-surface-hover transition-colors w-full rounded-xl border border-border"
+          >
+            <ExternalLink size={16} />
+            Customer View
+          </a>
+          <button
+            onClick={onQrOpen}
+            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary/10 transition-colors w-full rounded-xl border border-primary/20"
+          >
+            <QrCode size={16} />
+            My QR Code
+          </button>
+        </div>
+      )}
+
+      {/* Logout */}
+      <div className="p-3 border-t border-border/60">
+        <button
+          onClick={() => signOut({ callbackUrl: "/" })}
+          className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-muted hover:text-danger hover:bg-danger/10 transition-colors w-full rounded-xl"
+        >
+          <LogOut size={16} />
+          Sign Out
+        </button>
+      </div>
+    </>
+  );
+}
+
 interface DashboardShellProps {
   user: { name: string; role: UserRole; email: string; cafeId: string | null };
   children: React.ReactNode;
@@ -115,102 +219,42 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
       </div>
 
       <div className="flex">
-        {/* Sidebar */}
-        <aside
-          className={cn(
-            "fixed inset-y-0 left-0 z-40 w-60 bg-background border-r border-border transform transition-transform flex flex-col lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:z-auto",
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          )}
-        >
-          {/* Logo */}
-          <div className="hidden lg:flex items-center justify-between px-5 py-5 border-b border-border">
-            <BrandMark />
-            <button
-              onClick={toggle}
-              className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-surface-hover transition-colors"
-              title={dark ? "Light mode" : "Dark mode"}
-            >
-              {dark ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-          </div>
 
-          {/* User Info */}
-          <div className="px-4 py-4 border-b border-border">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center flex-shrink-0">
-                <span className="text-sm font-bold text-primary">
-                  {user.name.charAt(0).toUpperCase()}
-                </span>
-              </div>
-              <div className="min-w-0">
-                <p className="font-semibold text-sm truncate text-foreground">{user.name}</p>
-                <p className="text-[11px] text-muted truncate">{user.email}</p>
-              </div>
-            </div>
-            <span className="inline-block mt-3 text-[10px] bg-primary/20 text-primary-light border border-primary/30 px-2 py-0.5 rounded-full font-medium tracking-wide uppercase">
-              {user.role.replace("_", " ")}
-            </span>
-          </div>
-
-          {/* Navigation */}
-          <nav className="px-3 py-4 space-y-0.5 flex-1 overflow-y-auto">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-100",
-                    isActive
-                      ? "bg-primary/10 text-primary border border-primary/20 shadow-[0_0_12px_rgba(99,102,241,0.15)]"
-                      : "text-muted hover:bg-white/[0.04] hover:text-foreground"
-                  )}
-                >
-                  <item.icon size={17} />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Owner-only quick actions */}
-          {!isAdmin && cafeInfo && (
-            <div className="px-3 pb-2 space-y-2">
-              <a
-                href={`/${cafeInfo.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-muted hover:text-foreground hover:bg-white/[0.04] transition-colors w-full rounded-xl border border-border"
-              >
-                <ExternalLink size={16} />
-                Customer View
-              </a>
-              <button
-                onClick={() => setQrOpen(true)}
-                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary/[0.08] transition-colors w-full rounded-xl border border-primary/20"
-              >
-                <QrCode size={16} />
-                My QR Code
-              </button>
-            </div>
-          )}
-
-          {/* Logout */}
-          <div className="p-3 border-t border-border/60">
-            <button
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-muted hover:text-danger hover:bg-danger/10 transition-colors w-full rounded-xl"
-            >
-              <LogOut size={16} />
-              Sign Out
-            </button>
-          </div>
+        {/* Desktop sidebar — sticky, always mounted, no GPU layer */}
+        <aside className="hidden lg:flex flex-col w-60 flex-shrink-0 sticky top-0 h-screen border-r border-border bg-background">
+          <SidebarContent
+            user={user}
+            navigation={navigation}
+            isAdmin={isAdmin}
+            cafeInfo={cafeInfo}
+            dark={dark}
+            toggle={toggle}
+            onClose={() => setSidebarOpen(false)}
+            onQrOpen={() => setQrOpen(true)}
+          />
         </aside>
 
-        {/* Mobile backdrop */}
+        {/* Mobile sidebar — only mounted when open, fixed, no transform animation */}
         {sidebarOpen && (
+          <>
+            <div className="fixed inset-0 bg-black/70 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
+            <aside className="fixed inset-y-0 left-0 z-40 w-60 bg-background border-r border-border flex flex-col lg:hidden">
+              <SidebarContent
+                user={user}
+                navigation={navigation}
+                isAdmin={isAdmin}
+                cafeInfo={cafeInfo}
+                dark={dark}
+                toggle={toggle}
+                onClose={() => setSidebarOpen(false)}
+                onQrOpen={() => setQrOpen(true)}
+              />
+            </aside>
+          </>
+        )}
+
+        {/* Mobile backdrop (legacy slot kept for spacing) */}
+        {false && (
           <div
             className="fixed inset-0 bg-black/70 z-30 lg:hidden"
             onClick={() => setSidebarOpen(false)}
