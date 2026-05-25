@@ -70,28 +70,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Subtle glow */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 500,
-          height: 500,
-          top: "30%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          background: "radial-gradient(circle, rgba(14,165,233,0.10) 0%, transparent 70%)",
-          borderRadius: "50%",
-        }}
-      />
-      {/* Noise overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
+    <div className="landing-page min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
 
       <div className="relative w-full max-w-sm">
         {/* Logo */}
@@ -140,13 +119,13 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Theme toggle + back link */}
+        {/* Back link + theme toggle */}
         <div className="flex items-center justify-between mt-5">
           <Link href="/" className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground transition-colors group">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="group-hover:-translate-x-0.5 transition-transform">
               <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            Home
+            Back to home
           </Link>
           <ThemeToggle />
         </div>

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Syne, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,10 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const syne = Syne({
-  variable: "--font-syne",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["700", "800"],
+  weight: ["500", "600", "700", "800"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} ${jetbrainsMono.variable} dark`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} ${jetbrainsMono.variable} dark`}
       suppressHydrationWarning
     >
       <head>
