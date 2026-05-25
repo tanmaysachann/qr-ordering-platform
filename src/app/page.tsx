@@ -34,173 +34,94 @@ function Wordmark() {
 }
 
 /* ── Browser-frame dashboard mockup ──────────────────────── */
-const MOCK_ORDERS = [
-  { id: "#1041", customer: "Rohit M.",  items: "Cappuccino × 2, Croissant",   amt: "₹460", time: "8m ago",   status: "Preparing", sBg: "rgba(251,191,36,0.14)", sText: "#f59e0b", isNew: false },
-  { id: "#1042", customer: "Priya S.", items: "Club Sandwich, Iced Tea",      amt: "₹380", time: "just now", status: "New",        sBg: "rgba(99,102,241,0.14)", sText: "#818cf8", isNew: true  },
-  { id: "#1043", customer: "Aditya K.", items: "Masala Chai × 3",             amt: "₹270", time: "14m ago",  status: "Ready",      sBg: "rgba(34,197,94,0.14)",  sText: "#22c55e", isNew: false },
-  { id: "#1044", customer: "Sara T.",  items: "Cold Brew, Muffin × 2",       amt: "₹390", time: "19m ago",  status: "Preparing", sBg: "rgba(251,191,36,0.14)", sText: "#f59e0b", isNew: false },
-];
-
 function DashboardMockup() {
-  const S = {
-    wrap:        { border: "1px solid #1c1c24", borderRadius: "16px", overflow: "hidden", boxShadow: "0 48px 120px rgba(0,0,0,0.55), 0 12px 32px rgba(0,0,0,0.35)" } as React.CSSProperties,
-    chrome:      { display: "flex", alignItems: "center", padding: "9px 14px", gap: "10px", background: "#111118", borderBottom: "1px solid #1c1c24" } as React.CSSProperties,
-    urlPill:     { display: "flex", alignItems: "center", gap: "5px", background: "#0d0d12", borderRadius: "6px", padding: "3px 10px", fontSize: "10px", fontFamily: "monospace", color: "#46465a" } as React.CSSProperties,
-    shell:       { display: "flex", height: "388px", background: "#0d0d12" } as React.CSSProperties,
-    sidebar:     { width: "148px", flexShrink: 0, display: "flex", flexDirection: "column" as const, background: "#111118", borderRight: "1px solid #1c1c24", padding: "16px 10px" },
-    navItem:     (a: boolean) => ({ display: "flex", alignItems: "center", gap: "7px", padding: "6px 9px", borderRadius: "7px", fontSize: "11px", fontWeight: a ? 600 : 400, cursor: "default", ...(a ? { background: "#1e1e2e", color: "#a5b4fc" } : { color: "#3d3d52" }) }) as React.CSSProperties,
-    main:        { flex: 1, display: "flex", flexDirection: "column" as const, overflow: "hidden" },
-    statsBar:    { display: "flex", gap: "6px", padding: "12px 16px", borderBottom: "1px solid #1c1c24", flexShrink: 0 } as React.CSSProperties,
-    statChip:    (c: string) => ({ flex: 1, background: "#111118", border: "1px solid #1c1c24", borderRadius: "8px", padding: "8px 10px", display: "flex", flexDirection: "column" as const, gap: "2px", borderTop: `2px solid ${c}` }),
-    orderList:   { flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" as const, gap: "4px", padding: "10px 12px" },
-    orderRow:    (isNew: boolean) => ({ display: "flex", alignItems: "center", gap: "10px", padding: "9px 12px", borderRadius: "8px", background: isNew ? "rgba(99,102,241,0.07)" : "#111118", border: isNew ? "1px solid rgba(99,102,241,0.22)" : "1px solid #1c1c24", position: "relative" as const, overflow: "hidden" }),
-  };
-
   return (
-    <div className="relative w-full max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+    <div className="relative w-full max-w-2xl mx-auto animate-fade-in-up" style={{ animationDelay: "300ms" }}>
 
-      <div style={S.wrap}>
+      {/* Main card */}
+      <div style={{ background: "#13120f", border: "1px solid #2a2620", borderRadius: "20px", overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3)" }}>
 
-        {/* Browser chrome */}
-        <div style={S.chrome}>
-          <div style={{ display: "flex", gap: "5px", flexShrink: 0 }}>
-            {["#ff5f57","#febc2e","#28c840"].map(c => <span key={c} style={{ width: "9px", height: "9px", borderRadius: "50%", background: c, display: "block" }} />)}
-          </div>
-          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-            <div style={S.urlPill}>
-              <span style={{ color: "#22c55e", fontSize: "7px", lineHeight: 1 }}>●</span>
-              dashboard.scanandpay.app/orders
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #1e1c19" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ width: "28px", height: "28px", borderRadius: "8px", background: "#2a2620", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <ChefHat size={14} color="#9a8578" />
+            </div>
+            <div>
+              <div style={{ fontSize: "13px", fontWeight: 700, color: "#e8e2db", letterSpacing: "-0.02em" }}>Blue Tokai Coffee</div>
+              <div style={{ fontSize: "10px", color: "#5a5248" }}>Koramangala, Bengaluru</div>
             </div>
           </div>
-          <div style={{ width: "44px" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "rgba(90,122,74,0.15)", border: "1px solid rgba(90,122,74,0.3)", borderRadius: "99px", padding: "4px 10px" }}>
+            <span className="animate-pulse" style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#5a7a4a", display: "block" }} />
+            <span style={{ fontSize: "10px", fontWeight: 600, color: "#5a7a4a" }}>Live</span>
+          </div>
         </div>
 
-        {/* App shell */}
-        <div style={S.shell}>
-
-          {/* Sidebar */}
-          <div style={S.sidebar}>
-
-            {/* Brand */}
-            <div style={{ padding: "2px 4px", marginBottom: "18px" }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, color: "#d0d0e0", letterSpacing: "-0.02em" }}>Blue Tokai</div>
-              <div style={{ fontSize: "9px", color: "#3d3d52", marginTop: "1px" }}>Koramangala</div>
+        {/* Stats row */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "1px", background: "#1e1c19", borderBottom: "1px solid #1e1c19" }}>
+          {[
+            { label: "Today's Revenue", value: "₹12,840", sub: "+18% vs yesterday", subColor: "#5a7a4a" },
+            { label: "Orders",          value: "24",       sub: "since 9 AM",        subColor: "#5a5248" },
+            { label: "Pending",         value: "3",        sub: "need action",       subColor: "#7a5a30" },
+            { label: "Completed",       value: "21",       sub: "today",             subColor: "#5a5248" },
+          ].map(s => (
+            <div key={s.label} style={{ background: "#13120f", padding: "14px 16px" }}>
+              <div style={{ fontSize: "9px", color: "#5a5248", textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: "6px" }}>{s.label}</div>
+              <div className="[font-family:var(--font-jb-mono)]" style={{ fontSize: "18px", fontWeight: 700, color: "#e8e2db", letterSpacing: "-0.03em", lineHeight: 1 }}>{s.value}</div>
+              <div style={{ fontSize: "9px", color: s.subColor, marginTop: "4px" }}>{s.sub}</div>
             </div>
+          ))}
+        </div>
 
-            {/* Nav items */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
-              {[
-                { label: "Orders",    Icon: Bell,      active: true,  badge: 4 as number | undefined },
-                { label: "Menu",      Icon: ChefHat,   active: false, badge: undefined },
-                { label: "Analytics", Icon: LineChart,  active: false, badge: undefined },
-                { label: "QR Code",   Icon: QrCode,    active: false, badge: undefined },
-              ].map(({ label, Icon, active, badge }) => (
-                <div key={label} style={S.navItem(active)}>
-                  <Icon size={11} />
-                  {label}
-                  {badge && (
-                    <span style={{ marginLeft: "auto", background: "#6366f1", color: "#fff", fontSize: "8px", fontWeight: 700, padding: "1px 5px", borderRadius: "99px", lineHeight: "14px" }}>
-                      {badge}
-                    </span>
-                  )}
-                </div>
-              ))}
+        {/* New order — highlighted */}
+        <div style={{ margin: "14px 16px 8px", background: "rgba(90,122,74,0.08)", border: "1px solid rgba(90,122,74,0.25)", borderRadius: "12px", padding: "14px 16px", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "3px", background: "#5a7a4a", borderRadius: "3px 0 0 3px" }} />
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "8px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+              <span style={{ fontSize: "9px", fontWeight: 700, background: "rgba(90,122,74,0.2)", color: "#5a7a4a", padding: "2px 7px", borderRadius: "99px", letterSpacing: "0.06em" }}>NEW</span>
+              <span className="[font-family:var(--font-jb-mono)]" style={{ fontSize: "11px", fontWeight: 700, color: "#e8e2db" }}>#1047</span>
+              <span style={{ fontSize: "10px", color: "#5a5248" }}>just now</span>
             </div>
-
-            {/* Revenue block */}
-            <div style={{ marginTop: "auto", borderTop: "1px solid #1c1c24", paddingTop: "14px" }}>
-              <div style={{ fontSize: "8px", textTransform: "uppercase", letterSpacing: "0.10em", color: "#3d3d52", marginBottom: "7px" }}>Today&apos;s revenue</div>
-              <div className="[font-family:var(--font-jb-mono)]" style={{ fontSize: "20px", fontWeight: 700, color: "#f0f0f8", letterSpacing: "-0.04em", lineHeight: 1 }}>
-                ₹12,840
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "3px", fontSize: "9px", color: "#22c55e", fontWeight: 600, marginTop: "6px" }}>
-                <TrendingUp size={9} />
-                +18% vs yesterday
-              </div>
-            </div>
+            <span className="[font-family:var(--font-jb-mono)]" style={{ fontSize: "14px", fontWeight: 700, color: "#e8e2db" }}>₹520</span>
           </div>
-
-          {/* Main panel */}
-          <div style={S.main}>
-
-            {/* Top stats bar */}
-            <div style={S.statsBar}>
-              {[
-                { label: "Revenue", value: "₹4,240", accent: "#6366f1" },
-                { label: "Orders",  value: "18",      accent: "#22c55e" },
-                { label: "Pending", value: "4",        accent: "#f59e0b" },
-                { label: "Done",    value: "14",       accent: "#3d3d52" },
-              ].map(c => (
-                <div key={c.label} style={S.statChip(c.accent)}>
-                  <div style={{ fontSize: "8px", color: "#3d3d52", textTransform: "uppercase", letterSpacing: "0.08em" }}>{c.label}</div>
-                  <div className="[font-family:var(--font-jb-mono)]" style={{ fontSize: "14px", fontWeight: 700, color: "#d0d0e0", letterSpacing: "-0.02em" }}>{c.value}</div>
-                </div>
-              ))}
-              {/* Live dot */}
-              <div style={{ display: "flex", alignItems: "center", gap: "5px", marginLeft: "auto", flexShrink: 0 }}>
-                <span className="animate-pulse" style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#22c55e", display: "block" }} />
-                <span style={{ fontSize: "9px", fontWeight: 600, color: "#22c55e" }}>LIVE</span>
-              </div>
-            </div>
-
-            {/* Column headers */}
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 24px 4px", flexShrink: 0 }}>
-              {[["Order", "60px"], ["Items", "1"], ["Time", "52px"], ["Amount", "44px"], ["Status", "64px"]].map(([h, w]) => (
-                <div key={h} style={{ fontSize: "8px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.10em", color: "#2d2d40", ...(w === "1" ? { flex: 1 } : { width: w, flexShrink: 0, textAlign: h === "Amount" || h === "Status" ? "center" : "left" as "left" | "center" }) }}>
-                  {h}
-                </div>
-              ))}
-            </div>
-
-            {/* Orders */}
-            <div style={S.orderList}>
-              {MOCK_ORDERS.map((row, i) => (
-                <div key={i} style={S.orderRow(row.isNew)}>
-                  {/* Status strip */}
-                  <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "3px", background: row.sText }} />
-
-                  {/* Order ID */}
-                  <div className="[font-family:var(--font-jb-mono)]" style={{ width: "60px", flexShrink: 0, fontSize: "10px", fontWeight: 700, color: row.isNew ? "#818cf8" : "#3d3d52" }}>
-                    {row.id}
-                  </div>
-
-                  {/* Customer + Items */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: "9px", fontWeight: 600, color: "#a0a0b8", marginBottom: "1px" }}>{row.customer}</div>
-                    <div style={{ fontSize: "10px", color: "#5a5a70", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{row.items}</div>
-                  </div>
-
-                  {/* Time */}
-                  <div style={{ width: "52px", flexShrink: 0, fontSize: "9px", color: "#2d2d40", textAlign: "right" }}>{row.time}</div>
-
-                  {/* Amount */}
-                  <div className="[font-family:var(--font-jb-mono)]" style={{ width: "44px", flexShrink: 0, fontSize: "11px", fontWeight: 700, color: "#d0d0e0", textAlign: "right" }}>{row.amt}</div>
-
-                  {/* Status badge */}
-                  <div style={{ width: "64px", flexShrink: 0, textAlign: "center", fontSize: "8px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", padding: "3px 0", borderRadius: "5px", background: row.sBg, color: row.sText }}>
-                    {row.status}
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div style={{ fontSize: "11px", color: "#9a8578", marginBottom: "10px" }}>Cold Brew × 2, Avocado Toast</div>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <div style={{ flex: 1, background: "#5a7a4a", borderRadius: "7px", padding: "7px 0", textAlign: "center", fontSize: "10px", fontWeight: 700, color: "#fff" }}>Accept</div>
+            <div style={{ flex: 1, background: "#2a2620", borderRadius: "7px", padding: "7px 0", textAlign: "center", fontSize: "10px", fontWeight: 600, color: "#9a8578" }}>View Details</div>
           </div>
+        </div>
 
+        {/* Older orders */}
+        <div style={{ padding: "0 16px 16px", display: "flex", flexDirection: "column" as const, gap: "6px" }}>
+          {[
+            { id: "#1046", items: "Cappuccino × 2, Croissant", amt: "₹460", status: "Preparing", statusBg: "rgba(122,90,48,0.18)", statusColor: "#c4874a" },
+            { id: "#1045", items: "Masala Chai × 3",           amt: "₹270", status: "Ready",     statusBg: "rgba(90,122,74,0.15)", statusColor: "#5a7a4a" },
+            { id: "#1044", items: "Club Sandwich, Iced Tea",   amt: "₹380", status: "Done",      statusBg: "rgba(90,82,72,0.2)",  statusColor: "#6a5a50" },
+          ].map(row => (
+            <div key={row.id} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "10px 12px", background: "#1a1816", borderRadius: "9px", border: "1px solid #2a2620" }}>
+              <span className="[font-family:var(--font-jb-mono)]" style={{ fontSize: "10px", fontWeight: 700, color: "#5a5248", width: "38px", flexShrink: 0 }}>{row.id}</span>
+              <span style={{ flex: 1, fontSize: "10px", color: "#7a6e66", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{row.items}</span>
+              <span className="[font-family:var(--font-jb-mono)]" style={{ fontSize: "11px", fontWeight: 700, color: "#9a8578", flexShrink: 0 }}>{row.amt}</span>
+              <span style={{ fontSize: "9px", fontWeight: 700, padding: "3px 9px", borderRadius: "99px", background: row.statusBg, color: row.statusColor, flexShrink: 0 }}>{row.status}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Floating new-order toast */}
-      <div className="hidden lg:flex items-center gap-3 animate-float" style={{
-        position: "absolute", top: "-14px", right: "-18px",
-        background: "#111118", border: "1px solid rgba(99,102,241,0.3)",
-        borderRadius: "12px", padding: "10px 14px",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.08)",
+      {/* Floating payment toast */}
+      <div className="hidden lg:flex items-center gap-3" style={{
+        position: "absolute", top: "-16px", right: "-20px",
+        background: "#1a1816", border: "1px solid #2a2620",
+        borderRadius: "14px", padding: "11px 15px",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
       }}>
-        <div style={{ width: "30px", height: "30px", borderRadius: "8px", background: "rgba(99,102,241,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          <Bell size={14} color="#818cf8" />
+        <div style={{ width: "32px", height: "32px", borderRadius: "9px", background: "rgba(90,122,74,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <TrendingUp size={14} color="#5a7a4a" />
         </div>
         <div>
-          <div style={{ fontSize: "11px", fontWeight: 700, color: "#d0d0e0", marginBottom: "2px" }}>New order #1042</div>
-          <div style={{ fontSize: "10px", color: "#3d3d52" }}>Club Sandwich · ₹380 paid</div>
+          <div style={{ fontSize: "11px", fontWeight: 700, color: "#e8e2db", marginBottom: "2px" }}>Payment confirmed</div>
+          <div style={{ fontSize: "10px", color: "#5a5248" }}>#1047 · ₹520 via PhonePe</div>
         </div>
       </div>
 
