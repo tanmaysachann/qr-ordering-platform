@@ -43,10 +43,8 @@
 }
 
 .dark .landing-page .glass-panel-landing {
-  background: rgba(28, 25, 22, 0.65);
+  background: rgba(28, 25, 22, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
 }
 
 /* ── Light mode (premium indigo) ── */
@@ -201,21 +199,17 @@ body {
 
 /* ── Glassmorphic card (Voltage Mono) ── */
 .glass-card {
-  background: rgba(160, 120, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(160, 120, 255, 0.10);
 }
 
 /* ── Landing glass panel (CraveFlow) — adapts to light/dark ── */
 .glass-panel-landing {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .dark .glass-panel-landing {
-  background: rgba(30, 41, 59, 0.4);
+  background: rgba(30, 41, 59, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -251,7 +245,6 @@ body {
 }
 .animate-marquee {
   animation: marquee 30s linear infinite;
-  will-change: transform;
 }
 
 /* ── Animations ── */
@@ -390,9 +383,7 @@ body {
 .stagger-children > *:nth-child(10) { animation-delay: 360ms; }
 
 .glass {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .page-enter {

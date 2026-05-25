@@ -19,15 +19,13 @@ export function CartSheet({ isOpen, onClose, onCheckout }: CartSheetProps) {
     <>
       {/* Backdrop */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/70 z-40 transition-opacity" onClick={onClose} />
+        <div className="fixed inset-0 bg-black/70 z-40" onClick={onClose} />
       )}
 
       {/* Sheet */}
+      {isOpen && (
       <div
-        className={cn(
-          "fixed inset-x-0 bottom-0 z-50 bg-[#111222] border-t-2 border-[#494454] shadow-2xl transition-transform duration-200 ease-out max-h-[85vh] flex flex-col",
-          isOpen ? "translate-y-0" : "translate-y-full"
-        )}
+        className="fixed inset-x-0 bottom-0 z-50 bg-[#111222] border-t-2 border-[#494454] shadow-2xl max-h-[85vh] flex flex-col"
         style={{ borderRadius: 0 }}
       >
         {/* Handle */}
@@ -205,6 +203,7 @@ export function CartSheet({ isOpen, onClose, onCheckout }: CartSheetProps) {
           </div>
         )}
       </div>
+      )}
     </>
   );
 }
