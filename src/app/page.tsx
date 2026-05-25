@@ -216,15 +216,21 @@ const MARQUEE_ITEMS = [
 ];
 
 function MarqueeStrip() {
+  const items = (
+    <div className="flex items-center gap-10 flex-shrink-0 pr-10">
+      {MARQUEE_ITEMS.map(item => (
+        <span key={item} className="inline-flex items-center gap-4 text-[11px] uppercase tracking-[0.14em] text-muted font-medium">
+          {item}
+          <span className="text-primary opacity-50">✦</span>
+        </span>
+      ))}
+    </div>
+  );
   return (
     <div className="border-y border-border py-4 overflow-hidden bg-surface/50">
-      <div className="flex items-center justify-center flex-wrap gap-x-10 gap-y-2 px-6">
-        {MARQUEE_ITEMS.map(item => (
-          <span key={item} className="inline-flex items-center gap-4 text-[11px] uppercase tracking-[0.14em] text-muted font-medium">
-            {item}
-            <span className="text-primary opacity-50">✦</span>
-          </span>
-        ))}
+      <div className="animate-marquee">
+        {items}
+        {items}
       </div>
     </div>
   );
