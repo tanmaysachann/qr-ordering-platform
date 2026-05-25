@@ -254,7 +254,7 @@ export default function HomePage() {
             <ThemeToggle />
             <Link
               href="/login"
-              className="bg-primary text-white hover:bg-primary-dark px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition-all hover:scale-[1.02] shadow-sm shadow-primary/20"
+              className="bg-primary text-white hover:bg-primary-dark px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition-colors shadow-sm shadow-primary/20"
             >
               Get Started <ArrowRight size={14} />
             </Link>
@@ -301,10 +301,10 @@ export default function HomePage() {
           >
             <Link
               href="/login"
-              className="bg-primary text-white px-7 py-3.5 rounded-xl text-sm font-bold hover:bg-primary-dark transition-all hover:scale-[1.02] flex items-center gap-2 shadow-lg shadow-primary/25 group"
+              className="bg-primary text-white px-7 py-3.5 rounded-xl text-sm font-bold hover:bg-primary-dark transition-colors flex items-center gap-2 shadow-lg shadow-primary/25"
             >
               Open Dashboard
-              <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight size={15} />
             </Link>
             <a
               href="#how-it-works"
@@ -583,10 +583,10 @@ export default function HomePage() {
                 </p>
                 <Link
                   href="/login"
-                  className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl text-sm font-bold hover:bg-white/90 transition-all hover:scale-[1.02] shadow-lg group"
+                  className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl text-sm font-bold hover:bg-white/90 transition-colors shadow-lg"
                 >
                   Open Dashboard
-                  <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+                  <ArrowRight size={15} />
                 </Link>
               </div>
             </div>

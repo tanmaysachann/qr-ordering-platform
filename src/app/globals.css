@@ -238,29 +238,17 @@ body {
   scrollbar-width: none;
 }
 
-/* ── Marquee ── */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
+/* ── Marquee (transform animation removed — causes Android GPU glitch) ── */
 .animate-marquee {
-  animation: marquee 30s linear infinite;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
 /* ── Animations ── */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(100%); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes shimmer {
@@ -268,56 +256,21 @@ body {
   100% { background-position: 200% 0; }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
 @keyframes progressPulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
 
-@keyframes pop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.35); }
-  70%  { transform: scale(0.92); }
-  100% { transform: scale(1); }
-}
-
-@keyframes addRipple {
-  0%   { opacity: 0.55; transform: scale(0.7); }
-  100% { opacity: 0;    transform: scale(1.45); }
-}
-
-@keyframes checkBurst {
-  0%   { opacity: 0; transform: scale(0.4); }
-  35%  { opacity: 1; transform: scale(1.15); }
-  70%  { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.95); }
-}
-
-@keyframes shine {
-  0%   { transform: translateX(-120%) skewX(-20deg); }
-  100% { transform: translateX(220%)  skewX(-20deg); }
-}
-
-@keyframes wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25%      { transform: rotate(-6deg); }
-  75%      { transform: rotate(6deg); }
-}
-
 .animate-fade-in-up {
-  animation: fadeInUp 0.35s ease-out both;
+  animation: fadeIn 0.3s ease-out both;
 }
 
 .animate-slide-up {
-  animation: slideUp 0.3s ease-out both;
+  animation: fadeIn 0.3s ease-out both;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.2s ease-out both;
+  animation: fadeIn 0.2s ease-out both;
 }
 
 .animate-shimmer {
@@ -327,7 +280,7 @@ body {
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  /* float removed — infinite transform causes GPU compositing glitch on Android */
 }
 
 .animate-progress-pulse {
@@ -335,41 +288,27 @@ body {
 }
 
 .animate-pop {
-  animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* pop removed — transform scale causes GPU compositing */
 }
 
 .animate-add-ripple {
-  animation: addRipple 0.7s ease-out forwards;
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
 .animate-check-burst {
-  animation: checkBurst 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
 .animate-wiggle {
-  animation: wiggle 0.5s ease-in-out;
+  /* wiggle removed — transform rotate causes GPU compositing */
 }
 
 .shine-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: inherit;
-}
-.shine-overlay::before {
-  content: "";
-  position: absolute;
-  top: 0; bottom: 0;
-  left: 0;
-  width: 40%;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
-  transform: translateX(-120%) skewX(-20deg);
-  animation: shine 2.8s ease-in-out infinite;
+  display: none;
 }
 
 .stagger-children > * {
-  animation: fadeInUp 0.35s ease-out both;
+  animation: fadeIn 0.3s ease-out both;
 }
 .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
 .stagger-children > *:nth-child(2) { animation-delay: 40ms; }

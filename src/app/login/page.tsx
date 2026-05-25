@@ -122,7 +122,7 @@ export default function LoginPage() {
         {/* Back link + theme toggle */}
         <div className="flex items-center justify-between mt-5">
           <Link href="/" className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground transition-colors group">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="group-hover:-translate-x-0.5 transition-transform">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
               <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             Back to home

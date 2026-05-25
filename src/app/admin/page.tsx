@@ -295,7 +295,7 @@ export default function AdminCafesPage() {
             <div
               key={cafe.id}
               onClick={() => router.push(`/admin/cafes/${cafe.id}`)}
-              className="group bg-surface rounded-2xl border border-border p-5 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer"
+              className="bg-surface rounded-2xl border border-border p-5 shadow-sm hover:shadow-lg hover:border-primary/20 transition-shadow duration-150 cursor-pointer"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -305,7 +305,7 @@ export default function AdminCafesPage() {
                   <Badge variant={cafe.isActive ? "success" : "danger"}>
                     {cafe.isActive ? "Active" : "Inactive"}
                   </Badge>
-                  <ChevronRight size={15} className="text-muted/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-100" />
+                  <ChevronRight size={15} className="text-muted/50" />
                 </div>
               </div>
 
