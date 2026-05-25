@@ -467,15 +467,39 @@ export default function HomePage() {
                   <Bell size={22} />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">Live order stream</h3>
-                <p className="text-muted leading-relaxed mb-8 text-[15px]">
+                <p className="text-muted leading-relaxed mb-6 text-[15px]">
                   New orders appear on your screen the instant they&apos;re placed. Move orders through prep stages with a single tap. No refresh, no delay.
                 </p>
-                <ul className="space-y-3.5 mt-auto">
+
+                {/* Mock order feed */}
+                <div className="rounded-xl border border-primary/15 bg-background/60 overflow-hidden mb-6 flex-shrink-0">
+                  <div className="flex items-center justify-between px-4 py-2.5 border-b border-primary/10">
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-muted">Live feed</span>
+                    <span className="flex items-center gap-1.5 text-[11px] text-success font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-success inline-block" />
+                      Connected
+                    </span>
+                  </div>
+                  {[
+                    { id: "#1042", items: "Cappuccino × 2, Croissant", amt: "₹460", status: "New", statusColor: "text-success bg-success/10" },
+                    { id: "#1041", items: "Club Sandwich, Iced Tea", amt: "₹380", status: "Preparing", statusColor: "text-warning bg-warning/10" },
+                    { id: "#1040", items: "Masala Chai × 3", amt: "₹270", status: "Ready", statusColor: "text-info bg-info/10" },
+                  ].map((order, i) => (
+                    <div key={order.id} className={`flex items-center justify-between px-4 py-3 ${i !== 2 ? "border-b border-primary/10" : ""}`}>
+                      <div>
+                        <p className="text-xs font-bold text-foreground">{order.id} &middot; {order.amt}</p>
+                        <p className="text-[11px] text-muted mt-0.5 truncate max-w-[200px]">{order.items}</p>
+                      </div>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${order.statusColor}`}>{order.status}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <ul className="space-y-3 mt-auto">
                   {[
                     "Real-time push via Server-Sent Events",
                     "One-tap status: Preparing → Ready → Done",
                     "Full order history and itemised receipts",
-                    "Multi-table view at a glance",
                     "Visual + audio alerts for new orders",
                   ].map((b) => (
                     <li key={b} className="flex items-start gap-2.5 text-sm text-muted">
