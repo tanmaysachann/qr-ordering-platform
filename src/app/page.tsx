@@ -240,7 +240,7 @@ export default function HomePage() {
     <div className="landing-page min-h-screen bg-background text-foreground antialiased overflow-x-hidden">
 
       {/* ── Navbar ── */}
-      <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-border">
+      <header className="fixed top-0 w-full z-50 bg-background border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link href="/"><Wordmark /></Link>
 

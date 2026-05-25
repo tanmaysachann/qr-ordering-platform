@@ -148,7 +148,7 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
 
           <h1
             className="text-[2.4rem] leading-[1.0] tracking-[-0.03em] font-extrabold text-[#e2e0f8] mb-4 animate-fade-in-up uppercase"
-            style={{ fontFamily: "var(--font-syne), sans-serif", animationDelay: "50ms" }}
+            style={{ fontFamily: "var(--font-display), sans-serif", animationDelay: "50ms" }}
           >
             {cafe.name}
           </h1>
@@ -242,7 +242,7 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
               </div>
               <p
                 className="text-base font-bold text-[#e2e0f8] mb-1 uppercase"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 No dishes found
               </p>
@@ -266,7 +266,7 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
               <div className="flex items-center gap-3 mb-4">
                 <h2
                   className="text-base font-extrabold text-[#e2e0f8] uppercase tracking-tight"
-                  style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                  style={{ fontFamily: "var(--font-display), sans-serif" }}
                 >
                   {toTitleCase(category.name)}
                 </h2>

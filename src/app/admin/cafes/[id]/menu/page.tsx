@@ -65,6 +65,7 @@ export default function AdminCafeMenuPage() {
   const [formCategory, setFormCategory] = useState("");
   const [formIsVeg, setFormIsVeg] = useState(true);
   const [formSaving, setFormSaving] = useState(false);
+  const [formError, setFormError] = useState("");
   const [formImageUrl, setFormImageUrl] = useState<string | null>(null);
   const [imageUploading, setImageUploading] = useState(false);
 
@@ -174,11 +175,11 @@ export default function AdminCafeMenuPage() {
       if (data.success) {
         setFormImageUrl(data.data.imageUrl);
       } else {
-        alert(data.error || "Upload failed");
+        setFormError(data.error || "Upload failed");
       }
     } catch (err) {
       console.error("Image upload failed:", err);
-      alert("Image upload failed");
+      setFormError("Image upload failed");
     } finally {
       setImageUploading(false);
     }
@@ -506,6 +507,11 @@ export default function AdminCafeMenuPage() {
             </button>
           </div>
 
+          {formError && (
+            <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl border border-danger/25">
+              {formError}
+            </div>
+          )}
           <Button onClick={handleSave} className="w-full" loading={formSaving}>
             {editItem ? "Update Item" : "Add Item"}
           </Button>

@@ -10,7 +10,7 @@ interface CategoryTabsProps {
 
 export function CategoryTabs({ categories, activeCategory, onSelect }: CategoryTabsProps) {
   return (
-    <div className="sticky top-0 z-20 bg-[#111222]/90 backdrop-blur-xl border-b-2 border-[#494454]">
+    <div className="sticky top-0 z-20 bg-[#111222] border-b-2 border-[#494454]">
       <div className="flex gap-2.5 px-4 py-3 overflow-x-auto no-scrollbar">
         {categories.map((cat) => {
           const isActive = activeCategory === cat.id;

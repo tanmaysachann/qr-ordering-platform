@@ -136,9 +136,12 @@ export default function AccountsPage() {
   async function handleDelete(id: string) {
     setDeleting(id);
     try {
-      await fetch(`/api/dashboard/expenses?id=${id}`, { method: "DELETE" });
-      setExpenses((prev) => prev.filter((e) => e.id !== id));
-      setTotalPaise((prev) => prev - (expenses.find((e) => e.id === id)?.amountPaise ?? 0));
+      const res = await fetch(`/api/dashboard/expenses?id=${id}`, { method: "DELETE" });
+      if (res.ok) {
+        const removed = expenses.find((e) => e.id === id);
+        setExpenses((prev) => prev.filter((e) => e.id !== id));
+        setTotalPaise((prev) => prev - (removed?.amountPaise ?? 0));
+      }
     } finally {
       setDeleting(null);
     }
@@ -228,7 +231,7 @@ export default function AccountsPage() {
 
       {/* Add Expense Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
           <div className="bg-surface border border-border rounded-2xl w-full max-w-md shadow-xl">
             <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-border">
               <h2 className="font-semibold text-lg">Add Expense</h2>
@@ -377,7 +380,7 @@ export default function AccountsPage() {
                     <button
                       onClick={() => handleDelete(expense.id)}
                       disabled={deleting === expense.id}
-                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-muted hover:text-danger hover:bg-danger/100/10 transition-all"
+                      className="p-1.5 rounded-lg text-muted hover:text-danger hover:bg-danger/10 transition-all"
                     >
                       <Trash2 size={14} />
                     </button>

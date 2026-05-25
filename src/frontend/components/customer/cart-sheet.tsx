@@ -44,7 +44,7 @@ export function CartSheet({ isOpen, onClose, onCheckout }: CartSheetProps) {
             <div>
               <h2
                 className="text-lg font-extrabold leading-tight text-[#e2e0f8] uppercase"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 Your Cart
               </h2>
@@ -86,7 +86,7 @@ export function CartSheet({ isOpen, onClose, onCheckout }: CartSheetProps) {
               </div>
               <p
                 className="font-bold text-[#e2e0f8] mb-1 uppercase"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 Cart is empty
               </p>
@@ -122,7 +122,7 @@ export function CartSheet({ isOpen, onClose, onCheckout }: CartSheetProps) {
                       </span>
                       <p
                         className="text-sm font-bold truncate text-[#e2e0f8] uppercase"
-                        style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                        style={{ fontFamily: "var(--font-display), sans-serif" }}
                       >
                         {item.name}
                       </p>
@@ -146,19 +146,19 @@ export function CartSheet({ isOpen, onClose, onCheckout }: CartSheetProps) {
                           ? removeItem(item.menuItemId)
                           : updateQuantity(item.menuItemId, item.quantity - 1)
                       }
-                      className="w-8 h-8 flex items-center justify-center text-[#cbc3d7] hover:bg-[#494454]/30 hover:text-[#e2e0f8] transition-colors duration-75"
+                      className="w-11 h-11 flex items-center justify-center text-[#cbc3d7] hover:bg-[#494454]/30 hover:text-[#e2e0f8] transition-colors duration-75"
                     >
                       {item.quantity === 1 ? <Trash2 size={13} className="text-[#ffb4ab]" /> : <Minus size={13} />}
                     </button>
                     <span
-                      className="w-8 h-8 flex items-center justify-center text-sm font-bold border-x-2 border-[#494454] text-[#e2e0f8]"
+                      className="w-8 h-11 flex items-center justify-center text-sm font-bold border-x-2 border-[#494454] text-[#e2e0f8]"
                       style={{ fontFamily: "var(--font-jb-mono), monospace" }}
                     >
                       {item.quantity}
                     </span>
                     <button
                       onClick={() => updateQuantity(item.menuItemId, item.quantity + 1)}
-                      className="w-8 h-8 flex items-center justify-center text-[#cbc3d7] hover:bg-[#494454]/30 hover:text-[#e2e0f8] transition-colors duration-75"
+                      className="w-11 h-11 flex items-center justify-center text-[#cbc3d7] hover:bg-[#494454]/30 hover:text-[#e2e0f8] transition-colors duration-75"
                     >
                       <Plus size={13} />
                     </button>
@@ -189,7 +189,7 @@ export function CartSheet({ isOpen, onClose, onCheckout }: CartSheetProps) {
               </span>
               <span
                 className="text-2xl font-extrabold text-[#cdf200]"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 {paiseToCurrencyShort(total)}
               </span>

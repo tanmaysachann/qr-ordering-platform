@@ -80,6 +80,7 @@ export default function MenuManagementPage() {
   // Image upload state
   const [formImageUrl, setFormImageUrl] = useState<string | null>(null);
   const [imageUploading, setImageUploading] = useState(false);
+  const [formError, setFormError] = useState("");
 
   // Inline "new category" from item modal
   const [inlineNewCat, setInlineNewCat] = useState("");
@@ -212,11 +213,11 @@ export default function MenuManagementPage() {
       if (data.success) {
         setFormImageUrl(data.data.imageUrl);
       } else {
-        alert(data.error || "Upload failed");
+        setFormError(data.error || "Upload failed");
       }
     } catch (err) {
       console.error("Image upload failed:", err);
-      alert("Image upload failed");
+      setFormError("Image upload failed");
     } finally {
       setImageUploading(false);
     }
@@ -225,9 +226,10 @@ export default function MenuManagementPage() {
   const handleSaveItem = async () => {
     if (!formName || !formPrice) return;
     if (!formCategory) {
-      alert("Please select a category (or create a new one).");
+      setFormError("Please select a category (or create a new one).");
       return;
     }
+    setFormError("");
     setFormSaving(true);
 
     const apiBase = getMenuApiBase();
@@ -259,14 +261,14 @@ export default function MenuManagementPage() {
           });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        alert(err.error || "Failed to save item.");
+        setFormError(err.error || "Failed to save item.");
         return;
       }
       setShowModal(false);
       refetchMenu();
     } catch (err) {
       console.error("Failed to save:", err);
-      alert("Network error - could not save item.");
+      setFormError("Network error — could not save item.");
     } finally {
       setFormSaving(false);
     }
@@ -744,6 +746,11 @@ export default function MenuManagementPage() {
             </button>
           </div>
 
+          {formError && (
+            <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl border border-danger/25">
+              {formError}
+            </div>
+          )}
           <Button onClick={handleSaveItem} className="w-full" loading={formSaving}>
             {editItem ? "Update Item" : "Add Item"}
           </Button>

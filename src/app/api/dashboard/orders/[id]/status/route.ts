@@ -15,9 +15,10 @@ export async function PATCH(
     const { id } = await params;
     const { status } = await request.json();
 
-    if (!status) {
+    const VALID_STATUSES = ["CREATED","PAYMENT_PENDING","PAID","PREPARING","READY","COMPLETED","CANCELLED"];
+    if (!status || !VALID_STATUSES.includes(status)) {
       return NextResponse.json(
-        { success: false, error: "Status is required" },
+        { success: false, error: "Invalid or missing status" },
         { status: 400 }
       );
     }

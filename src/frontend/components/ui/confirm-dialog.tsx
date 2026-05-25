@@ -37,7 +37,7 @@ export function ConfirmDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/70" onClick={onClose} />
 
       {/* Panel */}
       <div className="relative z-10 w-full max-w-sm bg-surface rounded-2xl shadow-2xl shadow-black/25 ring-1 ring-border/50 animate-fade-in-up overflow-hidden">

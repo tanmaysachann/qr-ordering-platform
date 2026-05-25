@@ -72,6 +72,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         { name: "All Cafes",    href: "/admin",           icon: LayoutDashboard },
         { name: "All Orders",   href: "/admin/orders",    icon: ClipboardList },
         { name: "Menu",         href: "/admin/menu",      icon: UtensilsCrossed },
+        { name: "Users",        href: "/admin/users",     icon: Users },
         { name: "Deep Insights",href: "/admin/insights",  icon: Sparkles },
       ]
     : [
@@ -85,17 +86,8 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
 
   return (
     <div className="dashboard-app min-h-screen bg-background">
-      {/* Noise overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none z-[9998] opacity-[0.025]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-
       {/* Mobile Header */}
-      <div className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border sticky top-0 z-30">
+      <div className="lg:hidden bg-background border-b border-border sticky top-0 z-30">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2.5">
             <button
@@ -220,7 +212,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         {/* Mobile backdrop */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 lg:hidden"
+            className="fixed inset-0 bg-black/70 z-30 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}

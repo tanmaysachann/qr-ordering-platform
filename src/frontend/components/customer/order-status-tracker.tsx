@@ -115,16 +115,23 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
           </div>
           <h2
             className="text-lg font-extrabold text-[#e2e0f8] mb-2 uppercase"
-            style={{ fontFamily: "var(--font-syne), sans-serif" }}
+            style={{ fontFamily: "var(--font-display), sans-serif" }}
           >
             Something went wrong
           </h2>
           <p
-            className="text-[#cbc3d7]"
+            className="text-[#cbc3d7] mb-5"
             style={{ fontFamily: "var(--font-jb-mono), monospace" }}
           >
             {error || "Could not load order"}
           </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="border-2 border-[#a078ff] text-[#a078ff] px-6 py-2.5 text-sm font-bold uppercase tracking-wider hover:bg-[#a078ff]/10 transition-colors"
+            style={{ fontFamily: "var(--font-jb-mono), monospace" }}
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
@@ -173,7 +180,7 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
               </div>
               <h1
                 className="text-xl font-extrabold mb-1 uppercase"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 {order.status === "CANCELLED" ? "Order Cancelled" : "Payment Failed"}
               </h1>
@@ -191,7 +198,7 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
               </div>
               <h1
                 className="text-xl font-extrabold mb-1 uppercase"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 Confirming Payment...
               </h1>
@@ -209,7 +216,7 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
               </div>
               <h1
                 className="text-2xl font-extrabold mb-2 uppercase"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 Order #{order.orderNumber}
               </h1>
@@ -241,7 +248,7 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
             <div>
               <p
                 className="font-bold text-[#cdf200] text-sm uppercase"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 Your order is ready!
               </p>
@@ -260,7 +267,7 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
       {!isFailed && !isPaymentPending && currentStepIndex >= 0 && (
         <div className="px-5 -mt-2 mb-5 animate-fade-in-up" style={{ animationDelay: "100ms" }}>
           <div
-            className="bg-[#1e1e2f]/80 border-2 border-[#494454] p-5 backdrop-blur-md"
+            className="bg-[#1e1e2f] border-2 border-[#494454] p-5"
             style={{ boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)", borderRadius: 0 }}
           >
             <div className="space-y-0">
@@ -292,7 +299,7 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
                             "text-sm font-bold uppercase",
                             isActive ? "text-[#e2e0f8]" : "text-[#494454]"
                           )}
-                          style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                          style={{ fontFamily: "var(--font-display), sans-serif" }}
                         >
                           {step.label}
                         </p>
@@ -388,7 +395,7 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
               </span>
               <span
                 className="font-extrabold text-lg text-[#cdf200]"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 {paiseToCurrencyShort(order.totalPaise)}
               </span>

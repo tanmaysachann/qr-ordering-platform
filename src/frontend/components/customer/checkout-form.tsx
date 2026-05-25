@@ -142,7 +142,7 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
           <div className="flex-1">
             <h1
               className="text-lg font-extrabold leading-tight text-[#e2e0f8] uppercase"
-              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              style={{ fontFamily: "var(--font-display), sans-serif" }}
             >
               Checkout
             </h1>
@@ -219,7 +219,7 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
               </span>
               <span
                 className="font-extrabold text-xl text-[#cdf200]"
-                style={{ fontFamily: "var(--font-syne), sans-serif" }}
+                style={{ fontFamily: "var(--font-display), sans-serif" }}
               >
                 {paiseToCurrencyShort(total)}
               </span>
@@ -339,7 +339,7 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
       </form>
 
       {/* Fixed Bottom Pay Button */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#0c0d1d]/95 backdrop-blur-md border-t-2 border-[#494454] p-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#0c0d1d] border-t-2 border-[#494454] p-4">
         <button
           type="submit"
           disabled={loading}

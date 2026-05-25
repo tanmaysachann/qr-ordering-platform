@@ -77,7 +77,7 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
             </span>
             <h3
               className="font-bold text-[#e2e0f8] text-[15px] leading-tight truncate uppercase tracking-tight"
-              style={{ fontFamily: "var(--font-syne), sans-serif" }}
+              style={{ fontFamily: "var(--font-display), sans-serif" }}
             >
               {toTitleCase(item.name)}
             </h3>
