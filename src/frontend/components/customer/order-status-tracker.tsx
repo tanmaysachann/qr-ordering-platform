@@ -49,7 +49,8 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
   }, [orderId]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    // eslint-disable-next-line prefer-const
+    let interval: NodeJS.Timeout | undefined;
 
     const fetchStatus = async () => {
       try {

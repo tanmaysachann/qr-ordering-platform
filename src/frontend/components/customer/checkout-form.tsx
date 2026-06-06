@@ -104,11 +104,13 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
         return;
       }
 
-      sessionStorage.removeItem("checkout_idempotency_key");
       sessionStorage.setItem("pending_order_id", data.data.orderId);
 
       if (data.data.paymentRedirectUrl) {
         window.location.href = data.data.paymentRedirectUrl;
+      } else {
+        // Order exists but no redirect URL - go to order status page directly
+        window.location.href = `/${cafeSlug}/order/${data.data.orderId}/status`;
       }
     } catch {
       setError("Network error. Please try again.");
@@ -341,7 +343,7 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
       {/* Fixed Bottom Pay Button */}
       <div className="fixed bottom-0 left-0 right-0 bg-[#0c0d1d] border-t-2 border-[#494454] p-4">
         <button
-          type="submit"
+          type="button"
           disabled={loading}
           onClick={handleSubmit}
           className="w-full bg-[#cdf200] disabled:bg-[#333345] disabled:text-[#cbc3d7] text-black border-2 border-black py-4 font-bold text-sm uppercase tracking-wider neo-shadow active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-75 flex items-center justify-center gap-2 rounded-full"

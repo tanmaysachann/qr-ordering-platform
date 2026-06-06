@@ -346,7 +346,7 @@ export default function AccountsPage() {
             <div className="py-16 text-center text-muted">
               <Receipt size={36} className="mx-auto mb-3 opacity-30" />
               <p className="font-medium">No expenses recorded</p>
-              <p className="text-sm mt-1">Click "Add Expense" to start tracking</p>
+              <p className="text-sm mt-1">Click &quot;Add Expense&quot; to start tracking</p>
             </div>
           ) : (
             <div className="divide-y divide-border">

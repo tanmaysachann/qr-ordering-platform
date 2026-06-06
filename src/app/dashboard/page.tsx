@@ -168,6 +168,7 @@ export default function DashboardOrdersPage() {
 }
 
 function mapOrder(o: Record<string, unknown>): DashboardOrder {
+  const cafe = o.cafe as Record<string, unknown> | undefined;
   return {
     id: o.id as string,
     orderNumber: o.orderNumber as string,
@@ -178,6 +179,8 @@ function mapOrder(o: Record<string, unknown>): DashboardOrder {
     notes: o.notes as string | null,
     createdAt: o.createdAt as string,
     updatedAt: o.updatedAt as string,
+    cafeName: (o.cafeName ?? cafe?.name) as string | undefined,
+    cafeSlug: (o.cafeSlug ?? cafe?.slug) as string | undefined,
     items: (o.items as Record<string, unknown>[]).map((i) => ({
       id: i.id as string,
       itemName: i.itemName as string,

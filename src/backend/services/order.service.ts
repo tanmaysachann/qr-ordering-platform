@@ -65,6 +65,17 @@ export const orderService = {
       throw new Error("Order total must be greater than zero");
     }
 
+    const isTestMode = process.env.PHONEPE_TEST_MODE === "true";
+    const merchantId = process.env.PHONEPE_MERCHANT_ID || cafe.phonepeMerchantId;
+    const saltKey = process.env.PHONEPE_SALT_KEY || cafe.phonepeSaltKey;
+    const saltIndex = process.env.PHONEPE_SALT_INDEX || cafe.phonepeSaltIndex || "1";
+
+    if (!isTestMode && (!merchantId || !saltKey)) {
+      throw new Error("Payment is not configured for this cafe. Please contact support.");
+    }
+
+    const cafeCredentials = merchantId && saltKey ? { merchantId, saltKey, saltIndex } : undefined;
+
     // Generate order number
     const orderNumber = await generateOrderNumber(cafe.slug);
 
@@ -100,18 +111,6 @@ export const orderService = {
       }).catch((err) => console.error("[Email] Order confirmation failed:", err));
     }
 
-    // Validate that this cafe has PhonePe credentials configured
-    if (!cafe.phonepeMerchantId || !cafe.phonepeSaltKey) {
-      await orderRepository.updateOrderStatus(order.id, "FAILED");
-      throw new Error("Payment is not configured for this cafe. Please contact support.");
-    }
-
-    const cafeCredentials = {
-      merchantId: cafe.phonepeMerchantId,
-      saltKey: cafe.phonepeSaltKey,
-      saltIndex: cafe.phonepeSaltIndex ?? "1",
-    };
-
     // Create payment and initiate PhonePe
     const merchantTxnId = `ORD-${order.id.slice(0, 8)}-${uuid().slice(0, 8)}`;
 
@@ -119,7 +118,7 @@ export const orderService = {
       orderId: order.id,
       amountPaise: totalPaise,
       merchantTxnId,
-      phonepeMerchantId: cafe.phonepeMerchantId,
+      phonepeMerchantId: merchantId ?? undefined,
     });
 
     const paymentResult = await initiatePayment({

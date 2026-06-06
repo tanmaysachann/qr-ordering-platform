@@ -25,7 +25,9 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
   useEffect(() => {
     if (quantity > prevQty.current) {
       const id = Date.now();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBursts((b) => [...b, id]);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPopImage(true);
       window.setTimeout(() => setBursts((b) => b.filter((x) => x !== id)), 800);
       window.setTimeout(() => setPopImage(false), 450);

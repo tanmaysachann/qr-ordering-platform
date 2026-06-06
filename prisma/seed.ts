@@ -88,7 +88,7 @@ async function main() {
   // Create Super Admin
   await prisma.user.upsert({
     where: { email: "admin@cafeorder.com" },
-    update: {},
+    update: { passwordHash: hashPassword("Admin@Demo1234") },
     create: {
       email: "admin@cafeorder.com",
       passwordHash: hashPassword("Admin@Demo1234"),
@@ -102,7 +102,7 @@ async function main() {
     const ownerEmail = `owner@${cafe.slug}.com`;
     await prisma.user.upsert({
       where: { email: ownerEmail },
-      update: {},
+      update: { passwordHash: hashPassword("Owner@Demo1234") },
       create: {
         email: ownerEmail,
         passwordHash: hashPassword("Owner@Demo1234"),

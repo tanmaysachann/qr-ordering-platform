@@ -59,8 +59,13 @@ export async function POST(
       return NextResponse.json({ success: true, data: order });
     }
 
-    await paymentService.reconcilePayment(merchantTxnId);
+    const reconcileResult = await paymentService.reconcilePayment(merchantTxnId);
     const order = await orderService.getOrderStatus(orderId);
+
+    if (reconcileResult === "pending") {
+      return NextResponse.json({ success: false, error: "Payment still pending" }, { status: 202 });
+    }
+
     return NextResponse.json({ success: true, data: order });
   } catch {
     return NextResponse.json(

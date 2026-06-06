@@ -9,7 +9,7 @@ export default function CafeNotFound() {
       </div>
       <h1 className="text-2xl font-bold mb-2">Cafe Not Found</h1>
       <p className="text-muted mb-6 max-w-sm">
-        The cafe you're looking for doesn't exist or is currently inactive.
+        The cafe you&apos;re looking for doesn&apos;t exist or is currently inactive.
         Please scan the QR code again.
       </p>
       <Link

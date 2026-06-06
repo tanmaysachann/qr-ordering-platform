@@ -616,7 +616,7 @@ export default function AdminMenuPage() {
 
             {!showNewCat && modalCategories.length === 0 && (
               <p className="text-xs text-muted mt-1.5">
-                No categories yet. Use "+ New category" to create one.
+                No categories yet. Use &quot;+ New category&quot; to create one.
               </p>
             )}
           </div>

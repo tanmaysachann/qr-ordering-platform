@@ -27,7 +27,7 @@ export default function OwnerStaffPage() {
     <div>
       <div className="mb-7">
         <h1 className="text-2xl font-bold tracking-tight">Staff</h1>
-        <p className="text-sm text-muted mt-0.5">Your cafe's current active staff members</p>
+        <p className="text-sm text-muted mt-0.5">Your cafe&apos;s current active staff members</p>
       </div>
 
       {loading ? (

@@ -53,8 +53,8 @@ export async function requireCafeAccess(cafeId: string): Promise<SessionUser> {
 }
 
 /** Wraps a handler, converting AuthError into a JSON Response. */
-export function authGuard<T extends (req: Request, ctx: any) => Promise<Response>>(handler: T): T {
-  return (async (req: Request, ctx: any) => {
+export function authGuard<T extends (req: Request, ctx: Record<string, unknown>) => Promise<Response>>(handler: T): T {
+  return (async (req: Request, ctx: Record<string, unknown>) => {
     try {
       return await handler(req, ctx);
     } catch (e) {

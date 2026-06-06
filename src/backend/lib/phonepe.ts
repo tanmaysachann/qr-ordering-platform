@@ -4,6 +4,8 @@ const PHONEPE_BASE_URL = process.env.PHONEPE_BASE_URL || "https://api-preprod.ph
 const GLOBAL_MERCHANT_ID = process.env.PHONEPE_MERCHANT_ID || "";
 const GLOBAL_SALT_KEY = process.env.PHONEPE_SALT_KEY || "";
 const GLOBAL_SALT_INDEX = process.env.PHONEPE_SALT_INDEX || "1";
+const TEST_MODE = process.env.PHONEPE_TEST_MODE === "true";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
 export interface PhonePeCredentials {
   merchantId: string;
@@ -37,6 +39,14 @@ interface PhonePePayResponse {
 export async function initiatePayment(
   params: InitiatePaymentParams
 ): Promise<PhonePePayResponse> {
+  if (TEST_MODE) {
+    const url = new URL(params.redirectUrl);
+    const orderId = url.searchParams.get("orderId");
+    if (!orderId) return { success: false, error: "orderId missing from redirectUrl in test mode" };
+    const testUrl = `${APP_URL}/api/orders/${orderId}/test-pay?txn=${params.merchantTransactionId}&redirect=${encodeURIComponent(params.redirectUrl)}`;
+    return { success: true, redirectUrl: testUrl };
+  }
+
   const creds = resolveCredentials(params.credentials);
 
   const payload = {

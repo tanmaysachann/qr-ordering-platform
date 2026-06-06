@@ -29,6 +29,7 @@ export default function PaymentReturnPage({
     const orderId = searchParams.get("orderId") || sessionStorage.getItem("pending_order_id");
 
     if (!orderId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStatus("failed");
       return;
     }
@@ -60,6 +61,13 @@ export default function PaymentReturnPage({
 
       try {
         const res = await fetch(`/api/orders/${oid}/status`);
+
+        // Treat rate limits and server errors as transient - keep polling
+        if (res.status === 429 || res.status >= 500) {
+          await new Promise((r) => setTimeout(r, 3000));
+          return pollOrderStatus(oid, attempts + 1);
+        }
+
         const data = await res.json();
 
         if (!data.success) {
@@ -72,6 +80,7 @@ export default function PaymentReturnPage({
         if (["PAID", "PREPARING", "READY", "COMPLETED"].includes(orderStatus)) {
           setStatus("success");
           sessionStorage.removeItem("pending_order_id");
+          sessionStorage.removeItem("checkout_idempotency_key");
           // Clear cart
           try { localStorage.removeItem("cart-storage"); } catch {}
           // Redirect to order status tracker

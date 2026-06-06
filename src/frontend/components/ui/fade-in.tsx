@@ -28,6 +28,7 @@ export function FadeIn({
 
     if (!belowFold) return; // already in view — stay visible, no animation needed
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVisible(false);
 
     const observer = new IntersectionObserver(

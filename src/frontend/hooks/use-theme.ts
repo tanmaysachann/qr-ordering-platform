@@ -7,6 +7,7 @@ export function useTheme() {
 
   useEffect(() => {
     // Sync state with whatever the anti-flash script already applied
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDark(document.documentElement.classList.contains("dark"));
   }, []);
 

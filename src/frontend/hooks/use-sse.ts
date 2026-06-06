@@ -36,6 +36,7 @@ export function useSSE({ url, events, onMessage, enabled = true }: UseSSEOptions
 
     es.onerror = () => {
       es.close();
+      // eslint-disable-next-line react-hooks/immutability
       reconnectTimeout.current = setTimeout(connect, 3000);
     };
   }, [url, enabled, events]);

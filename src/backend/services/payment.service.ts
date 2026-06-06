@@ -59,10 +59,12 @@ export const paymentService = {
     // We need the txn ID to look up which cafe's salt key to use for verification.
     let decoded: Record<string, unknown>;
     let merchantTxnId: string;
+    let base64Response: string;
     try {
-      decoded = JSON.parse(
-        Buffer.from(JSON.parse(body).response, "base64").toString()
-      ) as Record<string, unknown>;
+      const parsed = JSON.parse(body) as Record<string, unknown>;
+      base64Response = parsed.response as string;
+      if (!base64Response) return { success: false, message: "Invalid webhook payload" };
+      decoded = JSON.parse(Buffer.from(base64Response, "base64").toString()) as Record<string, unknown>;
       const data = decoded.data as Record<string, unknown> | undefined;
       merchantTxnId = data?.merchantTransactionId as string;
       if (!merchantTxnId) {
@@ -79,11 +81,11 @@ export const paymentService = {
     }
 
     const cafe = payment.order.cafe;
-    const saltKey = cafe?.phonepeSaltKey ?? undefined;
-    const saltIndex = cafe?.phonepeSaltIndex ?? undefined;
+    const saltKey = process.env.PHONEPE_SALT_KEY || cafe?.phonepeSaltKey || undefined;
+    const saltIndex = process.env.PHONEPE_SALT_INDEX || cafe?.phonepeSaltIndex || undefined;
 
-    // Step 3: Verify the webhook signature with the cafe's salt key
-    if (!verifyWebhookSignature(body, xVerifyHeader, saltKey, saltIndex)) {
+    // Step 3: Verify signature against the base64 response value (not the full raw body)
+    if (!verifyWebhookSignature(base64Response, xVerifyHeader, saltKey, saltIndex)) {
       return { success: false, message: "Invalid signature" };
     }
 
@@ -121,24 +123,26 @@ export const paymentService = {
     return { success: true, message: isSuccess ? "Payment confirmed" : "Payment failed" };
   },
 
-  async reconcilePayment(merchantTxnId: string) {
+  async reconcilePayment(merchantTxnId: string): Promise<"success" | "failed" | "pending" | "already_done"> {
     const payment = await paymentRepository.findByMerchantTxnId(merchantTxnId);
-    if (!payment || payment.status === "SUCCESS") return payment;
+    if (!payment) return "failed";
+    if (payment.status === "SUCCESS") return "already_done";
+    if (payment.status === "FAILED") return "failed";
 
     const cafe = payment.order.cafe;
-    const credentials = cafe?.phonepeMerchantId && cafe?.phonepeSaltKey
-      ? {
-          merchantId: cafe.phonepeMerchantId,
-          saltKey: cafe.phonepeSaltKey,
-          saltIndex: cafe.phonepeSaltIndex ?? "1",
-        }
+    const merchantId = process.env.PHONEPE_MERCHANT_ID || cafe?.phonepeMerchantId;
+    const saltKey = process.env.PHONEPE_SALT_KEY || cafe?.phonepeSaltKey;
+    const saltIndex = process.env.PHONEPE_SALT_INDEX || cafe?.phonepeSaltIndex || "1";
+    const credentials = merchantId && saltKey
+      ? { merchantId, saltKey, saltIndex }
       : undefined;
 
     const result = await checkPaymentStatus(merchantTxnId, credentials);
-    if (!result.success) return null;
+    if (!result.success) return "pending";
 
     const isSuccess = result.status === "PAYMENT_SUCCESS";
-    const responseData = result.data?.data as Record<string, unknown> | undefined;
+    // PhonePe status API wraps data inside result.data.data
+    const responseData = (result.data?.data ?? result.data) as Record<string, unknown> | undefined;
     const instrument = responseData?.paymentInstrument as Record<string, unknown> | undefined;
 
     await paymentRepository.updatePaymentStatus(merchantTxnId, {
@@ -148,12 +152,9 @@ export const paymentService = {
       paidAt: isSuccess ? new Date() : undefined,
     });
 
-    const updatedOrder = await orderRepository.updateOrderStatus(
-      payment.orderId,
-      isSuccess ? "PAID" : "FAILED"
-    );
+    await orderRepository.updateOrderStatus(payment.orderId, isSuccess ? "PAID" : "FAILED");
 
-    if (isSuccess && updatedOrder) {
+    if (isSuccess) {
       const fullOrder = await orderRepository.getOrderById(payment.orderId);
       if (fullOrder) {
         broadcastNewOrder(fullOrder);
@@ -161,6 +162,6 @@ export const paymentService = {
       }
     }
 
-    return payment;
+    return isSuccess ? "success" : "failed";
   },
 };
