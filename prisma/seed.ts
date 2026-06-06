@@ -91,7 +91,7 @@ async function main() {
     update: {},
     create: {
       email: "admin@cafeorder.com",
-      passwordHash: hashPassword("admin123"),
+      passwordHash: hashPassword("Admin@Demo1234"),
       name: "Super Admin",
       role: "SUPER_ADMIN",
     },
@@ -105,7 +105,7 @@ async function main() {
       update: {},
       create: {
         email: ownerEmail,
-        passwordHash: hashPassword("owner123"),
+        passwordHash: hashPassword("Owner@Demo1234"),
         name: `${cafe.name} Owner`,
         role: "CAFE_OWNER",
         cafeId: cafe.id,
@@ -182,11 +182,11 @@ async function main() {
 
   console.log("\nSeed completed!");
   console.log("\nLogin credentials:");
-  console.log("  Super Admin: admin@cafeorder.com / admin123");
-  console.log("  Cafe Owner:  owner@koramangala.com / owner123");
-  console.log("               owner@indiranagar.com / owner123");
-  console.log("               owner@hsr-layout.com / owner123");
-  console.log("               owner@whitefield.com / owner123");
+  console.log("  Super Admin: admin@cafeorder.com / Admin@Demo1234");
+  console.log("  Cafe Owner:  owner@koramangala.com / Owner@Demo1234");
+  console.log("               owner@indiranagar.com / Owner@Demo1234");
+  console.log("               owner@hsr-layout.com / Owner@Demo1234");
+  console.log("               owner@whitefield.com / Owner@Demo1234");
 }
 
 main()
