@@ -82,7 +82,7 @@ export default function LoginPage() {
         </div>
 
         {/* Glass card */}
-        <div className="glass-panel-landing rounded-2xl p-7 space-y-5">
+        <form onSubmit={handleSubmit} className="glass-panel-landing rounded-2xl p-7 space-y-5">
           <Input
             id="email"
             label="Email"
@@ -109,7 +109,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <Button type="submit" className="w-full" loading={loading} onClick={handleSubmit}>
+          <Button type="submit" className="w-full" loading={loading}>
             <LogIn size={16} className="mr-2" />
             Sign In
           </Button>
@@ -117,7 +117,7 @@ export default function LoginPage() {
           <p className="text-xs text-center text-muted pt-1">
             Forgot your password? Contact your administrator.
           </p>
-        </div>
+        </form>
 
         {/* Back link + theme toggle */}
         <div className="flex items-center justify-between mt-5">

@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, XCircle, Loader2, ArrowLeft, RefreshCw } from "lucide-react";
+import { useCartStore } from "@/frontend/stores/cart";
 
 export default function PaymentReturnPage({
   params: paramsPromise,
@@ -81,8 +82,8 @@ export default function PaymentReturnPage({
           setStatus("success");
           sessionStorage.removeItem("pending_order_id");
           sessionStorage.removeItem("checkout_idempotency_key");
-          // Clear cart
-          try { localStorage.removeItem("cart-storage"); } catch {}
+          // Clear cart using the store action (key is "cafe-cart" not "cart-storage")
+          try { useCartStore.getState().clearCart(); } catch {}
           // Redirect to order status tracker
           setTimeout(() => {
             window.location.href = `/${cafeSlug}/order/${oid}/status`;

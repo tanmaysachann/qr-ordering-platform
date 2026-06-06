@@ -1,5 +1,6 @@
 import { adminRepository } from "@/backend/repositories/admin.repository";
 import { orderRepository } from "@/backend/repositories/order.repository";
+import type { OrderStatus } from "@/generated/prisma";
 import type { AnalyticsOverview } from "@/shared/types";
 
 export const analyticsService = {
@@ -18,7 +19,7 @@ export const analyticsService = {
     }
   ) {
     return orderRepository.getOrdersForCafe(cafeId, {
-      status: options?.status as never[],
+      status: options?.status as OrderStatus[] | undefined,
       limit: options?.limit,
       offset: options?.offset,
       dateFrom: options?.dateFrom ? new Date(options.dateFrom) : undefined,
