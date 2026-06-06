@@ -2,7 +2,7 @@
 
 A multi-tenant QR-based food ordering system for cafes. Customers scan a table QR code, browse the menu, and pay via PhonePe. Cafe owners manage orders and menus in real time. A super admin oversees all cafes on the platform.
 
-**Live Demo:** https://qr-ordering-platform.vercel.app
+**Live Demo:** https://project-n9d3m.vercel.app
 
 ---
 
