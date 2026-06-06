@@ -87,9 +87,14 @@ export default function DashboardOrdersPage() {
     });
 
     if (res.ok) {
-      setOrders((prev) =>
-        prev.map((o) => (o.id === orderId ? { ...o, status } : o))
-      );
+      if (status === "CANCELLED") {
+        // Remove cancelled orders from the active view immediately
+        setOrders((prev) => prev.filter((o) => o.id !== orderId));
+      } else {
+        setOrders((prev) =>
+          prev.map((o) => (o.id === orderId ? { ...o, status } : o))
+        );
+      }
     }
   };
 

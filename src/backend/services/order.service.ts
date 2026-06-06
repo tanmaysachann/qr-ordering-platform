@@ -179,7 +179,8 @@ export const orderService = {
     const validTransitions: Record<string, string[]> = {
       PAID: ["PREPARING", "CANCELLED"],
       PREPARING: ["READY", "CANCELLED"],
-      READY: ["COMPLETED"],
+      READY: ["COMPLETED", "CANCELLED"],
+      PAYMENT_PENDING: ["CANCELLED"],
     };
 
     const allowed = validTransitions[order.status] || [];

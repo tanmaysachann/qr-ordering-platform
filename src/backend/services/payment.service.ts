@@ -138,7 +138,10 @@ export const paymentService = {
       : undefined;
 
     const result = await checkPaymentStatus(merchantTxnId, credentials);
-    if (!result.success) return "pending";
+    // Network/internal error - treat as transient, caller should retry
+    if (result.status === "INTERNAL_ERROR") return "pending";
+    // PhonePe explicitly says payment is still pending
+    if (result.status === "PAYMENT_PENDING") return "pending";
 
     const isSuccess = result.status === "PAYMENT_SUCCESS";
     // PhonePe status API wraps data inside result.data.data
