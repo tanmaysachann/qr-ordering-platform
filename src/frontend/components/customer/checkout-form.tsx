@@ -278,7 +278,7 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
               required
             />
             <p className="-mt-3 text-xs text-muted">
-              Make sure this is correct — your order confirmation and pickup updates are sent to this number on WhatsApp.
+              We'll send order updates to this number on WhatsApp, so make sure it's correct.
             </p>
             <Input
               id="email"
