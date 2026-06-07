@@ -31,10 +31,29 @@ export const menuRepository = {
     });
     const allItems = [...cafeItems, ...globalItems];
 
-    // Group items under their categories
-    const categories = allCategories.map((cat) => ({
+    // Merge categories that share the same name (cafe-specific + duplicate/global
+    // entries can collide on display name) so the same label isn't shown twice
+    const mergedByName = new Map<string, (typeof allCategories)[number]>();
+    for (const cat of allCategories) {
+      const key = cat.name.trim().toLowerCase();
+      const existing = mergedByName.get(key);
+      if (!existing || cat.sortOrder < existing.sortOrder) {
+        mergedByName.set(key, cat);
+      }
+    }
+    const dedupedCategories = [...mergedByName.values()].sort((a, b) => a.sortOrder - b.sortOrder);
+
+    // Map every original category id to its canonical (deduped) category
+    const canonicalIdByOriginalId = new Map<string, string>();
+    for (const cat of allCategories) {
+      const canonical = mergedByName.get(cat.name.trim().toLowerCase())!;
+      canonicalIdByOriginalId.set(cat.id, canonical.id);
+    }
+
+    // Group items under their canonical category
+    const categories = dedupedCategories.map((cat) => ({
       ...cat,
-      items: allItems.filter((i) => i.categoryId === cat.id),
+      items: allItems.filter((i) => i.categoryId && canonicalIdByOriginalId.get(i.categoryId) === cat.id),
     }));
 
     // Anything that didn't match a visible category falls into uncategorized (legacy data)
