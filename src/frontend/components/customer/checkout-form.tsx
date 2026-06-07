@@ -277,6 +277,9 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
               autoComplete="tel"
               required
             />
+            <p className="-mt-3 text-xs text-muted">
+              Make sure this is correct — your order confirmation and pickup updates are sent to this number on WhatsApp.
+            </p>
             <Input
               id="email"
               label={<>Email <span className="text-[#ffb4ab]">*</span></>}
