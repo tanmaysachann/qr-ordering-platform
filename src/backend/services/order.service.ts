@@ -176,12 +176,16 @@ export const orderService = {
     // Send WhatsApp message when order is ready for pickup
     if (status === "READY" && updated.customerPhone) {
       const cafe = await adminRepository.getCafeById(updated.cafeId);
-      notifyOrderReady({
-        customerPhone: updated.customerPhone,
-        customerName: updated.customerName || "there",
-        orderNumber: updated.orderNumber,
-        cafeName: cafe?.name || "the cafe",
-      }).catch((err) => console.error("[WhatsApp] notifyOrderReady failed:", err));
+      try {
+        await notifyOrderReady({
+          customerPhone: updated.customerPhone,
+          customerName: updated.customerName || "there",
+          orderNumber: updated.orderNumber,
+          cafeName: cafe?.name || "the cafe",
+        });
+      } catch (err) {
+        console.error("[WhatsApp] notifyOrderReady failed:", err);
+      }
     }
 
     // Push SSE event

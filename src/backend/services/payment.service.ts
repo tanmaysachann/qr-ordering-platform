@@ -7,20 +7,24 @@ import type { Prisma } from "@/generated/prisma";
 
 type FullOrder = NonNullable<Awaited<ReturnType<typeof orderRepository.getOrderById>>>;
 
-function sendOrderPlacedWhatsApp(fullOrder: FullOrder) {
+async function sendOrderPlacedWhatsApp(fullOrder: FullOrder) {
   if (!fullOrder.customerPhone) return;
-  notifyOrderPlaced({
-    customerPhone: fullOrder.customerPhone,
-    customerName: fullOrder.customerName || "there",
-    orderNumber: fullOrder.orderNumber,
-    totalPaise: fullOrder.totalPaise,
-    cafeName: fullOrder.cafe?.name || "the cafe",
-    items: fullOrder.items.map((i) => ({
-      itemName: i.itemName,
-      quantity: i.quantity,
-      subtotalPaise: i.subtotalPaise,
-    })),
-  }).catch((err) => console.error("[WhatsApp] notifyOrderPlaced failed:", err));
+  try {
+    await notifyOrderPlaced({
+      customerPhone: fullOrder.customerPhone,
+      customerName: fullOrder.customerName || "there",
+      orderNumber: fullOrder.orderNumber,
+      totalPaise: fullOrder.totalPaise,
+      cafeName: fullOrder.cafe?.name || "the cafe",
+      items: fullOrder.items.map((i) => ({
+        itemName: i.itemName,
+        quantity: i.quantity,
+        subtotalPaise: i.subtotalPaise,
+      })),
+    });
+  } catch (err) {
+    console.error("[WhatsApp] notifyOrderPlaced failed:", err);
+  }
 }
 
 function broadcastNewOrder(fullOrder: FullOrder) {
@@ -116,7 +120,7 @@ export const paymentService = {
       const fullOrder = await orderRepository.getOrderById(payment.orderId);
       if (fullOrder) {
         broadcastNewOrder(fullOrder);
-        sendOrderPlacedWhatsApp(fullOrder);
+        await sendOrderPlacedWhatsApp(fullOrder);
       }
     }
 
@@ -161,7 +165,7 @@ export const paymentService = {
       const fullOrder = await orderRepository.getOrderById(payment.orderId);
       if (fullOrder) {
         broadcastNewOrder(fullOrder);
-        sendOrderPlacedWhatsApp(fullOrder);
+        await sendOrderPlacedWhatsApp(fullOrder);
       }
     }
 
