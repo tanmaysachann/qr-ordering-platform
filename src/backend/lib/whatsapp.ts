@@ -92,6 +92,38 @@ async function sendViaTwilio(to: string, message: string): Promise<boolean> {
 }
 
 async function sendViaMeta(to: string, message: string): Promise<boolean> {
+  return postToMeta({
+    messaging_product: "whatsapp",
+    to: to.replace(/^\+/, ""),
+    type: "text",
+    text: { body: message },
+  });
+}
+
+async function sendMetaTemplate(
+  to: string,
+  templateName: string,
+  languageCode: string,
+  bodyParams: string[]
+): Promise<boolean> {
+  return postToMeta({
+    messaging_product: "whatsapp",
+    to: to.replace(/^\+/, ""),
+    type: "template",
+    template: {
+      name: templateName,
+      language: { code: languageCode },
+      components: [
+        {
+          type: "body",
+          parameters: bodyParams.map((text) => ({ type: "text", text })),
+        },
+      ],
+    },
+  });
+}
+
+async function postToMeta(payload: Record<string, unknown>): Promise<boolean> {
   const phoneNumberId = process.env.META_WHATSAPP_PHONE_NUMBER_ID;
   const accessToken = process.env.META_WHATSAPP_ACCESS_TOKEN;
 
@@ -107,12 +139,7 @@ async function sendViaMeta(to: string, message: string): Promise<boolean> {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({
-      messaging_product: "whatsapp",
-      to: to.replace(/^\+/, ""),
-      type: "text",
-      text: { body: message },
-    }),
+    body: JSON.stringify(payload),
   });
 
   if (!res.ok) {
@@ -133,6 +160,17 @@ export async function notifyOrderPlaced(args: {
   items: OrderItemSummary[];
 }): Promise<boolean> {
   const { customerPhone, customerName, orderNumber, totalPaise, cafeName, items } = args;
+
+  // Order confirmation is the first business-initiated message to a customer, so it must
+  // use an approved template — free-form text only delivers within an open 24h window.
+  if (process.env.WHATSAPP_PROVIDER === "meta") {
+    return sendMetaTemplate(normalizePhone(customerPhone), "order_confirmation", "en_US", [
+      customerName,
+      cafeName,
+      orderNumber,
+      formatRupees(totalPaise),
+    ]);
+  }
 
   const itemLines = items
     .map((i) => `• ${i.itemName} x${i.quantity}: ₹${formatRupees(i.subtotalPaise)}`)
