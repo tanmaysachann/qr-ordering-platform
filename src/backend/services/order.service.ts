@@ -5,8 +5,7 @@ import { adminRepository } from "@/backend/repositories/admin.repository";
 import { generateOrderNumber } from "@/backend/lib/utils/order-number";
 import { initiatePayment } from "@/backend/lib/phonepe";
 import { sseManager } from "@/backend/lib/sse";
-import { notifyOrderReady } from "@/backend/lib/sms";
-import { notifyOrderPlacedEmail } from "@/backend/lib/email";
+import { notifyOrderReady } from "@/backend/lib/whatsapp";
 import type { CreateOrderRequest, CreateOrderResponse, OrderSummary } from "@/shared/types";
 import { v4 as uuid } from "uuid";
 
@@ -92,25 +91,6 @@ export const orderService = {
       items: orderItems,
     });
 
-    // Send order confirmation email (fire-and-forget)
-    if (request.customerEmail) {
-      notifyOrderPlacedEmail({
-        customerEmail: request.customerEmail,
-        customerName: request.customerName || "there",
-        customerPhone: request.customerPhone ?? null,
-        orderNumber: order.orderNumber,
-        totalPaise,
-        cafeName: cafe.name,
-        cafeAddress: cafe.address ?? null,
-        cafeSlug: cafe.slug,
-        orderId: order.id,
-        notes: request.notes ?? null,
-        paymentMethod: null,
-        placedAt: order.createdAt,
-        items: orderItems,
-      }).catch((err) => console.error("[Email] Order confirmation failed:", err));
-    }
-
     // Create payment and initiate PhonePe
     const merchantTxnId = `ORD-${order.id.slice(0, 8)}-${uuid().slice(0, 8)}`;
 
@@ -193,14 +173,15 @@ export const orderService = {
       status as "PREPARING" | "READY" | "COMPLETED" | "CANCELLED"
     );
 
-    // Send SMS when order is ready for pickup
+    // Send WhatsApp message when order is ready for pickup
     if (status === "READY" && updated.customerPhone) {
       const cafe = await adminRepository.getCafeById(updated.cafeId);
-      notifyOrderReady(
-        updated.customerPhone,
-        updated.orderNumber,
-        cafe?.name || "the cafe"
-      ).catch((err) => console.error("[SMS] Failed:", err));
+      notifyOrderReady({
+        customerPhone: updated.customerPhone,
+        customerName: updated.customerName || "there",
+        orderNumber: updated.orderNumber,
+        cafeName: cafe?.name || "the cafe",
+      }).catch((err) => console.error("[WhatsApp] notifyOrderReady failed:", err));
     }
 
     // Push SSE event

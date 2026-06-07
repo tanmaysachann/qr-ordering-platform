@@ -147,3 +147,19 @@ export async function notifyOrderPlaced(args: {
 
   return sendWhatsApp({ to: customerPhone, message });
 }
+
+/** Send "order ready for pickup" WhatsApp message when status changes to READY */
+export async function notifyOrderReady(args: {
+  customerPhone: string;
+  customerName: string;
+  orderNumber: string;
+  cafeName: string;
+}): Promise<boolean> {
+  const { customerPhone, customerName, orderNumber, cafeName } = args;
+
+  const message =
+    `Hi ${customerName}, your order #${orderNumber} at ${cafeName} is ready for pickup! 🛎️\n\n` +
+    `Please collect it at the counter. Thanks for ordering with us!`;
+
+  return sendWhatsApp({ to: customerPhone, message });
+}
