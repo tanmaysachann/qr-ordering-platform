@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { requireRole, AuthError } from "@/backend/lib/authz";
-import { rateLimitResponse, getClientIp } from "@/backend/lib/rate-limit";
+import { rateLimitResponse } from "@/backend/lib/rate-limit";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

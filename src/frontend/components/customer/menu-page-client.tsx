@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
+import Image from "next/image";
 import { useCartStore } from "@/frontend/stores/cart";
 import { useSSE } from "@/frontend/hooks/use-sse";
 import { CategoryTabs } from "./category-tabs";
@@ -109,10 +110,12 @@ export function MenuPageClient({ cafe, categories: initialCategories }: MenuPage
       <div className="relative overflow-hidden bg-[#0c0d1d]">
         {cafe.imageUrl ? (
           <>
-            <img
+            <Image
               src={cafe.imageUrl}
               alt=""
-              className="absolute inset-0 w-full h-full object-cover opacity-40 contrast-125 saturate-150"
+              fill
+              sizes="100vw"
+              className="object-cover opacity-40 contrast-125 saturate-150"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#0c0d1d]/40 via-[#0c0d1d]/70 to-[#111222]" />
           </>

@@ -25,7 +25,7 @@ export const useCartStore = create<CartState>()(
       cafeSlug: null,
 
       addItem: (item) => {
-        const { items, cafeSlug } = get();
+        const { items } = get();
         const existing = items.find((i) => i.menuItemId === item.menuItemId);
 
         if (existing) {

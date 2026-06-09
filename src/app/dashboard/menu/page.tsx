@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Card } from "@/frontend/components/ui/card";
 import { Button } from "@/frontend/components/ui/button";
 import { Input } from "@/frontend/components/ui/input";
@@ -127,14 +128,12 @@ export default function MenuManagementPage() {
       fetchMenuForOwner();
     };
     init();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (isAdmin && selectedCafeId) {
       fetchMenuForCafe(selectedCafeId);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdmin, selectedCafeId]);
 
   const fetchMenuForOwner = async () => {
@@ -496,8 +495,8 @@ export default function MenuManagementPage() {
               {items.map((item) => (
                 <Card key={item.id} className={cn(!item.isAvailable && "opacity-60")}>
                   {item.imageUrl && (
-                    <div className="w-full h-32 rounded-xl overflow-hidden mb-3 -mt-1">
-                      <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                    <div className="relative w-full h-32 rounded-xl overflow-hidden mb-3 -mt-1">
+                      <Image src={item.imageUrl} alt={item.name} fill sizes="(max-width: 768px) 100vw, 400px" className="object-cover" />
                     </div>
                   )}
                   <div className="flex justify-between items-start mb-2">
@@ -688,10 +687,12 @@ export default function MenuManagementPage() {
             <label className="block text-sm font-medium mb-1.5">Item Image</label>
             {formImageUrl ? (
               <div className="relative w-full h-36 rounded-xl overflow-hidden border border-border">
-                <img
+                <Image
                   src={formImageUrl}
                   alt="Preview"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  className="object-cover"
                 />
                 <button
                   type="button"

@@ -155,7 +155,6 @@ interface DashboardShellProps {
 }
 
 export function DashboardShell({ user, children }: DashboardShellProps) {
-  const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { dark, toggle } = useTheme();
   const isAdmin = user.role === "SUPER_ADMIN";

@@ -59,7 +59,6 @@ export default function AdminOrdersPage() {
   const [datePreset, setDatePreset] = useState<DatePreset>("today");
   const [cafeFilter, setCafeFilter] = useState<string>("ALL");
   const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState(0);
 
   const fetchCafes = useCallback(async () => {
     try {
@@ -84,7 +83,6 @@ export default function AdminOrdersPage() {
       const data = await res.json();
       if (data.success) {
         setOrders(data.data.orders);
-        setTotal(data.data.total ?? data.data.orders.length);
       }
     } catch {
       console.error("Failed to fetch orders");

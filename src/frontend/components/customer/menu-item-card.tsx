@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Plus, Minus, Check } from "lucide-react";
 import { useCartStore } from "@/frontend/stores/cart";
 import { paiseToCurrencyShort } from "@/shared/utils/currency";
@@ -27,7 +28,6 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
       const id = Date.now();
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setBursts((b) => [...b, id]);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPopImage(true);
       window.setTimeout(() => setBursts((b) => b.filter((x) => x !== id)), 800);
       window.setTimeout(() => setPopImage(false), 450);
@@ -123,11 +123,12 @@ export const MenuItemCard = memo(function MenuItemCard({ item }: MenuItemCardPro
           style={{ borderRadius: 0 }}
         >
           {item.imageUrl ? (
-            <img
+            <Image
               src={item.imageUrl}
               alt={item.name}
+              width={108}
+              height={96}
               className="w-full h-full object-cover contrast-110 saturate-110"
-              loading="lazy"
             />
           ) : (
             <div className={cn(

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Button } from "@/frontend/components/ui/button";
 import { Input } from "@/frontend/components/ui/input";
 import { Modal } from "@/frontend/components/ui/modal";
@@ -401,7 +402,7 @@ export default function AdminMenuPage() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       {item.imageUrl ? (
-                        <img src={item.imageUrl} alt={item.name} className="w-9 h-9 rounded-lg object-cover flex-shrink-0" />
+                        <Image src={item.imageUrl} alt={item.name} width={36} height={36} className="w-9 h-9 rounded-lg object-cover flex-shrink-0" />
                       ) : (
                         <div className="w-9 h-9 rounded-lg bg-surface-hover flex items-center justify-center flex-shrink-0">
                           <UtensilsCrossed size={14} className="text-muted" />
@@ -653,7 +654,7 @@ export default function AdminMenuPage() {
             <label className="block text-sm font-medium mb-1.5">Image</label>
             {formImageUrl ? (
               <div className="relative w-full h-36 rounded-xl overflow-hidden border border-border">
-                <img src={formImageUrl} alt="Preview" className="w-full h-full object-cover" />
+                <Image src={formImageUrl} alt="Preview" fill sizes="(max-width: 768px) 100vw, 400px" className="object-cover" />
                 <button
                   type="button"
                   onClick={() => setFormImageUrl(null)}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/frontend/components/ui/button";
 import { Input } from "@/frontend/components/ui/input";
@@ -81,7 +81,23 @@ export default function AdminCafesPage() {
   // QR state (accepts any cafe-shaped object with name+slug)
   const [qrTarget, setQrTarget] = useState<{ name: string; slug: string } | null>(null);
 
-  const fetchData = async () => {
+  const fetchAllStaff = useCallback(async (cafeList: CafeWithStats[]) => {
+    try {
+      const results = await Promise.all(
+        cafeList.map((c) =>
+          fetch(`/api/admin/cafes/${c.id}/staff`)
+            .then((r) => r.json())
+            .then((d) => (d.success ? (d.data as StaffMember[]).map((s) => ({ ...s, cafeId: c.id })) : []))
+            .catch(() => [] as StaffMember[])
+        )
+      );
+      setAllStaff(results.flat());
+    } finally {
+      setStaffLoading(false);
+    }
+  }, []);
+
+  const fetchData = useCallback(async () => {
     try {
       const [cafesRes, analyticsRes] = await Promise.all([
         fetch("/api/admin/cafes"),
@@ -100,27 +116,11 @@ export default function AdminCafesPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const fetchAllStaff = async (cafeList: CafeWithStats[]) => {
-    try {
-      const results = await Promise.all(
-        cafeList.map((c) =>
-          fetch(`/api/admin/cafes/${c.id}/staff`)
-            .then((r) => r.json())
-            .then((d) => (d.success ? (d.data as StaffMember[]).map((s) => ({ ...s, cafeId: c.id })) : []))
-            .catch(() => [] as StaffMember[])
-        )
-      );
-      setAllStaff(results.flat());
-    } finally {
-      setStaffLoading(false);
-    }
-  };
+  }, [fetchAllStaff]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleCreateCafe = async () => {
     setFormError("");
