@@ -164,7 +164,7 @@ export async function notifyOrderPlaced(args: {
   // Order confirmation is the first business-initiated message to a customer, so it must
   // use an approved template — free-form text only delivers within an open 24h window.
   if (process.env.WHATSAPP_PROVIDER === "meta") {
-    return sendMetaTemplate(normalizePhone(customerPhone), "order_confirmation", "en_US", [
+    return sendMetaTemplate(normalizePhone(customerPhone), "order_confirmation", "en", [
       customerName,
       cafeName,
       orderNumber,
