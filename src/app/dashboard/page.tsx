@@ -10,6 +10,24 @@ import { cn } from "@/shared/utils/cn";
 import type { DashboardOrder } from "@/shared/types";
 import type { OrderStatus } from "@/generated/prisma";
 
+function playDing() {
+  try {
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(1050, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(820, ctx.currentTime + 0.25);
+    gain.gain.setValueAtTime(0.85, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 1.1);
+    osc.onended = () => ctx.close();
+  } catch {}
+}
+
 const statusFilters: { label: string; value: OrderStatus | "ALL" }[] = [
   { label: "All Active", value: "ALL" },
   { label: "Preparing", value: "PREPARING" },
@@ -66,10 +84,7 @@ export default function DashboardOrdersPage() {
       if (event === "new_order") {
         setOrders((prev) => [payload.order, ...prev]);
         setNewOrderAlert(true);
-        try {
-          const audio = new Audio("/notification.mp3");
-          audio.play().catch(() => {});
-        } catch {}
+        playDing();
         setTimeout(() => setNewOrderAlert(false), 3000);
       } else if (event === "order_updated") {
         setOrders((prev) =>
