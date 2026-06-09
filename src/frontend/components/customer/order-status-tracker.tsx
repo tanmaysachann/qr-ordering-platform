@@ -27,26 +27,9 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
   const prevStatusRef = useRef<string | null>(null);
   const [readyAlert, setReadyAlert] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
-    }
-  }, []);
-
-  const fireReadyNotification = useCallback((orderNumber: string) => {
+  const fireReadyNotification = useCallback(() => {
     setReadyAlert(true);
-    try {
-      const audio = new Audio("/notification.mp3");
-      audio.play().catch(() => {});
-    } catch {}
-    if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "granted") {
-      new Notification("Order Ready! 🎉", {
-        body: `Your order #${orderNumber} is ready for pickup!`,
-        icon: "/favicon.ico",
-        tag: `order-ready-${orderId}`,
-      });
-    }
-  }, [orderId]);
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line prefer-const
@@ -61,7 +44,7 @@ export function OrderStatusTracker({ orderId }: OrderStatusTrackerProps) {
           const newStatus = data.data.status;
           const prevStatus = prevStatusRef.current;
           if (newStatus === "READY" && prevStatus !== null && prevStatus !== "READY") {
-            fireReadyNotification(data.data.orderNumber);
+            fireReadyNotification();
           }
           prevStatusRef.current = newStatus;
           setOrder(data.data);

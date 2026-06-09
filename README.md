@@ -59,7 +59,7 @@ Customers access via QR code or directly through the cafe URL:
 - Add special instructions for the kitchen during checkout
 - Pay securely via PhonePe
 - Track the order live after payment with a step-by-step status timeline (Confirmed, Preparing, Ready, Picked Up)
-- Get a sound alert and a phone notification the moment the order is ready for pickup
+- Get a phone notification the moment the order is ready for pickup
 - Receive a WhatsApp message confirming the order and another one when it is ready
 
 ### Cafe Owner
