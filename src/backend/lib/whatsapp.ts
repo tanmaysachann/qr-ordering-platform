@@ -195,6 +195,17 @@ export async function notifyOrderReady(args: {
 }): Promise<boolean> {
   const { customerPhone, customerName, orderNumber, cafeName } = args;
 
+  // Order-ready is a business-initiated message sent outside any open 24h
+  // window, so on Meta it must use an approved template — free-form text only
+  // delivers while a customer-initiated session is open, which never happens here.
+  if (process.env.WHATSAPP_PROVIDER === "meta") {
+    return sendMetaTemplate(normalizePhone(customerPhone), "order_ready", "en", [
+      customerName,
+      orderNumber,
+      cafeName,
+    ]);
+  }
+
   const message =
     `Hi ${customerName}, your order #${orderNumber} at ${cafeName} is ready for pickup! 🛎️\n\n` +
     `Please collect it at the counter. Thanks for ordering with us!`;
