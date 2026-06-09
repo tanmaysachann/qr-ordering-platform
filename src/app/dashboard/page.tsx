@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { OrderCard } from "@/frontend/components/dashboard/order-card";
 import { useSSE } from "@/frontend/hooks/use-sse";
 import { EmptyState } from "@/frontend/components/ui/empty-state";
@@ -10,28 +10,37 @@ import { cn } from "@/shared/utils/cn";
 import type { DashboardOrder } from "@/shared/types";
 import type { OrderStatus } from "@/generated/prisma";
 
-function playDing() {
+// One shared AudioContext, unlocked on the owner's first interaction so that
+// browser autoplay policies don't block the ding when an order arrives later.
+let sharedCtx: AudioContext | null = null;
+
+function ensureAudio(): AudioContext | null {
+  if (typeof window === "undefined") return null;
   try {
-    const ctx = new AudioContext();
-    const play = () => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(1050, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(820, ctx.currentTime + 0.25);
-      gain.gain.setValueAtTime(0.85, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 1.1);
-      osc.onended = () => ctx.close();
-    };
-    if (ctx.state === "suspended") {
-      ctx.resume().then(play);
-    } else {
-      play();
-    }
+    if (!sharedCtx) sharedCtx = new AudioContext();
+    if (sharedCtx.state === "suspended") sharedCtx.resume().catch(() => {});
+    return sharedCtx;
+  } catch {
+    return null;
+  }
+}
+
+function playDing() {
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  try {
+    const t = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(1050, t);
+    osc.frequency.exponentialRampToValueAtTime(820, t + 0.25);
+    gain.gain.setValueAtTime(0.85, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 1.1);
+    osc.start(t);
+    osc.stop(t + 1.1);
   } catch {}
 }
 
@@ -47,6 +56,71 @@ export default function DashboardOrdersPage() {
   const [filter, setFilter] = useState<OrderStatus | "ALL">("ALL");
   const [loading, setLoading] = useState(true);
   const [newOrderAlert, setNewOrderAlert] = useState(false);
+
+  // Track which order ids we've already seen so a newly-arrived order dings
+  // exactly once, regardless of whether it came via SSE or the polling fallback.
+  const seenIdsRef = useRef<Set<string>>(new Set());
+  const baselineRef = useRef(false);
+
+  // Unlock audio on the owner's first interaction with the page.
+  useEffect(() => {
+    const unlock = () => ensureAudio();
+    window.addEventListener("pointerdown", unlock, { once: true });
+    window.addEventListener("keydown", unlock, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+  }, []);
+
+  const handleIncomingOrders = useCallback((incoming: DashboardOrder[]) => {
+    const fresh = incoming.filter((o) => !seenIdsRef.current.has(o.id));
+    fresh.forEach((o) => seenIdsRef.current.add(o.id));
+    // Before the baseline snapshot exists, just record ids without alerting so
+    // pre-existing orders don't ding on first load.
+    if (!baselineRef.current || fresh.length === 0) return;
+    playDing();
+    setNewOrderAlert(true);
+    setOrders((prev) => {
+      const have = new Set(prev.map((o) => o.id));
+      const toAdd = fresh.filter((o) => !have.has(o.id));
+      return [...toAdd, ...prev];
+    });
+    setTimeout(() => setNewOrderAlert(false), 3000);
+  }, []);
+
+  // Polling fallback: in-memory SSE cannot fan out across serverless instances,
+  // so poll the active order list and detect new arrivals client-side.
+  useEffect(() => {
+    let active = true;
+    const poll = async () => {
+      try {
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const params = new URLSearchParams({
+          status: "PAID,PREPARING,READY,COMPLETED",
+          limit: "200",
+          dateFrom: todayStart.toISOString(),
+        });
+        const res = await fetch(`/api/dashboard/orders?${params}`);
+        const data = await res.json();
+        if (!active || !data?.success) return;
+        const list = (data.data.orders as Record<string, unknown>[]).map(mapOrder);
+        if (!baselineRef.current) {
+          list.forEach((o) => seenIdsRef.current.add(o.id));
+          baselineRef.current = true;
+          return;
+        }
+        handleIncomingOrders(list);
+      } catch {}
+    };
+    poll();
+    const interval = setInterval(poll, 8000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, [handleIncomingOrders]);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -89,10 +163,7 @@ export default function DashboardOrdersPage() {
     onMessage: (event, data) => {
       const payload = data as { order: DashboardOrder };
       if (event === "new_order") {
-        setOrders((prev) => [payload.order, ...prev]);
-        setNewOrderAlert(true);
-        playDing();
-        setTimeout(() => setNewOrderAlert(false), 3000);
+        handleIncomingOrders([payload.order]);
       } else if (event === "order_updated") {
         setOrders((prev) =>
           prev.map((o) => (o.id === payload.order.id ? payload.order : o))
