@@ -13,18 +13,25 @@ import type { OrderStatus } from "@/generated/prisma";
 function playDing() {
   try {
     const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(1050, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(820, ctx.currentTime + 0.25);
-    gain.gain.setValueAtTime(0.85, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 1.1);
-    osc.onended = () => ctx.close();
+    const play = () => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(1050, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(820, ctx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.85, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 1.1);
+      osc.onended = () => ctx.close();
+    };
+    if (ctx.state === "suspended") {
+      ctx.resume().then(play);
+    } else {
+      play();
+    }
   } catch {}
 }
 

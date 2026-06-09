@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { orderRepository } from "@/backend/repositories/order.repository";
 import { paymentRepository } from "@/backend/repositories/payment.repository";
 import { sseManager } from "@/backend/lib/sse";
+import { notifyOrderPlaced } from "@/backend/lib/whatsapp";
 
 // Only active when PHONEPE_TEST_MODE=true - simulates a successful payment
 export async function GET(
@@ -62,6 +63,21 @@ export async function GET(
           })),
         },
       });
+
+      if (updatedOrder.customerPhone) {
+        await notifyOrderPlaced({
+          customerPhone: updatedOrder.customerPhone,
+          customerName: updatedOrder.customerName || "there",
+          orderNumber: updatedOrder.orderNumber,
+          totalPaise: updatedOrder.totalPaise,
+          cafeName: updatedOrder.cafe?.name || "the cafe",
+          items: updatedOrder.items.map((i) => ({
+            itemName: i.itemName,
+            quantity: i.quantity,
+            subtotalPaise: i.subtotalPaise,
+          })),
+        }).catch(() => {});
+      }
     }
   }
 
