@@ -29,18 +29,33 @@ function playDing() {
   const ctx = ensureAudio();
   if (!ctx) return;
   try {
-    const t = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(1050, t);
-    osc.frequency.exponentialRampToValueAtTime(820, t + 0.25);
-    gain.gain.setValueAtTime(0.85, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 1.1);
-    osc.start(t);
-    osc.stop(t + 1.1);
+    const now = ctx.currentTime;
+    // A short two-note bell, similar in feel to an iOS message tone. Each note
+    // is built from a few harmonics with a fast attack and exponential decay.
+    const bell = (freq: number, start: number, dur: number, peak: number) => {
+      const env = ctx.createGain();
+      env.connect(ctx.destination);
+      env.gain.setValueAtTime(0.0001, start);
+      env.gain.exponentialRampToValueAtTime(peak, start + 0.006);
+      env.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+      for (const [mult, gain] of [
+        [1, 1],
+        [2.01, 0.4],
+        [3.0, 0.18],
+      ] as const) {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq * mult;
+        g.gain.value = gain;
+        osc.connect(g);
+        g.connect(env);
+        osc.start(start);
+        osc.stop(start + dur);
+      }
+    };
+    bell(987.77, now, 0.45, 0.6); // B5
+    bell(1318.51, now + 0.12, 0.6, 0.7); // E6
   } catch {}
 }
 
