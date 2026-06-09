@@ -139,8 +139,10 @@ export default function DashboardOrdersPage() {
 
   const fetchOrders = useCallback(async () => {
     try {
+      // "All Active" shows only in-progress orders; completed/cancelled live
+      // under their own tabs.
       const statuses = filter === "ALL"
-        ? "PAID,PREPARING,READY,COMPLETED"
+        ? "PAID,PREPARING,READY"
         : filter;
 
       // Only show today's orders
@@ -207,7 +209,9 @@ export default function DashboardOrdersPage() {
   };
 
   const filteredOrders =
-    filter === "ALL" ? orders : orders.filter((o) => o.status === filter);
+    filter === "ALL"
+      ? orders.filter((o) => o.status !== "COMPLETED" && o.status !== "CANCELLED")
+      : orders.filter((o) => o.status === filter);
 
   return (
     <div>
