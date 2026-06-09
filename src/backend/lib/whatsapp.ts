@@ -199,7 +199,7 @@ export async function notifyOrderReady(args: {
   // window, so on Meta it must use an approved template — free-form text only
   // delivers while a customer-initiated session is open, which never happens here.
   if (process.env.WHATSAPP_PROVIDER === "meta") {
-    return sendMetaTemplate(normalizePhone(customerPhone), "order_ready", "en", [
+    return sendMetaTemplate(normalizePhone(customerPhone), "order_ready_alert", "en", [
       customerName,
       orderNumber,
       cafeName,
