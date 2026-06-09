@@ -293,12 +293,6 @@ export function CheckoutForm({ cafeSlug, cafeName, onBack }: CheckoutFormProps) 
               autoComplete="email"
               required
             />
-            <p
-              className="text-[11px] text-[#cbc3d7] -mt-1"
-              style={{ fontFamily: "var(--font-jb-mono), monospace" }}
-            >
-              We&apos;ll send your order confirmation here.
-            </p>
             <div>
               <label
                 htmlFor="notes"
