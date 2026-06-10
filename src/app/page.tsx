@@ -185,8 +185,8 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* ── Hero ── (centered) ── */}
-      <section className="relative overflow-hidden min-h-screen flex flex-col justify-center pt-16 pb-8">
+      {/* ── Hero ── (centered, above the fold) ── */}
+      <section className="relative overflow-hidden min-h-[100dvh] flex flex-col justify-center pt-16">
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
 
@@ -239,7 +239,7 @@ export default function HomePage() {
 
           {/* Trust signals */}
           <div
-            className="flex flex-wrap justify-center items-center gap-5 mb-10 animate-fade-in-up"
+            className="flex flex-wrap justify-center items-center gap-5 animate-fade-in-up"
             style={{ animationDelay: "220ms" }}
           >
             {["No app required", "PhonePe payments", "Setup in minutes"].map((t) => (
@@ -249,14 +249,20 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Browser mockup */}
+      {/* ── Dashboard mockup (below the fold) ── */}
+      <section className="bg-background pb-0 pt-16 sm:pt-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <DashboardMockup />
         </div>
       </section>
 
       {/* ── Marquee ── */}
-      <MarqueeStrip />
+      <div className="mt-16 sm:mt-20">
+        <MarqueeStrip />
+      </div>
 
       {/* ── Problems ── (editorial) ── */}
       <section id="problems" className="bg-background">
