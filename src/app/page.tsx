@@ -186,7 +186,7 @@ export default function HomePage() {
       </header>
 
       {/* ── Hero ── (centered) ── */}
-      <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16">
+      <section className="relative overflow-hidden min-h-screen flex flex-col justify-center pt-16 pb-8">
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
 
