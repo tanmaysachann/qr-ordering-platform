@@ -17,8 +17,12 @@ jobs:
           VERCEL_SCOPE: tanmaysachan0005-gmailcoms-projects
         run: |
           npm i -g vercel --silent
-          LATEST=$(vercel ls scanpay-ordering --token $VERCEL_TOKEN --scope $VERCEL_SCOPE 2>/dev/null \
-            | grep "vercel.app" | head -1 | awk '{print $2}')
+          LATEST=$(vercel ls scanpay-ordering --prod --token "$VERCEL_TOKEN" --scope "$VERCEL_SCOPE" \
+            | grep -oE 'https://[a-zA-Z0-9-]+\.vercel\.app' | head -1)
           echo "Latest deployment: $LATEST"
+          if [ -z "$LATEST" ]; then
+            echo "::error::Could not resolve the latest deployment URL from 'vercel ls' output"
+            exit 1
+          fi
           vercel alias set "$LATEST" scanpay-ordering.vercel.app \
-            --token $VERCEL_TOKEN --scope $VERCEL_SCOPE
+            --token "$VERCEL_TOKEN" --scope "$VERCEL_SCOPE"
