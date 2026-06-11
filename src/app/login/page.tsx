@@ -13,8 +13,8 @@ import { ThemeToggle } from "@/frontend/components/ui/theme-toggle";
 function ScanPayMark() {
   return (
     <div className="flex items-center gap-2.5 justify-center">
-      <div className="w-11 h-11 rounded-xl bg-white p-1 ring-1 ring-black/10 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden">
-        <Image src="/logo.png" alt="Scan&Pay logo" width={44} height={44} className="w-full h-full object-contain rounded-md" priority />
+      <div className="w-11 h-11 flex items-center justify-center flex-shrink-0">
+        <Image src="/logo.png" alt="Scan&Pay logo" width={44} height={44} className="w-full h-full object-contain" priority />
       </div>
       <span className="font-bold text-xl tracking-tight text-foreground">
         Scan<span className="text-primary">&amp;</span>Pay
