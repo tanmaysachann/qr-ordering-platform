@@ -7,19 +7,14 @@ import { Button } from "@/frontend/components/ui/button";
 import { Input } from "@/frontend/components/ui/input";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { ThemeToggle } from "@/frontend/components/ui/theme-toggle";
 
 function ScanPayMark() {
   return (
     <div className="flex items-center gap-2.5 justify-center">
-      <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-          <path d="M3.5 7V3.5H7"     stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M16.5 7V3.5H13"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M3.5 13V16.5H7"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M16.5 13V16.5H13" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          <circle cx="10" cy="10" r="1.6" fill="white"/>
-        </svg>
+      <div className="w-11 h-11 rounded-xl bg-white p-1 ring-1 ring-black/10 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden">
+        <Image src="/logo.png" alt="Scan&Pay logo" width={44} height={44} className="w-full h-full object-contain rounded-md" priority />
       </div>
       <span className="font-bold text-xl tracking-tight text-foreground">
         Scan<span className="text-primary">&amp;</span>Pay

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
@@ -24,14 +25,8 @@ import { CafeQRModal } from "@/frontend/components/admin/cafe-qr-modal";
 function BrandMark() {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
-          <path d="M3.5 7V3.5H7"     stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M16.5 7V3.5H13"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M3.5 13V16.5H7"   stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M16.5 13V16.5H13" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          <circle cx="10" cy="10" r="1.6" fill="white"/>
-        </svg>
+      <div className="w-8 h-8 rounded-md bg-white p-[3px] ring-1 ring-black/10 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden">
+        <Image src="/logo.png" alt="Scan&Pay logo" width={32} height={32} className="w-full h-full object-contain rounded-sm" />
       </div>
       <span className="font-bold text-base tracking-tight text-foreground">
         Scan<span className="text-primary">&amp;</span>Pay
