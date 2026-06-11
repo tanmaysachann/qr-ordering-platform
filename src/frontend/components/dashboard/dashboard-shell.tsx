@@ -26,7 +26,7 @@ function BrandMark() {
   return (
     <div className="flex items-center gap-2.5">
       <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
-        <Image src="/logo.png" alt="Scan&Pay logo" width={32} height={32} className="w-full h-full object-contain" />
+        <Image src="/logo.png" alt="Scan&Pay logo" width={32} height={32} className="w-full h-full object-contain dark:invert" />
       </div>
       <span className="font-bold text-base tracking-tight text-foreground">
         Scan<span className="text-primary">&amp;</span>Pay

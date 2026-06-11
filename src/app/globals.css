@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Drive `dark:` utilities from the `.dark` class toggled on <html>,
+   not the OS preference, to match the app's class-based theming. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ── Landing page: clean white, near-black, no color accent ── */
 .landing-page {
   --background:       #ffffff;
