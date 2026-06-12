@@ -234,14 +234,14 @@ export default function HomePage() {
 
           {/* Trust signals */}
           <div
-            className="flex flex-wrap justify-center items-center gap-5 animate-fade-in-up"
+            className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2 animate-fade-in-up text-xs text-muted"
             style={{ animationDelay: "220ms" }}
           >
             {["No app required", "PhonePe payments", "Setup in minutes"].map((t) => (
-              <div key={t} className="flex items-center gap-1.5 text-xs text-muted">
-                <CheckCircle size={13} className="text-success flex-shrink-0" />
+              <span key={t} className="flex items-center gap-1.5">
+                <CheckCircle size={14} className="text-primary flex-shrink-0" />
                 {t}
-              </div>
+              </span>
             ))}
           </div>
         </div>
@@ -489,9 +489,9 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden border border-border">
               {[
                 { value: "10k+",    label: "Orders processed" },
-                { value: "20+",     label: "Partner cafes" },
+                { value: "5+",      label: "Partner cafes" },
                 { value: "< 2 min", label: "Avg order time" },
-                { value: "99.9%",   label: "Platform uptime" },
+                { value: "100%",    label: "Contactless" },
               ].map((s) => (
                 <div key={s.label} className="bg-surface flex flex-col items-center justify-center py-10 px-6 text-center">
                   <div className="[font-family:var(--font-display)] text-[clamp(1.8rem,4vw,3rem)] font-extrabold tracking-tight text-foreground leading-none mb-2.5 tabular-nums">
@@ -544,14 +544,38 @@ export default function HomePage() {
 
       {/* ── Footer ── */}
       <footer className="border-t border-border bg-background">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-5">
-          <Wordmark />
-          <p className="text-sm text-muted">
-            &copy; {new Date().getFullYear()} Scan&amp;Pay · Built for modern dining.
-          </p>
-          <div className="flex gap-6 text-xs text-muted">
-            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+
+          {/* Top: brand + links */}
+          <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
+            <div className="max-w-xs">
+              <Wordmark />
+              <p className="mt-4 text-sm leading-relaxed text-muted">
+                QR ordering and payments for modern cafes. Scan, order, pay. No app, no wait.
+              </p>
+            </div>
+
+            <nav className="flex flex-col gap-3.5 sm:items-end">
+              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted/60">
+                Legal
+              </span>
+              <Link href="/privacy" className="text-sm text-muted hover:text-foreground transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="text-sm text-muted hover:text-foreground transition-colors">
+                Terms of Service
+              </Link>
+            </nav>
+          </div>
+
+          {/* Divider + meta */}
+          <div className="mt-12 flex flex-col gap-3 border-t border-border pt-7 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs text-muted">
+              &copy; {new Date().getFullYear()} Scan&amp;Pay. All rights reserved.
+            </p>
+            <p className="text-xs text-muted/80">
+              Built for modern dining · Made in Bengaluru, India
+            </p>
           </div>
         </div>
       </footer>
