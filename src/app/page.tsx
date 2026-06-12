@@ -550,8 +550,8 @@ export default function HomePage() {
             &copy; {new Date().getFullYear()} Scan&amp;Pay · Built for modern dining.
           </p>
           <div className="flex gap-6 text-xs text-muted">
-            <span className="hover:text-foreground transition-colors cursor-pointer">Privacy</span>
-            <span className="hover:text-foreground transition-colors cursor-pointer">Terms</span>
+            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
           </div>
         </div>
       </footer>
